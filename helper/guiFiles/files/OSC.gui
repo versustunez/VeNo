@@ -1,0 +1,5 @@
+@Knob {
+    bind: osc{osc}__level
+    w: 80
+    h: 140
+}

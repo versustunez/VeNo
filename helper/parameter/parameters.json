@@ -1,0 +1,537 @@
+{
+  "root": [
+    {
+      "name": "master__volume",
+      "showName": "Synth Volume",
+      "modulateAble": true,
+      "tooltip": "Control the Main Volume of the Synth",
+      "value": 1,
+      "maxValue": 1.5,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "pitch__wheel",
+      "showName": "Pitch Wheel",
+      "modulateAble": false,
+      "tooltip": "Change the Pitch of the Oscillators based on the PitchWheel",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": -1,
+      "type": "Float"
+    },
+    {
+      "name": "pitchbend__up",
+      "showName": "Pitch Bend Up",
+      "modulateAble": false,
+      "tooltip": "Max Semitones Up",
+      "value": 12,
+      "maxValue": 36,
+      "minValue": 0,
+      "type": "Integer"
+    },
+    {
+      "name": "pitchbend__down",
+      "showName": "Pitch Bend Down",
+      "modulateAble": false,
+      "tooltip": "Max Semitones Down",
+      "value": 12,
+      "maxValue": 36,
+      "minValue": 0,
+      "type": "Integer"
+    },
+    {
+      "name": "mod1",
+      "showName": "MOD1",
+      "modulateAble": false,
+      "tooltip": "Modulator 1",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "mod2",
+      "showName": "MOD2",
+      "modulateAble": false,
+      "tooltip": "Modulator 2",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "mod3",
+      "showName": "MOD3",
+      "modulateAble": false,
+      "tooltip": "Modulator 3",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "mod4",
+      "showName": "MOD4",
+      "modulateAble": false,
+      "tooltip": "Modulator 4",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "mono_legato",
+      "showName": "Mono Legato",
+      "modulateAble": false,
+      "tooltip": "Mono legato -> Disable Voice 2-5 and only enable Voice1 and do Frequency Slides!",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Boolean"
+    },
+    {
+      "name": "portamento",
+      "showName": "Portamento",
+      "modulateAble": false,
+      "tooltip": "Glide Time until new note is reached",
+      "value": 0,
+      "maxValue": 1500,
+      "minValue": 0,
+      "type": "Float"
+    }
+  ],
+  "oscConfig": {
+    "count": 4,
+    "id": "osc",
+    "sid": "OSC"
+  },
+  "osc": [
+    {
+      "name": "{id}__active",
+      "showName": "{sid} Active",
+      "modulateAble": false,
+      "tooltip": "Makes the Oscillator Available for Rendering or not",
+      "value": "{i} == 1",
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Boolean"
+    },
+    {
+      "name": "{id}__voices",
+      "showName": "{sid} Voices",
+      "modulateAble": false,
+      "tooltip": "How Many Voices he should play at Once: anyone above 1 will create Unison/Detune Voices",
+      "value": 1,
+      "maxValue": 9,
+      "minValue": 1,
+      "type": "Integer"
+    },
+    {
+      "name": "{id}__semitones",
+      "showName": "{sid} Semitones",
+      "modulateAble": true,
+      "tooltip": "Shift the Frequency by a specific Semitones amount",
+      "value": 0,
+      "maxValue": 24,
+      "minValue": -24,
+      "type": "Integer"
+    },
+    {
+      "name": "{id}__cents",
+      "showName": "{sid} Fine",
+      "modulateAble": true,
+      "tooltip": "Fine tune the Frequency by Cents",
+      "value": 0,
+      "maxValue": 100,
+      "minValue": -100,
+      "type": "Integer"
+    },
+    {
+      "name": "{id}__level",
+      "showName": "{sid} Volume",
+      "modulateAble": true,
+      "tooltip": "Volume of the Oscillator itself",
+      "value": 0.8,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__panning",
+      "showName": "{sid} Pan",
+      "modulateAble": true,
+      "tooltip": "Panning of the Oscillator itself",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": -1,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__detune_amount",
+      "showName": "{sid} Detune Volume",
+      "modulateAble": true,
+      "tooltip": "Unison Voice Volume",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__detune_dense",
+      "showName": "{sid} Detune Strength",
+      "modulateAble": true,
+      "tooltip": "Unison Voice Spread",
+      "value": 0,
+      "maxValue": 150,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__detune_mode",
+      "showName": "{sid} Detune Mode",
+      "modulateAble": false,
+      "tooltip": "Detune Mode",
+      "value": 1,
+      "maxValue": 3,
+      "minValue": 1,
+      "type": "Integer"
+    },
+    {
+      "name": "{id}__phase",
+      "showName": "{sid} Phase offset",
+      "modulateAble": true,
+      "tooltip": "Shift the Phase of the Oscillator",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__random_phase",
+      "showName": "{sid} Random Phase",
+      "modulateAble": false,
+      "tooltip": "Generate a Random Phase at each new Note",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Boolean"
+    },
+    {
+      "name": "{id}__stereo",
+      "showName": "{sid} Detune Stereo",
+      "modulateAble": true,
+      "tooltip": "Detune Stereo Spread",
+      "value": 50,
+      "maxValue": 200,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__waveform_base",
+      "showName": "{sid} Primary Waveform",
+      "modulateAble": false,
+      "tooltip": "Main Waveform that is applied without Mix",
+      "value": 1,
+      "maxValue": 13,
+      "minValue": 1,
+      "type": "Integer"
+    },
+    {
+      "name": "{id}__waveform_sec",
+      "showName": "{sid} Secondary Waveform",
+      "modulateAble": false,
+      "tooltip": "Secondary Waveform that is applied with Mix",
+      "value": 4,
+      "maxValue": 13,
+      "minValue": 1,
+      "type": "Integer"
+    },
+    {
+      "name": "{id}__waveform_mix",
+      "showName": "{sid} Waveform Mix",
+      "modulateAble": true,
+      "tooltip": "How much should both of the Waveform Mixed",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__attack",
+      "showName": "{sid} Attack",
+      "modulateAble": false,
+      "tooltip": "Oscillator Envelope Attack",
+      "value": 10,
+      "maxValue": 1500,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__decay",
+      "showName": "{sid} Decay",
+      "modulateAble": false,
+      "tooltip": "Oscillator Envelope Decay",
+      "value": 0,
+      "maxValue": 1500,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__sustain",
+      "showName": "{sid} Sustain",
+      "modulateAble": false,
+      "tooltip": "Oscillator Envelope Sustain",
+      "value": 1,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__release",
+      "showName": "{sid} Release",
+      "modulateAble": false,
+      "tooltip": "Oscillator Envelope Release",
+      "value": 10,
+      "maxValue": 1500,
+      "minValue": 0,
+      "type": "Float"
+    }
+  ],
+  "lfoConfig": {
+    "count": 2,
+    "id": "lfo",
+    "sid": "LFO"
+  },
+  "lfo": [
+    {
+      "name": "{id}__active",
+      "showName": "{sid} Active",
+      "modulateAble": false,
+      "tooltip": "Active or Deactivate LFO",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Boolean"
+    },
+    {
+      "name": "{id}__voices",
+      "showName": "{sid} Voices",
+      "modulateAble": false,
+      "tooltip": "How Many Voices he should play at Once: anyone above 1 will create Unison/Detune Voices",
+      "value": 1,
+      "maxValue": 9,
+      "minValue": 1,
+      "type": "Integer"
+    },
+    {
+      "name": "{id}__rate",
+      "showName": "{sid} Rate",
+      "modulateAble": true,
+      "tooltip": "Frequency of the LFO",
+      "value": 1,
+      "maxValue": 40,
+      "minValue": 1,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__phase",
+      "showName": "{sid} Phase offset",
+      "modulateAble": true,
+      "tooltip": "Shift the Phase of the Oscillator",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__random_phase",
+      "showName": "{sid} Random Phase",
+      "modulateAble": false,
+      "tooltip": "Generate a Random Phase at each new Note",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Boolean"
+    },
+    {
+      "name": "{id}__waveform_base",
+      "showName": "{sid} Primary Waveform",
+      "modulateAble": false,
+      "tooltip": "Main Waveform that is applied without Mix",
+      "value": 1,
+      "maxValue": 13,
+      "minValue": 1,
+      "type": "Integer"
+    },
+    {
+      "name": "{id}__waveform_sec",
+      "showName": "{sid} Secondary Waveform",
+      "modulateAble": false,
+      "tooltip": "Secondary Waveform that is applied with Mix",
+      "value": 4,
+      "maxValue": 13,
+      "minValue": 1,
+      "type": "Integer"
+    },
+    {
+      "name": "{id}__waveform_mix",
+      "showName": "{sid} Waveform Mix",
+      "modulateAble": true,
+      "tooltip": "How much should both of the Waveform Mixed",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    }
+  ],
+  "envelopeConfig": {
+    "count": 2,
+    "id": "env",
+    "sid": "Envelope"
+  },
+  "envelope": [
+    {
+      "name": "{id}__attack",
+      "showName": "{sid} Attack",
+      "modulateAble": false,
+      "tooltip": "Envelope Attack",
+      "value": 10,
+      "maxValue": 1500,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__decay",
+      "showName": "{sid} Decay",
+      "modulateAble": false,
+      "tooltip": "Envelope Decay",
+      "value": 0,
+      "maxValue": 1500,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__sustain",
+      "showName": "{sid} Sustain",
+      "modulateAble": false,
+      "tooltip": "Envelope Sustain",
+      "value": 1,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "{id}__release",
+      "showName": "{sid} Release",
+      "modulateAble": false,
+      "tooltip": "Envelope Release",
+      "value": 10,
+      "maxValue": 1500,
+      "minValue": 0,
+      "type": "Float"
+    }
+  ],
+  "distortion": [
+    {
+      "name": "dist__filter_one_type",
+      "showName": "Distortion Filter One",
+      "modulateAble": false,
+      "tooltip": "Select Filter",
+      "value": 1,
+      "maxValue": 5,
+      "minValue": 1,
+      "type": "Integer"
+    },
+    {
+      "name": "dist__filter_one_cutoff",
+      "showName": "Distortion Filter One Cutoff",
+      "modulateAble": true,
+      "tooltip": "Filter Cutoff 20-20000",
+      "value": 20,
+      "maxValue": 20000,
+      "minValue": 20,
+      "type": "Float"
+    },
+    {
+      "name": "dist__filter_two_type",
+      "showName": "Distortion Filter Two",
+      "modulateAble": false,
+      "tooltip": "Select Filter",
+      "value": 1,
+      "maxValue": 5,
+      "minValue": 1,
+      "type": "Integer"
+    },
+    {
+      "name": "dist__filter_two_cutoff",
+      "showName": "Distortion Filter Two Cutoff",
+      "modulateAble": true,
+      "tooltip": "Filter Cutoff 20-20000",
+      "value": 20,
+      "maxValue": 20000,
+      "minValue": 20,
+      "type": "Float"
+    },
+    {
+      "name": "dist__input_gain",
+      "showName": "Distortion Input Gain",
+      "modulateAble": false,
+      "tooltip": "How hard should the Signal Push into it",
+      "value": 1,
+      "maxValue": 1.5,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "dist__output_gain",
+      "showName": "Distortion Output Gain",
+      "modulateAble": false,
+      "tooltip": "How hard should the Signal Go out",
+      "value": 1,
+      "maxValue": 1.5,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "dist__drive",
+      "showName": "Distortion DRIVE",
+      "modulateAble": false,
+      "tooltip": "Overdrive it",
+      "value": 0,
+      "maxValue": 16,
+      "minValue": -16,
+      "type": "Float"
+    },
+    {
+      "name": "dist__type",
+      "showName": "Distortion Type",
+      "modulateAble": false,
+      "tooltip": "Distortion Algo selection",
+      "value": 1,
+      "maxValue": 7,
+      "minValue": 1,
+      "type": "Integer"
+    },
+    {
+      "name": "dist__dynamic",
+      "showName": "Distortion Dynamic Parameter",
+      "modulateAble": true,
+      "tooltip": "Dynamic Parameter that change based on the Algo not all Algo use this",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
+      "name": "dist__mix",
+      "showName": "Distortion DRY/WET",
+      "modulateAble": true,
+      "tooltip": "Dry Wet",
+      "value": 0.5,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    }
+  ]
+}
