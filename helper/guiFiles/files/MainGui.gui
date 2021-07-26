@@ -5,26 +5,40 @@
 
 w: 1200
 h: 700
-bg: 255,0,137,255
+bg: primaryBG
 
 #GroupOne {
-    w: 1000
+    w: 80%
     h: 150
-    bg: primary
+    bg: primaryBG
 
     @Knob {
+        id: osc1
         bind: osc1__level
         x: 10
         y: 10
         w: 130
         h: 130
+        label: top
+        labelvalue: semi
+    }
+
+    @Knob#Main Volume {
+        bind: osc1__level
+        x: 200
+        y: 10
+        w: 130
+        h: 130
+        label: center
+        labelvalue: semi
     }
 }
 
 #OSC1 {
-    w: 1000
+    w: 50%
     h: 300
     y: 300
-    bg: secondary
+    bg: secondaryBG
+    id: true
     @import Bin::Oscillator;osc=1
 }

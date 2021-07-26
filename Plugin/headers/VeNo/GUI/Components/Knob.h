@@ -4,11 +4,16 @@
 #include <JuceHeader.h>
 
 typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+
+// Forwards
+namespace VeNo::GUIEvents
+{
+class LiveLabel;
+}
 namespace VeNo::GUI
 {
 class Knob : public BaseComponent,
-             public juce::Label::Listener,
-             public juce::Slider::Listener
+             public juce::Label::Listener
 {
 public:
     Knob (std::string name, std::string showName, size_t id);
@@ -21,12 +26,17 @@ public:
     void labelTextChanged (juce::Label* labelThatHasChanged) override;
     void editorShown (juce::Label* label, juce::TextEditor& editor) override;
     void editorHidden (juce::Label* label, juce::TextEditor& editor) override;
-    void sliderValueChanged (juce::Slider* slider) override;
-    void enableLiveLabel();
+    void enableLiveLabel (bool isSemi);
 
+    juce::Slider* slider();
+    juce::Label* label();
+    void mouseDown (const juce::MouseEvent& event) override;
+
+    static juce::Slider::SliderStyle getSliderStyle();
+    static void openPopupMenu();
 protected:
     std::unique_ptr<juce::Slider> m_slider;
     std::unique_ptr<SliderAttachment> m_attachment;
-    bool m_liveLabel = false;
+    VeNo::GUIEvents::LiveLabel* m_liveLabel = nullptr;
 };
 } // namespace VeNo::GUI

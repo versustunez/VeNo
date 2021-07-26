@@ -15,10 +15,13 @@ std::shared_ptr<BaseComponent> KnobComponentFactory::create (GUIParseItem* item,
         auto& label = item->properties["label"];
         comp->setLabelPosition (label);
     }
-    if (item->properties.contains ("labelvalue") && item->properties["labelvalue"] == "real")
+    if (item->properties.contains ("labelvalue"))
     {
-        comp->enableLiveLabel();
+        auto& labelVal = item->properties["labelvalue"];
+        if (labelVal != "off")
+            comp->enableLiveLabel (labelVal == "semi");
     }
+    setSelector(comp.get(), item);
     return comp;
 }
 } // namespace VeNo::GUI

@@ -10,14 +10,14 @@ namespace VUtils
 {
 void StringUtils::leftTrim (std::string& s)
 {
-    s.erase (s.begin(), std::find_if (s.begin(), s.end(), [] (unsigned char ch) {
-                 return ! std::isspace (ch);
-             }));
+    s.erase (s.begin(), std::find_if (s.begin(), s.end(), [] (unsigned char ch)
+                                      { return ! std::isspace (ch); }));
 }
 
 void StringUtils::rightTrim (std::string& s)
 {
-    s.erase (std::find_if (s.rbegin(), s.rend(), [] (unsigned char ch) { return ! std::isspace (ch); })
+    s.erase (std::find_if (s.rbegin(), s.rend(), [] (unsigned char ch)
+                           { return ! std::isspace (ch); })
                  .base(),
              s.end());
 }
@@ -69,12 +69,13 @@ std::string StringUtils::urlDecode (const std::string& val)
     std::string ret;
     char ch;
     size_t i;
-    int ii;
+    unsigned int ii;
     for (i = 0; i < val.length(); i++)
     {
         if (int (val[i]) == 37)
         {
-            sscanf (val.substr (i + 1, 2).c_str(), "%x", &ii);
+            char* pEnd;
+            ii = std::strtoul(val.substr(i+1, 2).c_str(), &pEnd, 16);
             ch = static_cast<char> (ii);
             ret += ch;
             i = i + 2;
@@ -131,7 +132,7 @@ void StringUtils::toLower (std::string& str)
     std::transform (str.begin(), str.end(), str.begin(), ::tolower);
 }
 
-int StringUtils::stringToInt (std::string& string, int def)
+int StringUtils::toNumber (std::string& string, int def)
 {
     char* pEnd;
     long val = std::strtol (string.c_str(), &pEnd, 10);
@@ -140,10 +141,19 @@ int StringUtils::stringToInt (std::string& string, int def)
     return (int) val;
 }
 
-double StringUtils::stringToDouble (std::string& string, double def)
+long StringUtils::toNumber (std::string& string, long def)
 {
     char* pEnd;
-    double val = std::strtod(string.c_str(), &pEnd);
+    long val = std::strtol (string.c_str(), &pEnd, 10);
+    if (pEnd == string)
+        return def;
+    return val;
+}
+
+double StringUtils::toNumber (std::string& string, double def)
+{
+    char* pEnd;
+    double val = std::strtod (string.c_str(), &pEnd);
     if (pEnd == string)
         return def;
     return val;

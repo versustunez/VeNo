@@ -41,6 +41,7 @@ That example line imports the Binary Oscillator File with variable osc with the 
 - w
 - h
 - bg (only on Groups currently)
+- id (only on Groups)
 - bind (only on Compoenents)
 
 ## Color Values

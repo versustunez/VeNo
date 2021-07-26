@@ -1,7 +1,7 @@
 #include <VUtils/Logging.h>
+#include <VUtils/StringUtils.h>
 #include <VeNo/Core/Config.h>
 #include <VeNo/Core/Instance.h>
-#include <VeNo/GUI/Components/Components.h>
 #include <VeNo/GUI/GuiLang/GuiInterpreter.h>
 #include <regex>
 #include <vendor/tsl/robin_map.h>
@@ -18,9 +18,7 @@ std::shared_ptr<ComponentGroup> Interpreter::parseTree (GUIParseItem* item, Comp
     group->setColor (item->colorComponent);
     group->setPosition (item->pos);
     if (! inGroup)
-    {
         inGroup = group.get();
-    }
     // Imports need a sub-interpreter! so here we go:
     if (item->component != nullptr)
     {
@@ -35,6 +33,8 @@ std::shared_ptr<ComponentGroup> Interpreter::parseTree (GUIParseItem* item, Comp
     }
     else
     {
+        if (item->properties.contains ("id") && item->properties["id"] == "true")
+            group->setShowName (item->name);
         for (auto& import : item->imports)
         {
             auto importTree = VeNo::Core::Config::get().guiInit.get (import.name);
@@ -57,6 +57,8 @@ std::shared_ptr<ComponentGroup> Interpreter::parseTree (GUIParseItem* item, Comp
                 group->groups.push_back (parsed);
         }
     }
+    for (auto& component : group->components)
+        component->triggerAfterParsing (this);
     return group;
 }
 std::shared_ptr<BaseComponent> Interpreter::createComponent (GUIParseItem* item)
@@ -105,13 +107,48 @@ std::shared_ptr<BaseComponent> Interpreter::createFromType (GUIParseItem* item, 
         initMapping();
     if (componentMapping.contains (item->component->name))
         return componentMapping[item->component->name]->create (item, parameter, name, id);
+    WARN ("Found unknown Component: \"%s\"", item->component->name.c_str())
     return nullptr;
 }
-void Interpreter::initMapping()
+
+BaseComponent* Interpreter::find (const char* selector, ComponentGroup* inGroup)
 {
-    componentMapping["Label"] = std::make_shared<LabelComponentFactory>();
-    componentMapping["Knob"] = std::make_shared<KnobComponentFactory>();
-    /*    componentMapping["Slider"] = ComponentID::SLIDER;
-    componentMapping["Select"] = ComponentID::SELECT;*/
+    if (! inGroup)
+        inGroup = componentGroup.get();
+    auto selectors = VUtils::StringUtils::split (selector, " ");
+    if (selectors.empty())
+        return nullptr;
+
+    for (auto& query : selectors)
+    {
+        // we have a group selector so lets search for a group :P
+        if (query[0] == '#')
+        {
+            for (auto& group : inGroup->groups)
+            {
+                if (group->id() == query)
+                {
+                    inGroup = group.get();
+                    break;
+                }
+            }
+        }
+        else
+        {
+            for (auto& component : inGroup->components)
+            {
+                if (component->selectorId() == query)
+                    return component.get();
+            }
+            for (auto& component : inGroup->groups)
+            {
+                auto* el = find (query.c_str(), component.get());
+                if (el)
+                    return el;
+            }
+            break;
+        }
+    }
+    return nullptr;
 }
 } // namespace VeNo::GUI

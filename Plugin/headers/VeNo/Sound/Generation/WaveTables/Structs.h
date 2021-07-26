@@ -1,6 +1,6 @@
 #pragma once
-#include <cstdint>
 #include <VeNo/Definitions.h>
+#include <cstdint>
 namespace VeNo::Audio::Waves
 {
 enum WaveForms

@@ -90,7 +90,7 @@ bool FileHandler::createDirectoryIfNotExist (
     auto p = std::filesystem::path (fileName);
     if (! p.has_parent_path())
     {
-        WARN("Path has no Parent Path")
+        WARN ("Path has no Parent Path")
         return false;
     }
     if (FileHandler::isDirectory (p.parent_path()))

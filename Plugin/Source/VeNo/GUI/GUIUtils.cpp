@@ -1,3 +1,4 @@
+#include <VUtils/StringUtils.h>
 #include <VeNo/Core/Config.h>
 #include <VeNo/GUI/GUIUtils.h>
 
@@ -16,6 +17,10 @@ int Utils::getScaledSize (int size)
 {
     return static_cast<int> (size * Config::get().m_scale);
 }
+float Utils::getScaledSize (float size)
+{
+    return static_cast<float> (size * Config::get().m_scale);
+}
 juce::Path Utils::drawRectangleWithRadius (int x, int y, int w, int h, float radius, juce::Graphics& g)
 {
     juce::Path p;
@@ -28,5 +33,13 @@ juce::Path Utils::drawRectangleWithRadius (int x, int y, int w, int h, float rad
     p.closeSubPath();
     g.fillPath (p);
     return p;
+}
+VeNo::Core::Instance* Utils::getInstanceOrNull (const juce::Component& component)
+{
+    std::string compid = component.getComponentID().toStdString();
+    long pid = VUtils::StringUtils::toNumber (compid, -1);
+    if (pid == -1)
+        return nullptr;
+    return VeNo::Core::Instance::get((size_t) pid);
 }
 } // namespace VeNo::GUI

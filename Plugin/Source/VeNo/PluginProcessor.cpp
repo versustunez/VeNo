@@ -16,6 +16,7 @@ VeNoProcessor::VeNoProcessor()
 void VeNoProcessor::processBlock (juce::AudioBuffer<float>& buffer,
                                   juce::MidiBuffer& /*midiMessages*/)
 {
+    // oversampling only if less then 96khz everything above should fine by itself and "too hungry"
 }
 
 juce::AudioProcessorEditor* VeNoProcessor::createEditor()
@@ -41,7 +42,8 @@ void VeNoProcessor::prepareToPlay (double sampleRate, int blockSize)
     if (config.sampleRate != sampleRate)
     {
         config.sampleRate = sampleRate;
-        VeNo::Audio::Waves::WaveTableGenerator::getInstance().init();
+        // VeNo::Audio::Waves::WaveTableGenerator::getInstance().init();
+        // VeNo::Audio::Waves::WaveTableGenerator will later be setup to generate user selected waves!
     }
     //Setup WaveTables on Change
 }

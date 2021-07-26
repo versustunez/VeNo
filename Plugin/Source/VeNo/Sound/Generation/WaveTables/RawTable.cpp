@@ -1,5 +1,5 @@
-#include <VeNo/Sound/Generation/WaveTables/RawTable.h>
 #include <VeNo/Sound/Generation/WaveTables/Creator/Generator.h>
+#include <VeNo/Sound/Generation/WaveTables/RawTable.h>
 
 namespace VeNo::Audio::Waves
 {
@@ -29,6 +29,6 @@ void RawTable::cleanUpTemp()
 }
 void RawTable::finish() const
 {
-    WaveTableGenerator::getInstance().setGroup(m_index, m_group);
+    WaveTableGenerator::getInstance().setGroup (m_index, m_group);
 }
 } // namespace VeNo::Audio::Waves

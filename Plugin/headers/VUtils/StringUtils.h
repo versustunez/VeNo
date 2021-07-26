@@ -8,8 +8,9 @@ namespace VUtils
 class StringUtils
 {
 public:
-    static int stringToInt (std::string& string, int def);
-    static double stringToDouble (std::string& string, double def);
+    static int toNumber (std::string& string, int def);
+    static long toNumber (std::string& string, long def);
+    static double toNumber (std::string& string, double def);
     static void leftTrim (std::string& s);
 
     static void rightTrim (std::string& s);

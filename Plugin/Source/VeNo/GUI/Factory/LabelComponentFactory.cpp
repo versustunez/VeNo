@@ -10,6 +10,7 @@ std::shared_ptr<BaseComponent> LabelComponentFactory::create (GUIParseItem* item
 {
     auto comp = std::make_shared<Label> (parameter, name, id);
     comp->setText (item->properties["text"]);
+    setSelector(comp.get(), item);
     return comp;
 }
 } // namespace VeNo::GUI

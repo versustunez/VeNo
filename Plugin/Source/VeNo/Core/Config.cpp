@@ -1,5 +1,6 @@
 #include <VUtils/Logging.h>
 #include <VeNo/Core/Config.h>
+#include <VeNo/GUI/Fonts/Fonts.h>
 #include <VeNo/Sound/Generation/WaveTables/Creator/Generator.h>
 
 namespace VeNo::Core
@@ -15,7 +16,7 @@ Config::Config()
     layoutPath = m_config->getValue ("layoutPath", homeDir + "/Layouts/").toStdString();
     createForPath (presetPath);
     createForPath (layoutPath);
-    m_theme = std::make_shared<Theme> (m_config);
+    m_theme = std::make_shared<VeNo::Theme::Theme> (m_config);
     m_theme->init();
     DBGN ("Preset Dir: %s", presetPath.c_str())
     DBGN ("Layout Dir: %s", layoutPath.c_str())
@@ -23,8 +24,10 @@ Config::Config()
 Config::~Config()
 {
     DBGN ("Deleting")
+    VeNo::GUI::Fonts::destroyAll();
     m_config->save();
     m_config.reset();
+    m_theme = nullptr;
 }
 void Config::initConfig()
 {
@@ -41,12 +44,19 @@ void Config::registerEditor (std::string& id, juce::AudioProcessorEditor* editor
 {
     DBGN ("ID: %s", id.c_str())
     initLayout();
+    initTheme();
     m_editors[id] = editor;
 }
 void Config::removeEditor (std::string& id)
 {
     DBGN ("ID: %s", id.c_str())
     m_editors.erase (id);
+    if (m_editors.empty())
+    {
+        VeNo::GUI::Fonts::destroyAll();
+        delete look;
+        m_isThemeInit = false;
+    }
 }
 Config& Config::get()
 {
@@ -91,8 +101,16 @@ void Config::initLayout()
     std::string file = m_config->getValue ("layoutFile", "Bin::MainGUI").toStdString();
     guiInit.parseMain (file);
 }
-std::shared_ptr<Theme> Config::theme()
+std::shared_ptr<VeNo::Theme::Theme> Config::theme()
 {
     return m_theme;
+}
+void Config::initTheme()
+{
+    std::lock_guard<std::mutex> lockGuard (m_guard);
+    if (m_isThemeInit)
+        return;
+    m_isThemeInit = true;
+    look = new VeNo::GUI::LookHandler();
 }
 } // namespace VeNo::Core

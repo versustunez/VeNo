@@ -25,6 +25,7 @@ void ParameterHandler::addParameterModulate (const std::string& name, const std:
     m_paramMaps.push_back (name);
     auto* parameter = new ModulateParameter (name, showName, min, max, value, m_id);
     m_parameters[name] = parameter;
+    m_modularParameters[name] = parameter;
     m_params.push_back (parameter->createParameter (type));
 }
 
@@ -46,10 +47,21 @@ void ParameterHandler::parameterChanged (const juce::String& parameterID, float 
 }
 std::string ParameterHandler::getShowName (const std::string& parameter)
 {
-    if (m_parameters.contains(parameter)) {
+    if (m_parameters.contains (parameter))
         return m_parameters[parameter]->getShowName();
-    }
     return "Unknown";
+}
+VeNo::Core::Parameter* ParameterHandler::getParameter (const std::string& name)
+{
+    if (m_parameters.contains (name))
+        return m_parameters[name];
+    return nullptr;
+}
+VeNo::Core::ModulateParameter* ParameterHandler::getModulateParameter (const std::string& name)
+{
+    if (m_modularParameters.contains (name))
+        return m_modularParameters[name];
+    return nullptr;
 }
 
 } // namespace VeNo::Core

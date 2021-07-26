@@ -3,36 +3,44 @@
 #include <VeNo/Core/Config.h>
 #include <VeNo/GUI/GUIUtils.h>
 
+#include <utility>
+
 namespace VeNo::GUI
 {
 ComponentGroup::~ComponentGroup() = default;
 void ComponentGroup::paint (juce::Graphics& g)
 {
-    if (! m_color.hasColor)
-        return;
-    if (m_color.isPreColor)
+    auto* theme = VeNo::Core::Config::get().theme().get();
+    if (m_color.hasColor)
     {
-        g.setColour (VeNo::Core::Config::get().theme()->getColor (m_color.preColor));
+        if (m_color.isPreColor)
+            g.setColour (theme->getColor (m_color.preColor));
+        else
+            g.setColour (juce::Colour (m_color.colors[0], m_color.colors[1], m_color.colors[2], m_color.colors[3]));
+        g.fillAll();
     }
-    else
+    if (m_showGroupName)
     {
-        auto& colors = m_color.colors;
-        g.setColour (juce::Colour (colors[0], colors[1], colors[2], colors[3]));
+        g.setColour (theme->getDirectColor (VeNo::Theme::Colors::font));
+        int lineHeight = (int) Utils::setFontSize (16, g);
+        g.drawText (m_showName, 0, 1, getWidth(), lineHeight + 2, juce::Justification::centred);
     }
-    g.fillAll();
 }
 void ComponentGroup::resized()
 {
+    int yOff = 0;
+    if (m_showGroupName)
+        yOff = (int) Utils::getScaledSize (16) + 2;
     for (auto& subGroup : groups)
         subGroup->setBounds (
             Utils::getScaledSize (subGroup->m_pos.x),
-            Utils::getScaledSize (subGroup->m_pos.y),
+            Utils::getScaledSize (subGroup->m_pos.y) + yOff,
             Utils::getScaledSize (subGroup->m_pos.w),
             Utils::getScaledSize (subGroup->m_pos.h));
     for (auto& child : components)
         child->setBounds (
             Utils::getScaledSize (child->pos.x),
-            Utils::getScaledSize (child->pos.y),
+            Utils::getScaledSize (child->pos.y) + yOff,
             Utils::getScaledSize (child->pos.w),
             Utils::getScaledSize (child->pos.h));
 }
@@ -53,5 +61,23 @@ void ComponentGroup::setColor (const GUIColorComponent& color)
 void ComponentGroup::setPosition (Position pos)
 {
     m_pos = pos;
+}
+Position& ComponentGroup::position()
+{
+    return m_pos;
+}
+void ComponentGroup::setShowName (std::string name)
+{
+    m_showName = std::move (name);
+    m_showGroupName = true;
+}
+std::string ComponentGroup::id()
+{
+    return m_selector_id;
+}
+
+void ComponentGroup::setSelectorId (std::string name)
+{
+    m_selector_id = std::move(name);
 }
 } // namespace VeNo::GUI

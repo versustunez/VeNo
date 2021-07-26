@@ -1,6 +1,7 @@
 #pragma once
-#include <JuceHeader.h>
 #include "../GuiLang/Structs.h"
+#include <JuceHeader.h>
+
 
 namespace VeNo::GUI
 {
@@ -12,28 +13,36 @@ enum LabelPosition
     CENTER
 };
 
+class Interpreter;
+
 class BaseComponent : public juce::Component
 {
 public:
     BaseComponent (std::string name, std::string showName, size_t id);
     ~BaseComponent() override = default;
 
+    void setSelectorId(std::string selector);
     std::string& name();
     std::string& showName();
     size_t id();
+    std::string& selectorId();
     LabelPosition m_labelPosition = LabelPosition::BOTTOM;
-    Position pos{};
+    Position pos {};
 
-    void createLabel(const std::string& text, bool visible);
-    void setText(const std::string& text);
+    void createLabel (const std::string& text, bool visible);
+    void setText (const std::string& text);
+    void triggerAfterParsing (Interpreter*);
 
     Position resize();
-    void setLabelPosition(const std::string& pos);
+    void setLabelPosition (const std::string& pos);
 
 protected:
+    virtual void afterParsing (Interpreter*);
     std::string m_name;
     std::string m_showName;
     std::unique_ptr<juce::Label> m_label;
     size_t m_id; // ID is the id to the Instance! it's provided by the GUI-Interpreter
+    std::string m_selectorId;
+    bool m_afterParsingCalled = false;
 };
 } // namespace VeNo::GUI

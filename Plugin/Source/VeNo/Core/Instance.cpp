@@ -62,6 +62,8 @@ void Instance::remove (size_t m_id)
 void Instance::init()
 {
     handler = new ParameterHandler (id);
+    mainInterpreter.m_id = id;
+    state.m_id = id;
 }
 
 } // namespace VeNo::Core

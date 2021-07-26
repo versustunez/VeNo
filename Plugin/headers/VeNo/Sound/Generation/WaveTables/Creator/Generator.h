@@ -11,7 +11,7 @@ private:
     static constexpr int numWaveTableSlots = WAVETABLES;
 
 public:
-    WaveTableGroup* m_waveTables[numWaveTableSlots]{};
+    WaveTableGroup* m_waveTables[numWaveTableSlots] {};
     static WaveTableGenerator& getInstance()
     {
         static WaveTableGenerator instance;

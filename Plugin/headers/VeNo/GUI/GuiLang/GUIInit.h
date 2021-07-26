@@ -1,8 +1,8 @@
 #pragma once
 
+#include "../GUIFiles.h"
 #include "GUIHandler.h"
 #include "GuiInterpreter.h"
-#include "../GUIFiles.h"
 #include <vendor/tsl/robin_map.h>
 
 namespace VeNo::GUI
@@ -12,10 +12,10 @@ struct preDefinedBinary
     std::string name;
     std::string data;
 };
-struct Initalizer
+struct Initializer
 {
-    Initalizer() = default;
-    ~Initalizer();
+    Initializer() = default;
+    ~Initializer();
 
     void parseMain (std::string& name);
     void parseAll();
@@ -25,8 +25,7 @@ struct Initalizer
 
 protected:
     tsl::robin_map<std::string, std::shared_ptr<VeNo::GUI::GUILangParser>> m_guiParser;
-    preDefinedBinary preDefinedBinaries[5] = {
-        { "MainGUI", Files::MainGui },
+    preDefinedBinary preDefinedBinaries[4] = {
         { "Oscillator", Files::OSC },
         { "LFO", "" },
         { "Filter", "" },

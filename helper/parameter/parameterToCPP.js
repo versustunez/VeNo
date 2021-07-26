@@ -1,4 +1,5 @@
 const fs = require("fs"),
+    crypto = require('crypto'),
     config = {
         tpl: fs.readFileSync("./template.tpl", "utf8").toString(),
         json: JSON.parse(fs.readFileSync("./parameters.json", "utf8"))
@@ -66,4 +67,20 @@ createForType(config.json.envelope, config.json.envelopeConfig);
 for (let item of config.json.distortion) {
     createItem(item, 1);
 }
-fs.writeFileSync("./../../Plugin/Source/VeNo/Generated/ParameterHandlerSetup.cpp", config.tpl.replace("$s$", parameters));
+
+const outContent = config.tpl.replace("$s$", parameters)
+
+function getHash(content) {
+    const hash = crypto.createHash('SHA256');
+    hash.setEncoding('hex');
+    hash.write(content);
+    hash.end();
+    return hash.read();
+}
+
+const lastVersion = fs.readFileSync(__dirname + "/lastVersion.txt", "UTF8");
+const hash = getHash(outContent);
+if (lastVersion !== hash) {
+    fs.writeFileSync(__dirname + "/lastVersion.txt", hash);
+    fs.writeFileSync("./../../Plugin/Source/VeNo/Generated/ParameterHandlerSetup.cpp", outContent);
+}

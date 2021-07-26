@@ -1,15 +1,15 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include <VeNo/Core/Theme/Theme.h>
 #include <VeNo/GUI/GuiLang/GUIHandler.h>
 #include <VeNo/GUI/GuiLang/GUIInit.h>
+#include <VeNo/GUI/Theme/LookAndFeel/LookHandler.h>
+#include <VeNo/GUI/Theme/Theme.h>
 #include <memory>
 #include <vendor/tsl/robin_map.h>
 
 namespace VeNo::Core
 {
-typedef VeNo::Theme::Theme Theme;
 struct Config
 {
     static Config* m_instance;
@@ -23,12 +23,10 @@ struct Config
     juce::PropertiesFile* getProperties();
     std::string presetPath;
     std::string layoutPath;
-    VeNo::GUI::Initalizer guiInit;
+    VeNo::GUI::Initializer guiInit;
 
-    void initLayout();
-
-    std::shared_ptr<Theme> theme();
-
+    std::shared_ptr<VeNo::Theme::Theme> theme();
+    VeNo::GUI::LookHandler* look;
 protected:
     Config();
     ~Config();
@@ -40,6 +38,9 @@ protected:
     tsl::robin_map<std::string, juce::AudioProcessorEditor*> m_editors;
     tsl::robin_map<std::string, juce::AudioProcessor*> m_processors;
     bool m_isLayoutInit = false;
-    std::shared_ptr<Theme> m_theme;
+    bool m_isThemeInit = false;
+    std::shared_ptr<VeNo::Theme::Theme> m_theme;
+    void initTheme();
+    void initLayout();
 };
 } // namespace VeNo::Core

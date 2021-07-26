@@ -11,8 +11,6 @@ public:
     ~ComponentStates();
     void addKnob (const std::string& name, VeNo::GUI::Knob* knob);
     void removeKnob (const std::string& name);
-
-protected:
     tsl::robin_map<std::string, VeNo::GUI::Knob*> m_knobs;
 };
 

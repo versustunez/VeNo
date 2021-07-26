@@ -3,15 +3,15 @@
 #include <JuceHeader.h>
 #include <VeNo/Core/Parameter/Handler.h>
 #include <VeNo/Core/State/InstanceState.h>
+#include <VeNo/GUI/GuiLang/GuiInterpreter.h>
 
 namespace VeNo::Core
 {
 // Instance has a GetInstance method
 struct Instance
 {
-    size_t id {};
-
 public:
+    size_t id {};
     static Instance* get (size_t m_id);
     static Instance* create();
     static void remove (size_t m_id);
@@ -19,7 +19,7 @@ public:
     ParameterHandler* handler {};
     juce::AudioProcessorValueTreeState* treeState = nullptr;
     VeNo::State::InstanceState state { id };
-
+    VeNo::GUI::Interpreter mainInterpreter{id};
 protected:
     Instance() = default;
     ~Instance();

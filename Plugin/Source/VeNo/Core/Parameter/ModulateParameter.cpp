@@ -57,5 +57,4 @@ void ModulateParameter::reset()
     for (double& m_value : m_matrix)
         m_value = m_normalised;
 }
-
 } // namespace VeNo::Core

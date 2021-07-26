@@ -43,6 +43,6 @@ struct GUIParseItem
     GUIColorComponent colorComponent;
     std::vector<ImportItem> imports;
     // we have x,y,w,h by default also a gui_parameter
-    Position pos = { 0, 0, 0, 0 };
+    Position pos = { 0, 0, 1, 1 };
 };
 } // namespace VeNo::GUI

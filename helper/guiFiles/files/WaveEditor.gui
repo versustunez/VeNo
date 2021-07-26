@@ -1,0 +1,49 @@
+~Author: Maurice Grönwoldt (VersusTuneZ)
+~Version: 1.0
+~Name: WaveEditor
+~Look: Flat
+
+w: 1000
+h: 800
+bg: primaryBG
+
+-- Main GUI Part of the new WaveEditor :)
+#editor {
+    x: 0
+    y: 0
+    @WaveEditor {
+        id: editor
+        x: 2.5%
+        y: 5
+        w: 95%
+        h: 450
+        bg: secondaryBG
+    }
+
+    #controls {
+        x: 2.5%
+        y: 460
+        w: 95%
+        h: 100
+        @NumberInput#x {
+            id: x
+            event: changeX
+        }
+        @NumberInput#y {
+            id: y
+            event: changeY
+        }
+        @Checkbox#curveMode {
+            id: curveMode
+            event: toggleCurvedMode
+        }
+    }
+
+    @WaveEditorThumbBar {
+        id: thumb-bar
+        x: 5
+        y: 580
+        w: 990
+        h: 145
+    }
+}

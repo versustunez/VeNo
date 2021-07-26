@@ -1,4 +1,4 @@
-#include <VeNo/Core/Theme/Theme.h>
+#include <VeNo/GUI/Theme/Theme.h>
 
 #include <utility>
 
@@ -8,6 +8,13 @@ Theme::Theme (std::shared_ptr<juce::PropertiesFile> file)
     : m_configFile (std::move (file))
 {
 }
+Theme::~Theme()
+{
+    m_configFile.reset();
+    for (auto& item : m_colours)
+        delete item.second;
+}
+
 void Theme::init()
 {
     getColourFromConfig (Colors::bg);
@@ -32,7 +39,7 @@ juce::Colour Theme::getDirectColor (Colors index)
 {
     if (m_colours[index] != nullptr)
         return *m_colours[index];
-    return juce::Colour (255, 255, 255);
+    return {255, 255, 255};
 }
 juce::Colour Theme::getColor (const std::string& name)
 {
@@ -48,15 +55,15 @@ void Theme::getColourFromConfig (Colors index)
     std::string key = colorToString (index);
     delete m_colours[index];
     if (m_configFile->containsKey (key))
-    {
-        auto baseColour = juce::Colour::fromString (m_configFile->getValue (key));
-        auto* colour = new juce::Colour (baseColour);
-        m_colours[index] = colour;
+        m_colours[index] = new juce::Colour (juce::Colour::fromString (m_configFile->getValue (key)));
+    else {
+        auto color = getDefault (index);
+        m_configFile->setValue(key, color.toString());
+        m_colours[index] = new juce::Colour (color);
     }
-    else
-    {
-        m_colours[index] = new juce::Colour (getDefault (index));
-    }
+}
+bool Theme::colorExists(const std::string& color) {
+    return m_colorMapping.contains(color);
 }
 std::string Theme::colorToString (Colors index)
 {
@@ -88,25 +95,24 @@ juce::Colour Theme::getDefault (Colors index)
     switch (index)
     {
         case Colors::bg:
-            return juce::Colour (27, 27, 33);
+            return {27, 27, 33};
         case Colors::bg_two:
-            return juce::Colour (66, 67, 74);
+            return {66, 67, 74};
         case Colors::accent:
-            return juce::Colour (31, 115, 255);
+            return {31, 115, 255};
         case Colors::accent_two:
-            return juce::Colour (44, 40, 93);
+            return {44, 40, 93};
         case Colors::clip:
-            return juce::Colour (255, 23, 68);
+            return {255, 23, 68};
         case Colors::font:
-            return juce::Colour (255, 255, 255);
+            return {255, 255, 255};
         case Colors::lcd:
-            return juce::Colour (0, 129, 194);
+            return {0, 129, 194};
         case Colors::lcd_bg:
-            return juce::Colour (0, 0, 0);
+            return {0, 0, 0};
         case Colors::unknown:
         default:
-            return juce::Colour (255, 255, 255);
+            return {255, 255, 255};
     }
 }
-
 } // namespace VeNo::Theme

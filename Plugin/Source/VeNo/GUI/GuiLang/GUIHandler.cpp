@@ -1,21 +1,18 @@
 #include <VUtils/FileHandler.h>
 #include <VUtils/Logging.h>
 #include <VUtils/StringUtils.h>
-#include <utility>
-
 #include <VeNo/Core/Config.h>
 #include <VeNo/GUI/GuiLang/GUIHandler.h>
+#include <utility>
 
 namespace VeNo::GUI
 {
-std::string GUILangParser::preColors[5] = { "primaryBG", "secondBG", "primary", "secondary", "font" };
 GUILangParser::GUILangParser() = default;
 
 GUIParseItem::~GUIParseItem()
 {
-    for (auto& item : items) {
+    for (auto& item : items)
         delete item;
-    }
     delete component;
 }
 
@@ -98,16 +95,15 @@ void GUILangParser::parse (bool headOnly)
             }
             else
             {
-                if (item->name != "root") {
+                if (item->name != "root")
+                {
                     ERR ("Triggerd a Wrong State... Found item that is not root @ Line %d", lineCount)
                 }
             }
             continue;
         }
         if (m_isInvalid)
-        {
             continue;
-        }
         if (line.back() == '{')
         {
             auto lastItem = item;
@@ -151,11 +147,13 @@ void GUILangParser::parse (bool headOnly)
             if (props.size() != 2)
             {
                 WARN ("FOUND INVALID IMPORT AT: %d >> \"%s\"", lineCount, line.c_str());
+                continue;
             }
             auto importName = VUtils::StringUtils::trimCopy (props[1]);
             if (importName == parserName)
             {
                 WARN ("CANNOT IMPORT SAME FILE: %d >> \"%s\"", lineCount, line.c_str());
+                continue;
             }
             auto import = getImportParameters (importName);
             VeNo::Core::Config::get().guiInit.createParser (import.name);
@@ -189,30 +187,24 @@ GUILangParser::GUILangParser (std::string file, bool isFile) : m_file (std::move
 void GUILangParser::setProperty (GUIParseItem* item, std::string& name, std::string& value)
 {
     if (name == "x")
-        item->pos.x = VUtils::StringUtils::stringToInt (value, 0);
+        item->pos.x = getPercentValueIfPercent(value, item->parent ? item->parent->pos.x : 0);
     else if (name == "y")
-        item->pos.y = VUtils::StringUtils::stringToInt (value, 0);
+        item->pos.y = getPercentValueIfPercent(value, item->parent ? item->parent->pos.y : 0);
     else if (name == "w")
-        item->pos.w = VUtils::StringUtils::stringToInt (value, 0);
+        item->pos.w = getPercentValueIfPercent(value, item->parent ? item->parent->pos.w : 0);
     else if (name == "h")
-        item->pos.h = VUtils::StringUtils::stringToInt (value, 0);
+        item->pos.h = getPercentValueIfPercent(value, item->parent ? item->parent->pos.h : 0);
     else if (name == "bind" && item->component != nullptr)
         item->component->parameter = value;
     else if (name == "bg")
     {
         item->colorComponent.hasColor = true;
-        bool found = false;
-        for (auto& string : preColors)
+        if (VeNo::Core::Config::get().theme()->colorExists (value))
         {
-            if (string == value)
-            {
-                found = true;
-                item->colorComponent.isPreColor = true;
-                item->colorComponent.preColor = value;
-                break;
-            }
+            item->colorComponent.isPreColor = true;
+            item->colorComponent.preColor = value;
         }
-        if (! found)
+        else
         {
             auto split = VUtils::StringUtils::split (value, ",");
             if (split.size() != 4 && split.size() != 3)
@@ -223,7 +215,7 @@ void GUILangParser::setProperty (GUIParseItem* item, std::string& name, std::str
             }
             item->colorComponent.isPreColor = false;
             for (size_t i = 0; i < split.size(); ++i)
-                item->colorComponent.colors[i] = VUtils::StringUtils::stringToInt (split[i], 255);
+                item->colorComponent.colors[i] = VUtils::StringUtils::toNumber (split[i], 255);
         }
     }
     else
@@ -245,6 +237,22 @@ ImportItem GUILangParser::getImportParameters (std::string& import)
     DBGN ("Add Import: %s", import.c_str());
 #endif
     return importItem;
+}
+int GUILangParser::getPercentValueIfPercent (std::string& value, int parentVal)
+{
+    bool isPercent = false;
+    if (value[value.length() - 1] == '%')
+    {
+        isPercent = true;
+        value = value.erase (value.length() - 1, 0);
+    }
+    auto newVal = VUtils::StringUtils::toNumber (value, 0);
+    if (isPercent)
+    {
+        double val = newVal / 100.0;
+        newVal = parentVal * val;
+    }
+    return newVal;
 }
 GUILangParser::~GUILangParser() = default;
 

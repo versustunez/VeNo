@@ -6,4 +6,10 @@ std::shared_ptr<BaseComponent> ComponentFactory::create (GUIParseItem*, const st
 {
     return nullptr;
 }
+void ComponentFactory::setSelector (BaseComponent* component, GUIParseItem* item)
+{
+    if (item->properties.contains("id")) {
+        component->setSelectorId(item->properties["id"]);
+    }
+}
 } // namespace VeNo::GUI

@@ -30,5 +30,8 @@ public:
     int crashedOnLine = -1;
     std::string parserName = "unknown_file";
     static std::string preColors[5];
+
+protected:
+    static int getPercentValueIfPercent(std::string& value, int parentVal);
 };
 } // namespace VeNo::GUI

@@ -1,0 +1,9 @@
+add_subdirectory(Core)
+add_subdirectory(Events)
+add_subdirectory(Generated)
+add_subdirectory(GUI)
+add_subdirectory(Sound)
+add_sources(
+        PluginEditor.cpp
+        PluginProcessor.cpp
+)

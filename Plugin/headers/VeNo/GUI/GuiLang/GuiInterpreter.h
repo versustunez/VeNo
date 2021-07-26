@@ -9,7 +9,6 @@
 
 namespace VeNo::GUI
 {
-
 // Use the Generated Layout and Create some GUIs out of it! :D
 class Interpreter
 {
@@ -18,10 +17,9 @@ public:
     explicit Interpreter (size_t id);
     void parseMain (GUIParseItem* item);
     std::shared_ptr<ComponentGroup> parseTree (GUIParseItem* item, ComponentGroup* inGroup);
-    Position pos {};
-    GUIColorComponent color;
     std::shared_ptr<ComponentGroup> componentGroup = std::make_shared<ComponentGroup>();
     static tsl::robin_map<std::string, std::shared_ptr<ComponentFactory>> componentMapping;
+    BaseComponent* find (const char* selector, ComponentGroup* inGroup = nullptr);
 
 protected:
     // Yeah Regex! :(

@@ -18,11 +18,18 @@ struct ComponentGroup : public juce::Component
     void paint (juce::Graphics& g) override;
     void resized() override;
     void showChilds();
-    void setColor(const GUIColorComponent& color);
-    void setPosition(Position pos);
+    void setColor (const GUIColorComponent& color);
+    void setPosition (Position pos);
+    void setShowName (std::string name);
+    void setSelectorId (std::string id);
+    std::string id();
+    Position& position();
 
 protected:
     GUIColorComponent m_color;
     Position m_pos;
+    std::string m_showName;
+    bool m_showGroupName = false;
+    std::string m_selector_id;
 };
 } // namespace VeNo::GUI
