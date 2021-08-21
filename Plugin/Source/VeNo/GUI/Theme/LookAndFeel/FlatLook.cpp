@@ -33,7 +33,7 @@ void FlatLook::drawButtonBackground (juce::Graphics& graphics, juce::Button& but
 void FlatLook::drawRotarySlider (juce::Graphics& g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider)
 {
     float MAX_RADIAN = 2.53073;
-    float radius = juce::jmin (width / 2.0f, height / 2.0f) - VeNo::GUI::Utils::getScaledSize (3.5f);
+    float radius = juce::jmin (width / 2.0f, height / 2.0f) -3.5f;
     auto centreX = x + width * 0.5f;
     auto centreY = y + height * 0.5f;
     auto key = slider.getName().toStdString();
@@ -46,7 +46,7 @@ void FlatLook::drawRotarySlider (juce::Graphics& g, int x, int y, int width, int
         if (param != nullptr)
             arcPos = (float) param->getVoice (0);
     }
-    float size = Utils::getScaledSize (3.5f);
+    float size = 3.5f;
 
     //---[the real draw]---//
     juce::Path outerArc;
@@ -65,8 +65,8 @@ void FlatLook::drawRotarySlider (juce::Graphics& g, int x, int y, int width, int
     g.strokePath (arc, juce::PathStrokeType (size));
 
     juce::Path pointer;
-    auto pointerThickness = Utils::getScaledSize (3.0f);
-    auto l = Utils::getScaledSize (5);
+    auto pointerThickness = 3;
+    auto l = 5;
     pointer.addEllipse (-pointerThickness * 0.25f, -(radius - l), pointerThickness, pointerThickness);
     pointer.applyTransform (juce::AffineTransform::rotation (angle).translated (centreX, centreY));
     g.setColour (theme->getDirectColor (Colors::accent));
@@ -81,8 +81,8 @@ void FlatLook::drawTextEditorOutline (juce::Graphics& graphics, int width, int h
             0,
             theme->getDirectColor (Colors::accent),
             (float)width));
-    auto p = Utils::getScaledSize (10.0f);
-    graphics.drawLine (p, (float)height, (float)width - p, (float)height, Utils::getScaledSize(0.9f));
+    auto p = 10.0f;
+    graphics.drawLine (p, (float)height, (float)width - p, (float)height, 0.9f);
 }
 
 void FlatLook::drawToggleButton (juce::Graphics& graphics, juce::ToggleButton& button, bool, bool shouldDrawButtonAsDown)
@@ -103,8 +103,8 @@ void FlatLook::drawToggleButton (juce::Graphics& graphics, juce::ToggleButton& b
             text = "Off";
     }
 
-    auto l = Utils::getScaledSize (2);
-    auto p = Utils::getScaledSize (4);
+    auto l = 2;
+    auto p = 4;
     graphics.fillRect (l, l, width - p, height - p);
     graphics.setColour (theme->getDirectColor (Colors::font));
     graphics.drawText (text, l, l, width - p, height - p, juce::Justification::centred, true);
@@ -123,7 +123,7 @@ void FlatLook::drawTabButton (juce::TabBarButton& button, juce::Graphics& graphi
         graphics.setColour (theme->getDirectColor (Colors::accent));
     else
         graphics.setColour (theme->getDirectColor (Colors::accent).withAlpha (0.2f));
-    auto p = Utils::getScaledSize (2);
+    auto p = 2;
     graphics.fillRect (0, height - p, width, p);
     graphics.setColour (theme->getDirectColor (Colors::font));
     graphics.drawText (button.getButtonText(), 0, 0, width, height, juce::Justification::centred, true);
@@ -131,7 +131,7 @@ void FlatLook::drawTabButton (juce::TabBarButton& button, juce::Graphics& graphi
 
 void FlatLook::drawComboBox (juce::Graphics& graphics, int width, int height, bool, int, int, int, int, juce::ComboBox&)
 {
-    auto borderHeight = Utils::getScaledSize (2);
+    auto borderHeight = 2;
     graphics.setColour (theme->getDirectColor (Colors::accent));
     graphics.fillRect (0, height - borderHeight, width, borderHeight);
     graphics.setColour (theme->getDirectColor (Colors::bg_two).withAlpha (0.2f));

@@ -1,0 +1,9 @@
+add_sources(
+        BaseComponent.cpp
+        Button.cpp
+        ComponentGroup.cpp
+        Knob.cpp
+        Label.cpp
+        WaveEditor.cpp
+        ToggleButton.cpp
+)

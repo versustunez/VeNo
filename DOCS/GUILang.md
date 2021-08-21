@@ -35,11 +35,10 @@ example:
 That example line imports the Binary Oscillator File with variable osc with the value "1" and isActive with value "false"
 
 ## Group & Component Properties
-
-- x
-- y
 - w
 - h
+- x
+- y
 - bg (only on Groups currently)
 - id (only on Groups)
 - bind (only on Compoenents)

@@ -75,6 +75,7 @@ std::string Logging::getPrefix (PrintType type, const char* s)
             return "\033[1;" + std::to_string (DEBUG_COLOR) + "m[DEBUG][" + std::string (s) + "] >> ";
         case PrintType::WARN:
             return "\033[1;" + std::to_string (WARN_COLOR) + "m[WARN][" + std::string (s) + "] >> ";
+        case PrintType::LOG:
         default:
             return "\033[1;" + std::to_string (INFO_COLOR) + "m[LOG][" + std::string (s) + "] >> ";
     }

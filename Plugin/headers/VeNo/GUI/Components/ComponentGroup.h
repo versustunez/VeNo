@@ -3,6 +3,7 @@
 #include "BaseComponent.h"
 #include <JuceHeader.h>
 #include <VUtils/Logging.h>
+#include <VeNo/GUI/Flex.h>
 #include <VeNo/GUI/GuiLang/Structs.h>
 #include <memory>
 
@@ -17,19 +18,20 @@ struct ComponentGroup : public juce::Component
     std::vector<std::shared_ptr<BaseComponent>> components;
     void paint (juce::Graphics& g) override;
     void resized() override;
-    void showChilds();
+    void showChildren();
     void setColor (const GUIColorComponent& color);
     void setPosition (Position pos);
     void setShowName (std::string name);
     void setSelectorId (std::string id);
     std::string id();
     Position& position();
-
+    Flex* flex;
 protected:
     GUIColorComponent m_color;
     Position m_pos;
     std::string m_showName;
     bool m_showGroupName = false;
     std::string m_selector_id;
+
 };
 } // namespace VeNo::GUI

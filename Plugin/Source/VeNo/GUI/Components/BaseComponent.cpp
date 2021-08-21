@@ -17,7 +17,7 @@ std::string& BaseComponent::showName()
     return m_showName;
 }
 
-size_t BaseComponent::id()
+size_t BaseComponent::id() const
 {
     return m_id;
 }
@@ -38,11 +38,11 @@ void BaseComponent::setText (const std::string& text)
 Position BaseComponent::resize()
 {
     const auto& font = m_label->getFont();
-    m_label->setFont (font.withHeight (Utils::getScaledSize (16.0f)));
+    m_label->setFont (font.withHeight (16.0f));
     if (m_label != nullptr)
     {
-        int height = Utils::getScaledSize (18);
-        int labelHeight = Utils::getScaledSize (16);
+        int height = 18;
+        int labelHeight = 16;
         int secHeight = getHeight() - height;
         LabelPosition position = m_labelPosition;
         if (position == LabelPosition::TOP)
@@ -99,5 +99,9 @@ void BaseComponent::triggerAfterParsing (Interpreter* interpreter)
         m_afterParsingCalled = true;
         afterParsing (interpreter);
     }
+}
+void BaseComponent::setEventHandler (Events::EventHandler* handler)
+{
+    m_handler = handler;
 }
 } // namespace VeNo::GUI

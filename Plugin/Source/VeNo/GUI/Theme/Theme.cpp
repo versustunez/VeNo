@@ -63,7 +63,7 @@ void Theme::getColourFromConfig (Colors index)
     }
 }
 bool Theme::colorExists(const std::string& color) {
-    return m_colorMapping.contains(color);
+    return m_colorMapping.find(color) != m_colorMapping.end();
 }
 std::string Theme::colorToString (Colors index)
 {

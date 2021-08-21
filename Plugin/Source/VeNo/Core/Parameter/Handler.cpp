@@ -42,24 +42,24 @@ juce::AudioProcessorValueTreeState::ParameterLayout ParameterHandler::setupProce
         setupParameter();
     return { m_params.begin(), m_params.end() };
 }
-void ParameterHandler::parameterChanged (const juce::String& parameterID, float newValue)
+void ParameterHandler::parameterChanged (const juce::String&, float)
 {
 }
 std::string ParameterHandler::getShowName (const std::string& parameter)
 {
-    if (m_parameters.contains (parameter))
+    if (m_parameters.find (parameter) != m_parameters.end())
         return m_parameters[parameter]->getShowName();
     return "Unknown";
 }
 VeNo::Core::Parameter* ParameterHandler::getParameter (const std::string& name)
 {
-    if (m_parameters.contains (name))
+    if (m_parameters.find (name) != m_parameters.end())
         return m_parameters[name];
     return nullptr;
 }
 VeNo::Core::ModulateParameter* ParameterHandler::getModulateParameter (const std::string& name)
 {
-    if (m_modularParameters.contains (name))
+    if (m_modularParameters.find (name) != m_modularParameters.end())
         return m_modularParameters[name];
     return nullptr;
 }

@@ -1,5 +1,7 @@
 #pragma once
-#include <vendor/tsl/robin_map.h>
+#include <unordered_map>
+#include <vector>
+#include <string>
 namespace VeNo::GUI
 {
 struct Position
@@ -27,7 +29,7 @@ struct GUIComponent
 struct ImportItem
 {
     std::string name;
-    tsl::robin_map<std::string, std::string> params;
+    std::unordered_map<std::string, std::string> params;
 };
 
 struct GUIParseItem
@@ -36,7 +38,7 @@ struct GUIParseItem
     GUIParseItem() = default;
     GUIParseItem (GUIParseItem&) = delete;
     std::string name;
-    tsl::robin_map<std::string, std::string> properties;
+    std::unordered_map<std::string, std::string> properties;
     std::vector<GUIParseItem*> items; // we delete everything here ;)
     GUIParseItem* parent = nullptr;
     GUIComponent* component = nullptr;

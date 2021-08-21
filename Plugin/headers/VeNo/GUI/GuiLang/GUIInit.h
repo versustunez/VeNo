@@ -3,7 +3,6 @@
 #include "../GUIFiles.h"
 #include "GUIHandler.h"
 #include "GuiInterpreter.h"
-#include <vendor/tsl/robin_map.h>
 
 namespace VeNo::GUI
 {
@@ -22,14 +21,15 @@ struct Initializer
     void createParser (std::string& name);
 
     GUIParseItem* get (const std::string& name);
-
+    GUIParseItem* getOrCreate(const std::string& name);
 protected:
-    tsl::robin_map<std::string, std::shared_ptr<VeNo::GUI::GUILangParser>> m_guiParser;
-    preDefinedBinary preDefinedBinaries[4] = {
+    std::unordered_map<std::string, std::shared_ptr<VeNo::GUI::GUILangParser>> m_guiParser;
+    preDefinedBinary preDefinedBinaries[5] = {
         { "Oscillator", Files::OSC },
         { "LFO", "" },
         { "Filter", "" },
-        { "LCD", "" }
+        { "LCD", "" },
+        { "WaveEditor", Files::WaveEditor }
     };
     std::string getBinaryContent (const std::string& name);
 };

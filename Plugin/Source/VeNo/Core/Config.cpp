@@ -113,4 +113,10 @@ void Config::initTheme()
     m_isThemeInit = true;
     look = new VeNo::GUI::LookHandler();
 }
+void Config::setScale(double scale)
+{
+    juce::Desktop::getInstance().setGlobalScaleFactor(float(scale));
+    m_scale = scale;
+    m_config->setNeedsToBeSaved(true);
+}
 } // namespace VeNo::Core

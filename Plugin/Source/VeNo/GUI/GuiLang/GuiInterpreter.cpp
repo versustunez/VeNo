@@ -4,11 +4,10 @@
 #include <VeNo/Core/Instance.h>
 #include <VeNo/GUI/GuiLang/GuiInterpreter.h>
 #include <regex>
-#include <vendor/tsl/robin_map.h>
 
 namespace VeNo::GUI
 {
-tsl::robin_map<std::string, std::shared_ptr<ComponentFactory>> Interpreter::componentMapping = {};
+std::unordered_map<std::string, std::shared_ptr<ComponentFactory>> Interpreter::factories = {};
 Interpreter::Interpreter (size_t id) : m_id (id) {}
 std::shared_ptr<ComponentGroup> Interpreter::parseTree (GUIParseItem* item, ComponentGroup* inGroup)
 {
@@ -33,7 +32,17 @@ std::shared_ptr<ComponentGroup> Interpreter::parseTree (GUIParseItem* item, Comp
     }
     else
     {
-        if (item->properties.contains ("id") && item->properties["id"] == "true")
+        if (contains("flex", item) && item->properties["flex"] == "true")
+        {
+            Flex* flex = new Flex();
+            flex->setAlignContent(item->properties["align-content"]);
+            flex->setAlignItems(item->properties["align-items"]);
+            flex->setJustifyContent(item->properties["justify-content"]);
+            flex->setDirection(item->properties["flex-direction"]);
+            flex->setWrap(item->properties["flex-wrap"]);
+            group->flex = flex;
+        }
+        if (contains("id", item) && item->properties["id"] == "true")
             group->setShowName (item->name);
         for (auto& import : item->imports)
         {
@@ -87,7 +96,7 @@ std::string Interpreter::getParameterReplaced (std::string input)
         std::smatch match = *i;
         std::string replace;
         std::string key = match[1].str();
-        if (parameters.contains (key))
+        if (parameters.find (key) != parameters.end())
             replace = parameters[key];
         input.replace (input.find (match[0]), match[0].str().size(), replace);
     }
@@ -98,15 +107,15 @@ void Interpreter::parseMain (GUIParseItem* item)
     auto parsed = parseTree (item, nullptr);
     if (parsed != nullptr)
         componentGroup = parsed;
-    componentGroup->showChilds();
+    componentGroup->showChildren();
 }
 
 std::shared_ptr<BaseComponent> Interpreter::createFromType (GUIParseItem* item, const std::string& parameter, const std::string& name, size_t id)
 {
-    if (componentMapping.empty())
+    if (factories.empty())
         initMapping();
-    if (componentMapping.contains (item->component->name))
-        return componentMapping[item->component->name]->create (item, parameter, name, id);
+    if (factories.find (item->component->name) != factories.end())
+        return factories[item->component->name]->create (item, parameter, name, id, this);
     WARN ("Found unknown Component: \"%s\"", item->component->name.c_str())
     return nullptr;
 }
@@ -150,5 +159,17 @@ BaseComponent* Interpreter::find (const char* selector, ComponentGroup* inGroup)
         }
     }
     return nullptr;
+}
+Interpreter::~Interpreter()
+{
+    delete m_eventHandler;
+}
+Events::EventHandler* Interpreter::eventHandler()
+{
+    return m_eventHandler;
+}
+bool Interpreter::contains(const char* name, GUIParseItem* item)
+{
+    return item->properties.find(name) != item->properties.end();
 }
 } // namespace VeNo::GUI

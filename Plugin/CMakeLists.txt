@@ -22,10 +22,6 @@ set_target_properties(${BaseTargetName} PROPERTIES CXX_STANDARD 17)
 add_subdirectory(Assets)
 add_subdirectory(Source/VeNo)
 add_sources(
-        headers/vendor/tsl/robin_growth_policy.h
-        headers/vendor/tsl/robin_hash.h
-        headers/vendor/tsl/robin_hash.h
-        headers/vendor/tsl/robin_set.h
         Source/VUtils/Environment.cpp
         Source/VUtils/FileHandler.cpp
         Source/VUtils/StringUtils.cpp

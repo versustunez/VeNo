@@ -11,16 +11,19 @@ VeNoEditor::VeNoEditor (VeNoProcessor& p, std::string id)
 {
     auto& config = VeNo::Core::Config::get();
     config.registerEditor (m_id, this);
-    mainInterpreter = &VeNo::Core::Instance::get(m_instanceId)->mainInterpreter;
+    auto instance = VeNo::Core::Instance::get(m_instanceId);
+    mainInterpreter = &instance->mainInterpreter;
     mainInterpreter->parseMain (config.guiInit.get ("Main"));
     auto& pos = mainInterpreter->componentGroup->position();
     int width = pos.w > 0 ? pos.w : WINDOW_WIDTH;
     int height = pos.h > 0 ? pos.h : WINDOW_HEIGHT;
     setResizable (false, false);
-    setSize (VeNo::GUI::Utils::getScaledSize (width), VeNo::GUI::Utils::getScaledSize (height));
+    juce::Desktop::getInstance().setGlobalScaleFactor((float)config.m_scale);
+    setSize (width, height);
     addAndMakeVisible (mainInterpreter->componentGroup.get());
     if (config.getProperties()->getBoolValue ("useOpenGL", true))
         setupGL (config.getProperties()->getBoolValue ("vsync", true));
+    instance->state.waveEditorWindow = new VeNo::Windows::WaveEditorWindow(m_instanceId);
 }
 
 void VeNoEditor::paint (juce::Graphics& g)

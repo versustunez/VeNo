@@ -1,0 +1,10 @@
+add_sources(
+        ButtonFactory.cpp
+        ComponentFactory.cpp
+        KnobComponentFactory.cpp
+        LabelComponentFactory.cpp
+        ToggleButtonFactory.cpp
+        SelectComponentFactory.cpp
+        SliderComponentFactory.cpp
+        WaveEditorFactory.cpp
+)

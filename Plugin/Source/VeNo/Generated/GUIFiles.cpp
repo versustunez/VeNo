@@ -38,6 +38,13 @@ bg: primaryBG
         labelvalue: semi
     }
 }
+@ToggleButton {
+    bind: osc1__active
+    x: 70%
+    y: 180
+    w: 10%
+    h: 50
+}
 
 #OSC1 {
     w: 50%
@@ -63,13 +70,14 @@ bg: primaryBG
 
 -- Main GUI Part of the new WaveEditor :)
 #editor {
-    x: 0
-    y: 0
+    x: 2.5%
+    y: 5
+    w: 95%
     @WaveEditor {
         id: editor
-        x: 2.5%
-        y: 5
-        w: 95%
+        x:
+        y: 0
+        w: 100%
         h: 450
         bg: secondaryBG
     }
@@ -79,25 +87,39 @@ bg: primaryBG
         y: 460
         w: 95%
         h: 100
-        @NumberInput#x {
+        bg: 0,0,0,.2
+        flex: true
+        flex-wrap: wrap
+        justify-content: start
+        align-content: center
+        @Label#x {
             id: x
+            w: 100
+            h: 50
             event: changeX
+            text: X
         }
-        @NumberInput#y {
+        @Label#y {
             id: y
+            w: 100
+            h: 50
+            text: Y
             event: changeY
         }
-        @Checkbox#curveMode {
+        @ToggleButton#curveMode {
             id: curveMode
+            w: 100
+            h: 50
+            text: Curve Mode
             event: toggleCurvedMode
         }
     }
 
     @WaveEditorThumbBar {
         id: thumb-bar
-        x: 5
+        x: 2.5%
         y: 580
-        w: 990
+        w: 95%
         h: 145
     }
 })"";

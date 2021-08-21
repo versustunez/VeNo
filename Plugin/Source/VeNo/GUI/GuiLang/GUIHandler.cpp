@@ -19,7 +19,7 @@ GUIParseItem::~GUIParseItem()
 void GUILangParser::setContent (const std::string& content)
 {
     auto lines = VUtils::StringUtils::split (content, "\n");
-    this->m_lines = lines;
+    m_lines = lines;
 }
 
 void GUILangParser::load()
@@ -109,6 +109,9 @@ void GUILangParser::parse (bool headOnly)
             auto lastItem = item;
             item = new GUIParseItem();
             item->parent = lastItem;
+            // if not defined then use full width first
+            item->pos.w = item->parent->pos.w;
+            item->pos.h = item->parent->pos.h;
             if (lastItem->component == nullptr && line.rfind ('#', 0) == 0)
                 item->name = VUtils::StringUtils::trimCopy (line.substr (1, lineSize - 2));
             else if (line.rfind ('@', 0) == 0)
@@ -187,9 +190,9 @@ GUILangParser::GUILangParser (std::string file, bool isFile) : m_file (std::move
 void GUILangParser::setProperty (GUIParseItem* item, std::string& name, std::string& value)
 {
     if (name == "x")
-        item->pos.x = getPercentValueIfPercent(value, item->parent ? item->parent->pos.x : 0);
+        item->pos.x = getPercentValueIfPercent(value, item->parent ? item->parent->pos.w : 0);
     else if (name == "y")
-        item->pos.y = getPercentValueIfPercent(value, item->parent ? item->parent->pos.y : 0);
+        item->pos.y = getPercentValueIfPercent(value, item->parent ? item->parent->pos.h : 0);
     else if (name == "w")
         item->pos.w = getPercentValueIfPercent(value, item->parent ? item->parent->pos.w : 0);
     else if (name == "h")

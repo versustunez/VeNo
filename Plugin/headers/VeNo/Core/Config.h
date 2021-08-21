@@ -6,7 +6,7 @@
 #include <VeNo/GUI/Theme/LookAndFeel/LookHandler.h>
 #include <VeNo/GUI/Theme/Theme.h>
 #include <memory>
-#include <vendor/tsl/robin_map.h>
+#include <unordered_map>
 
 namespace VeNo::Core
 {
@@ -27,6 +27,7 @@ struct Config
 
     std::shared_ptr<VeNo::Theme::Theme> theme();
     VeNo::GUI::LookHandler* look;
+    void setScale(double scale);
 protected:
     Config();
     ~Config();
@@ -35,8 +36,8 @@ protected:
     std::mutex m_guard;
     static std::mutex createGuard;
     std::shared_ptr<juce::PropertiesFile> m_config;
-    tsl::robin_map<std::string, juce::AudioProcessorEditor*> m_editors;
-    tsl::robin_map<std::string, juce::AudioProcessor*> m_processors;
+    std::unordered_map<std::string, juce::AudioProcessorEditor*> m_editors;
+    std::unordered_map<std::string, juce::AudioProcessor*> m_processors;
     bool m_isLayoutInit = false;
     bool m_isThemeInit = false;
     std::shared_ptr<VeNo::Theme::Theme> m_theme;

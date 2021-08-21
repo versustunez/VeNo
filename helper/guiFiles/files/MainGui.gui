@@ -33,6 +33,13 @@ bg: primaryBG
         labelvalue: semi
     }
 }
+@ToggleButton {
+    bind: osc1__active
+    x: 70%
+    y: 180
+    w: 10%
+    h: 50
+}
 
 #OSC1 {
     w: 50%

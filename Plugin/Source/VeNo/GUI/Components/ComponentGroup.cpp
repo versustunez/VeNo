@@ -7,7 +7,11 @@
 
 namespace VeNo::GUI
 {
-ComponentGroup::~ComponentGroup() = default;
+ComponentGroup::~ComponentGroup()
+{
+    if (flex != nullptr)
+        delete flex;
+};
 void ComponentGroup::paint (juce::Graphics& g)
 {
     auto* theme = VeNo::Core::Config::get().theme().get();
@@ -28,28 +32,35 @@ void ComponentGroup::paint (juce::Graphics& g)
 }
 void ComponentGroup::resized()
 {
+    if (flex != nullptr)
+    {
+        flex->clear();
+        flex->setItems (components, groups);
+        flex->perform (getLocalBounds().toFloat());
+        return;
+    }
     int yOff = 0;
     if (m_showGroupName)
-        yOff = (int) Utils::getScaledSize (16) + 2;
+        yOff = 18;
     for (auto& subGroup : groups)
         subGroup->setBounds (
-            Utils::getScaledSize (subGroup->m_pos.x),
-            Utils::getScaledSize (subGroup->m_pos.y) + yOff,
-            Utils::getScaledSize (subGroup->m_pos.w),
-            Utils::getScaledSize (subGroup->m_pos.h));
+            subGroup->m_pos.x,
+            subGroup->m_pos.y + yOff,
+            subGroup->m_pos.w,
+            subGroup->m_pos.h);
     for (auto& child : components)
         child->setBounds (
-            Utils::getScaledSize (child->pos.x),
-            Utils::getScaledSize (child->pos.y) + yOff,
-            Utils::getScaledSize (child->pos.w),
-            Utils::getScaledSize (child->pos.h));
+            child->pos.x,
+            child->pos.y + yOff,
+            child->pos.w,
+            child->pos.h);
 }
-void ComponentGroup::showChilds()
+void ComponentGroup::showChildren()
 {
     for (auto& subGroup : groups)
     {
         addAndMakeVisible (*subGroup);
-        subGroup->showChilds();
+        subGroup->showChildren();
     }
     for (auto& child : components)
         addAndMakeVisible (child.get());
@@ -78,6 +89,6 @@ std::string ComponentGroup::id()
 
 void ComponentGroup::setSelectorId (std::string name)
 {
-    m_selector_id = std::move(name);
+    m_selector_id = std::move (name);
 }
 } // namespace VeNo::GUI

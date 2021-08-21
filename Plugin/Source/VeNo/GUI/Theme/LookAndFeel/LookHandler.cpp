@@ -1,6 +1,7 @@
 #include <VeNo/Core/Config.h>
 #include <VeNo/GUI/GUIUtils.h>
 #include <VeNo/GUI/Theme/LookAndFeel/LookHandler.h>
+#include <cassert>
 
 namespace VeNo::GUI
 {
@@ -78,7 +79,7 @@ juce::PopupMenu::Options LookHandler::getOptionsForComboBoxPopupMenu (juce::Comb
         .withItemThatMustBeVisible (box.getSelectedId())
         .withMinimumWidth (box.getWidth())
         .withMaximumNumColumns (3)
-        .withStandardItemHeight (Utils::getScaledSize (25));
+        .withStandardItemHeight (25);
 }
 
 void LookHandler::drawPopupMenuItem (juce::Graphics& g, const juce::Rectangle<int>& area, bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu, const juce::String& text, const juce::String&, const juce::Drawable*, const juce::Colour*)

@@ -4,11 +4,14 @@
 
 namespace VeNo::GUI
 {
+class Interpreter;
 class ComponentFactory
 {
 public:
-    virtual std::shared_ptr<BaseComponent> create (GUIParseItem* item, const std::string& parameter, const std::string& name, size_t id);
-    static void setSelector(BaseComponent* component, GUIParseItem* item);
+    virtual std::shared_ptr<BaseComponent> create (GUIParseItem* item, const std::string& parameter, const std::string& name, size_t id, Interpreter* interpreter);
+    static void setSelector (BaseComponent* component, GUIParseItem* item);
+    static void doBase(BaseComponent*, GUIParseItem*, Interpreter*);
+    static bool contains(const char* name, GUIParseItem* item);
 };
 
 class LabelComponentFactory : public ComponentFactory
@@ -18,7 +21,8 @@ public:
         GUIParseItem* item,
         const std::string& parameter,
         const std::string& name,
-        size_t id) override;
+        size_t id,
+        Interpreter* interpreter) override;
 };
 
 class KnobComponentFactory : public ComponentFactory
@@ -28,16 +32,41 @@ public:
         GUIParseItem* item,
         const std::string& parameter,
         const std::string& name,
-        size_t id) override;
+        size_t id,
+        Interpreter* interpreter) override;
 };
+
 class WaveEditorFactory : public ComponentFactory
-    {
-    public:
-        std::shared_ptr<BaseComponent> create (
-            GUIParseItem* item,
-            const std::string& parameter,
-            const std::string& name,
-            size_t id) override;
-    };
+{
+public:
+    std::shared_ptr<BaseComponent> create (
+        GUIParseItem* item,
+        const std::string& parameter,
+        const std::string& name,
+        size_t id,
+        Interpreter* interpreter) override;
+};
+
+class ToggleButtonFactory : public ComponentFactory
+{
+public:
+    std::shared_ptr<BaseComponent> create (
+        GUIParseItem* item,
+        const std::string& parameter,
+        const std::string& name,
+        size_t id,
+        Interpreter* interpreter) override;
+};
+
+class ButtonFactory : public ComponentFactory
+{
+public:
+    std::shared_ptr<BaseComponent> create (
+        GUIParseItem* item,
+        const std::string& parameter,
+        const std::string& name,
+        size_t id,
+        Interpreter* interpreter) override;
+};
 
 } // namespace VeNo::GUI
