@@ -75,8 +75,8 @@ GUIParseItem* Initializer::getOrCreate (const std::string& name)
     if (m_guiParser.find (name) == m_guiParser.end() || m_guiParser[name] == nullptr)
     {
         auto fileName = layoutPath + name;
-        bool fileExists = VUtils::FileHandler::fileExists (fileName);
         bool isBin = name.rfind ("Bin::", 0) == 0;
+        bool fileExists = ! isBin || VUtils::FileHandler::fileExists (fileName);
         m_guiParser.emplace (name, std::make_shared<GUILangParser> (name, fileExists && ! isBin));
         auto& item = m_guiParser[name];
         std::string content;

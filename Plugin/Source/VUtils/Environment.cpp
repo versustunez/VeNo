@@ -4,6 +4,7 @@
 #include <VUtils/StringUtils.h>
 #include <iomanip>
 #include <sstream>
+#include <vector>
 
 namespace VUtils
 {
