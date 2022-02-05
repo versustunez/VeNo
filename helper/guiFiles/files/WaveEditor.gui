@@ -45,7 +45,7 @@ bg: primaryBG
             text: Y
             event: changeY
         }
-        @ToggleButton#curveMode {
+        @Switch#curveMode {
             id: curveMode
             w: 100
             h: 50

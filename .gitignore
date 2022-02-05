@@ -4,6 +4,7 @@ SDKs
 
 build
 build-ios
+build-debug
 out
 
 cmake-build-debug
@@ -14,9 +15,10 @@ cmake_install.cmake
 CMakeScripts
 
 .idea
-
+.cache
 .vs
 
+compile_commands.json
 IDEWorkspaceChecks.plist
 UserInterfaceState.xcuserstate
 xcschememanagement.plist

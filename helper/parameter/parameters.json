@@ -11,6 +11,16 @@
       "type": "Float"
     },
     {
+      "name": "after__touch",
+      "showName": "After Touch",
+      "modulateAble": false,
+      "tooltip": "After Touch Midi Event",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
       "name": "pitch__wheel",
       "showName": "Pitch Wheel",
       "modulateAble": false,
@@ -228,24 +238,14 @@
       "type": "Float"
     },
     {
-      "name": "{id}__waveform_base",
-      "showName": "{sid} Primary Waveform",
+      "name": "{id}__wave_position",
+      "showName": "{sid} Waveform Position",
       "modulateAble": false,
-      "tooltip": "Main Waveform that is applied without Mix",
-      "value": 1,
-      "maxValue": 13,
-      "minValue": 1,
-      "type": "Integer"
-    },
-    {
-      "name": "{id}__waveform_sec",
-      "showName": "{sid} Secondary Waveform",
-      "modulateAble": false,
-      "tooltip": "Secondary Waveform that is applied with Mix",
-      "value": 4,
-      "maxValue": 13,
-      "minValue": 1,
-      "type": "Integer"
+      "tooltip": "Selected Waveform",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
     },
     {
       "name": "{id}__waveform_mix",

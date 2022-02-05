@@ -1,3 +1,1 @@
-add_sources(
-        WaveEditor.cpp
-)
+add_sources(WaveEditor.cpp)

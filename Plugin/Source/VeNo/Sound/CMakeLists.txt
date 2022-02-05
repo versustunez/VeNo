@@ -1,6 +1,7 @@
 add_sources(
-        Generation/WaveTables/Creator/Generator.cpp
-        Generation/WaveTables/Creator/TableCreatorHelper.cpp
-        Generation/WaveTables/RawTable.cpp
-        Generation/WaveTables/Structs.cpp
+  Synth/MidiHandler.cpp
+  Synth/Synthesizer.cpp
+  Synth/SynthVoice.cpp
+  Generation/Envelope.cpp
+  Generation/Oscillator.cpp
 )

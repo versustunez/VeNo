@@ -1,54 +1,63 @@
+#include <VUtils/Logging.h>
 #include <VeNo/Core/Config.h>
 #include <VeNo/PluginEditor.h>
 #include <VeNo/PluginProcessor.h>
-#include <VeNo/Sound/Generation/WaveTables/Creator/Generator.h>
+#include <VeNo/Utils/ProfileMacros.h>
 
 VeNoProcessor::VeNoProcessor()
-    : AudioProcessor (BusesProperties().withOutput ("Output", juce::AudioChannelSet::stereo(), true)),
-      instance (VeNo::Core::Instance::create()),
-      m_id (juce::Uuid().toString().toStdString()),
-      treeState (*this, nullptr, "VeNo", instance->handler->setupProcessor())
-{
-    instance->treeState = &treeState;
-    VeNo::Core::Config::get().registerProcessor (m_id, this);
+    : AudioProcessor(BusesProperties().withOutput(
+          "Output", juce::AudioChannelSet::stereo(), true)),
+      instance(VeNo::Core::Instance::create()),
+      m_id(juce::Uuid().toString().toStdString()),
+      treeState(*this, nullptr, "VeNo", instance->handler->setupProcessor()) {
+  instance->treeState = &treeState;
+  VeNo::Core::Config::get().registerProcessor(m_id, this);
+  VENO_PROFILE_BEGIN_SESSION("VeNo", "res://PROFILES/" + m_id);
 }
 
-void VeNoProcessor::processBlock (juce::AudioBuffer<float>& buffer,
-                                  juce::MidiBuffer& /*midiMessages*/)
-{
-    // oversampling only if less then 96khz everything above should fine by itself and "too hungry"
+void VeNoProcessor::processBlock(
+    juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages) {
+  VENO_PROFILE_FUNCTION();
+  auto *head = getPlayHead();
+  if (head) {
+    juce::AudioPlayHead::CurrentPositionInfo currentPositionInfo;
+    getPlayHead()->getCurrentPosition(currentPositionInfo);
+  }
+  buffer.clear();
+  // oversampling only if less than 96khz everything above should fine by itself
+  // and "too hungry"
+
+  if (instance->synthesizer)
+    instance->synthesizer->processBlock(buffer, midiMessages);
 }
 
-juce::AudioProcessorEditor* VeNoProcessor::createEditor()
-{
-    return new VeNoEditor (*this, m_id);
+juce::AudioProcessorEditor *VeNoProcessor::createEditor() {
+  return new VeNoEditor(*this, m_id);
 }
 
-void VeNoProcessor::getStateInformation (juce::MemoryBlock& destData)
-{
+void VeNoProcessor::getStateInformation(juce::MemoryBlock &) {
+  VENO_PROFILE_FUNCTION();
 }
 
-void VeNoProcessor::setStateInformation (const void* data, int sizeInBytes)
-{
+void VeNoProcessor::setStateInformation(const void *, int) {
+  VENO_PROFILE_FUNCTION();
 }
-VeNoProcessor::~VeNoProcessor()
-{
-    VeNo::Core::Config::get().removeProcessor (m_id);
-    VeNo::Core::Instance::remove (instance->id);
+VeNoProcessor::~VeNoProcessor() {
+  VeNo::Core::Config::get().removeProcessor(m_id);
+  VeNo::Core::Instance::remove(instance->id);
+  VENO_PROFILE_END_SESSION();
 }
-void VeNoProcessor::prepareToPlay (double sampleRate, int blockSize)
-{
-    auto& config = VeNo::Core::Config::get();
-    if (config.sampleRate != sampleRate)
-    {
-        config.sampleRate = sampleRate;
-        // VeNo::Audio::Waves::WaveTableGenerator::getInstance().init();
-        // VeNo::Audio::Waves::WaveTableGenerator will later be setup to generate user selected waves!
-    }
-    //Setup WaveTables on Change
+void VeNoProcessor::prepareToPlay(double sampleRate, int /*blockSize*/) {
+  VENO_PROFILE_FUNCTION();
+  auto &config = VeNo::Core::Config::get();
+  if (config.sampleRate != sampleRate) {
+    config.sampleRate = sampleRate;
+  }
+  if (instance->synthesizer)
+    instance->synthesizer =
+        VeNo::CreateRef<VeNo::Audio::Synthesizer>(instance->id);
 }
 
-juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
-{
-    return new VeNoProcessor();
+juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter() {
+  return new VeNoProcessor();
 }

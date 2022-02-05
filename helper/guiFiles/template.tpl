@@ -3,5 +3,8 @@
 
 namespace VeNo::GUI
 {
+// Empty STRING Reference
+std::string Files::EMPTY;
+
 $s$
-}
+} // VeNo::GUI

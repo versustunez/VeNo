@@ -28,7 +28,6 @@ function prepareName(item, id, showId) {
 
 function createItem(item, tDepth, id, showID, i) {
     depth(tDepth);
-    parameters += `// ${item.tooltip}\n`;
     let pre = prepareName(item, id, showID),
         name = pre.name,
         showName = pre.showName;

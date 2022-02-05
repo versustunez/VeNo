@@ -1,13 +1,13 @@
-#include <VeNo/GUI/GuiLang/GuiInterpreter.h>
-namespace VeNo::GUI
-{
-void Interpreter::initMapping()
-{
-    factories["Label"] = std::make_shared<LabelComponentFactory>();
-    factories["Knob"] = std::make_shared<KnobComponentFactory>();
-    factories["WaveEditor"] = std::make_shared<WaveEditorFactory>();
-    factories["ToggleButton"] = std::make_shared<ToggleButtonFactory>();
-    /*    componentMapping["Slider"] = ComponentID::SLIDER;
-    componentMapping["Select"] = ComponentID::SELECT;*/
+#include <VeNo/GUI/GuiLang/Interpreter.h>
+namespace VeNo::GUI {
+void Interpreter::initMapping() {
+  factories["Label"] = CreateRef<LabelComponentFactory>();
+  factories["Knob"] = CreateRef<KnobComponentFactory>();
+  factories["WaveEditor"] = CreateRef<WaveEditorFactory>();
+  factories["Switch"] = CreateRef<SwitchFactory>();
+  factories["Button"] = CreateRef<ButtonFactory>();
+  factories["Logo"] = CreateRef<LogoFactory>();
+  /*    componentMapping["Slider"] = ComponentID::SLIDER;
+  componentMapping["Select"] = ComponentID::SELECT;*/
 }
-}
+} // namespace VeNo::GUI

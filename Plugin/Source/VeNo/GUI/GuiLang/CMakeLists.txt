@@ -1,6 +1,6 @@
 add_sources(
-        FactoryMapping.cpp
-        GUIHandler.cpp
-        GUIInit.cpp
-        GuiInterpreter.cpp
+  FactoryMapping.cpp
+        Parser.cpp
+        Init.cpp
+        Interpreter.cpp
 )

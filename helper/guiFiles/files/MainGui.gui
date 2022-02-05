@@ -20,7 +20,18 @@ bg: primaryBG
         w: 130
         h: 130
         label: top
-        labelvalue: semi
+        label-value: semi
+    }
+
+    @Knob {
+        id: osc1
+        bind: osc1__level
+        x: 400
+        y: 10
+        w: 130
+        h: 130
+        label: center
+        label-value: semi
     }
 
     @Knob#Main Volume {
@@ -29,11 +40,11 @@ bg: primaryBG
         y: 10
         w: 130
         h: 130
-        label: center
-        labelvalue: semi
+        label: bottom
+        label-value: always
     }
 }
-@ToggleButton {
+@Switch {
     bind: osc1__active
     x: 70%
     y: 180
@@ -42,10 +53,10 @@ bg: primaryBG
 }
 
 #OSC1 {
+    header: true
     w: 50%
     h: 300
     y: 300
     bg: secondaryBG
-    id: true
-    @import Bin::Oscillator;osc=1
+    @import Oscillator;osc=1
 }

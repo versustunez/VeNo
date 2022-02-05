@@ -1,9 +1,9 @@
 add_sources(
-        Parameter/Handler.cpp
-        Parameter/ModulateParameter.cpp
-        Parameter/Parameter.cpp
-        State/ComponentStates.cpp
-        State/InstanceState.cpp
-        Config.cpp
-        Instance.cpp
+  Parameter/Handler.cpp
+  Parameter/ModulateParameter.cpp
+  Parameter/Parameter.cpp
+  State/ComponentStates.cpp
+  State/InstanceState.cpp
+  Config.cpp
+  Instance.cpp
 )

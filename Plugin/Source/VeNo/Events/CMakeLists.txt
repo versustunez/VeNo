@@ -1,3 +1,1 @@
-add_sources(
-        EventHandler.cpp
-)
+add_sources(EventHandler.cpp)
