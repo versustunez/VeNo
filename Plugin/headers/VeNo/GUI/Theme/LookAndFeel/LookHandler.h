@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FlatLook.h"
+
 #include <JuceHeader.h>
 #include <memory>
 
@@ -15,50 +16,71 @@ public:
   ~LookHandler() override;
   void selectLook(int index);
 
-  LookAndFeel_V4 *getLook();
+  VeNoLook *getLook();
 
   void drawButtonBackground(juce::Graphics &g, juce::Button &button,
-      const juce::Colour &backgroundColour, bool shouldDrawButtonAsHighlighted,
-      bool shouldDrawButtonAsDown) override;
+                            const juce::Colour &backgroundColour,
+                            bool shouldDrawButtonAsHighlighted,
+                            bool shouldDrawButtonAsDown) override;
 
   void drawRotarySlider(juce::Graphics &g, int x, int y, int width, int height,
-      float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle,
-      juce::Slider &slider) override;
+                        float sliderPosProportional, float rotaryStartAngle,
+                        float rotaryEndAngle, juce::Slider &slider) override;
 
   void drawTextEditorOutline(juce::Graphics &graphics, int width, int height,
-      juce::TextEditor &editor) override;
+                             juce::TextEditor &editor) override;
 
   void drawToggleButton(juce::Graphics &g, juce::ToggleButton &button,
-      bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
+                        bool shouldDrawButtonAsHighlighted,
+                        bool shouldDrawButtonAsDown) override;
 
   void drawTabButton(juce::TabBarButton &btn, juce::Graphics &g,
-      bool isMouseOver, bool isMouseDown) override;
+                     bool isMouseOver, bool isMouseDown) override;
 
   void drawComboBox(juce::Graphics &g, int width, int height, bool isButtonDown,
-      int buttonX, int buttonY, int buttonW, int buttonH,
-      juce::ComboBox &box) override;
+                    int buttonX, int buttonY, int buttonW, int buttonH,
+                    juce::ComboBox &box) override;
 
   void drawLabel(juce::Graphics &graphics, juce::Label &label) override;
 
-  void drawTabAreaBehindFrontButton(
-      juce::TabbedButtonBar &bar, juce::Graphics &g, int w, int h) override;
+  void drawTabAreaBehindFrontButton(juce::TabbedButtonBar &bar,
+                                    juce::Graphics &g, int w, int h) override;
 
   void drawPopupMenuItem(juce::Graphics &graphics,
-      const juce::Rectangle<int> &area, bool isSeparator, bool isActive,
-      bool isHighlighted, bool isTicked, bool hasSubMenu,
-      const juce::String &text, const juce::String &shortcutKeyText,
-      const juce::Drawable *icon, const juce::Colour *textColour) override;
+                         const juce::Rectangle<int> &area, bool isSeparator,
+                         bool isActive, bool isHighlighted, bool isTicked,
+                         bool hasSubMenu, const juce::String &text,
+                         const juce::String &shortcutKeyText,
+                         const juce::Drawable *icon,
+                         const juce::Colour *textColour) override;
 
-  juce::PopupMenu::Options getOptionsForComboBoxPopupMenu(
-      juce::ComboBox &box, juce::Label &label) override;
+  juce::PopupMenu::Options
+  getOptionsForComboBoxPopupMenu(juce::ComboBox &box,
+                                 juce::Label &label) override;
 
-  void drawPopupMenuBackground(
-      juce::Graphics &graphics, int width, int height) override;
+  void drawPopupMenuBackground(juce::Graphics &graphics, int width,
+                               int height) override;
+
+  void drawTooltip(juce::Graphics &graphics, const juce::String &text,
+                   int width, int height) override;
+
+  void drawBubble(juce::Graphics &graphics, juce::BubbleComponent &component,
+                  const juce::Point<float> &tip,
+                  const juce::Rectangle<float> &body) override;
+
+  void drawButtonText(juce::Graphics &graphics, juce::TextButton &button,
+                      bool shouldDrawButtonAsHighlighted,
+                      bool shouldDrawButtonAsDown) override;
+
+protected:
+  void drawBasedOnKnob(juce::Graphics &g, int x, int y, int width, int height,
+                       float sliderPosProportional, float rotaryStartAngle,
+                       float rotaryEndAngle, juce::Slider &slider);
 
 protected:
   // currently both available themes are CrazyLook <-- (this is a fun one xD)
   // and FlatLook
-  LookAndFeel_V4 *m_feels[1] = {new FlatLook()};
+  VeNoLook *m_feels[1] = {new FlatLook()};
   VeNo::Theme::Theme *theme = nullptr;
 };
 

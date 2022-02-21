@@ -7,6 +7,7 @@ namespace VeNo::Core {
 void ParameterHandler::setupParameter() {
   addParameterModulate("master__volume", "Synth Volume", 0, 1.5, 1, Float);
   addParameter("after__touch", "After Touch", 0, 1, 0, Float);
+  addParameter("mod__wheel", "Mod Wheel", 0, 1, 0, Float);
   addParameter("pitch__wheel", "Pitch Wheel", -1, 1, 0, Float);
   addParameter("pitchbend__up", "Pitch Bend Up", 0, 36, 12, Integer);
   addParameter("pitchbend__down", "Pitch Bend Down", 0, 36, 12, Integer);
@@ -22,33 +23,27 @@ void ParameterHandler::setupParameter() {
     std::string OSCName = "OSC" + std::to_string(i);
     addParameter(oscId + "active", OSCName + " Active", 0, 1, i == 1, Boolean);
     addParameter(oscId + "voices", OSCName + " Voices", 1, 9, 1, Integer);
-    addParameterModulate(
-        oscId + "semitones", OSCName + " Semitones", -24, 24, 0, Integer);
-    addParameterModulate(
-        oscId + "cents", OSCName + " Fine", -100, 100, 0, Integer);
-    addParameterModulate(
-        oscId + "level", OSCName + " Volume", 0, 1, 0.8, Float);
+    addParameterModulate(oscId + "semitones", OSCName + " Semitones", -24, 24,
+                         0, Integer);
+    addParameterModulate(oscId + "cents", OSCName + " Fine", -100, 100, 0,
+                         Integer);
+    addParameterModulate(oscId + "level", OSCName + " Volume", 0, 1, 0.8,
+                         Float);
     addParameterModulate(oscId + "panning", OSCName + " Pan", -1, 1, 0, Float);
-    addParameterModulate(
-        oscId + "detune_amount", OSCName + " Detune Volume", 0, 1, 0, Float);
-    addParameterModulate(
-        oscId + "detune_dense", OSCName + " Detune Strength", 0, 150, 0, Float);
-    addParameter(
-        oscId + "detune_mode", OSCName + " Detune Mode", 1, 3, 1, Integer);
-    addParameterModulate(
-        oscId + "phase", OSCName + " Phase offset", 0, 1, 0, Float);
-    addParameter(
-        oscId + "random_phase", OSCName + " Random Phase", 0, 1, 0, Boolean);
-    addParameterModulate(
-        oscId + "stereo", OSCName + " Detune Stereo", 0, 200, 50, Float);
+    addParameterModulate(oscId + "detune_amount", OSCName + " Detune Volume", 0,
+                         1, 0, Float);
+    addParameterModulate(oscId + "detune_dense", OSCName + " Detune Strength",
+                         0, 150, 0, Float);
+    addParameter(oscId + "detune_mode", OSCName + " Detune Mode", 1, 3, 1,
+                 Integer);
+    addParameterModulate(oscId + "phase", OSCName + " Phase offset", 0, 1, 0,
+                         Float);
+    addParameter(oscId + "random_phase", OSCName + " Random Phase", 0, 1, 0,
+                 Boolean);
+    addParameterModulate(oscId + "stereo", OSCName + " Detune Stereo", 0, 200,
+                         50, Float);
     addParameter(oscId + "wave_position", OSCName + " Waveform Position", 0, 1,
-        0, Float);
-    addParameterModulate(
-        oscId + "waveform_mix", OSCName + " Waveform Mix", 0, 1, 0, Float);
-    addParameter(oscId + "attack", OSCName + " Attack", 0, 1500, 10, Float);
-    addParameter(oscId + "decay", OSCName + " Decay", 0, 1500, 0, Float);
-    addParameter(oscId + "sustain", OSCName + " Sustain", 0, 1, 1, Float);
-    addParameter(oscId + "release", OSCName + " Release", 0, 1500, 10, Float);
+                 0, Float);
   }
 
   for (int i = 1; i < 3; i++) {
@@ -57,42 +52,37 @@ void ParameterHandler::setupParameter() {
     addParameter(lfoId + "active", LFOName + " Active", 0, 1, 0, Boolean);
     addParameter(lfoId + "voices", LFOName + " Voices", 1, 9, 1, Integer);
     addParameterModulate(lfoId + "rate", LFOName + " Rate", 1, 40, 1, Float);
-    addParameterModulate(
-        lfoId + "phase", LFOName + " Phase offset", 0, 1, 0, Float);
-    addParameter(
-        lfoId + "random_phase", LFOName + " Random Phase", 0, 1, 0, Boolean);
-    addParameter(lfoId + "waveform_base", LFOName + " Primary Waveform", 1, 13,
-        1, Integer);
-    addParameter(lfoId + "waveform_sec", LFOName + " Secondary Waveform", 1, 13,
-        4, Integer);
-    addParameterModulate(
-        lfoId + "waveform_mix", LFOName + " Waveform Mix", 0, 1, 0, Float);
+    addParameterModulate(lfoId + "phase", LFOName + " Phase offset", 0, 1, 0,
+                         Float);
+    addParameter(lfoId + "random_phase", LFOName + " Random Phase", 0, 1, 0,
+                 Boolean);
   }
 
-  for (int i = 1; i < 3; i++) {
+  for (int i = 1; i < 5; i++) {
     std::string envId = "env" + std::to_string(i) + "__";
     std::string EnvelopeName = "Envelope" + std::to_string(i);
-    addParameter(
-        envId + "attack", EnvelopeName + " Attack", 0, 1500, 10, Float);
+    addParameter(envId + "attack", EnvelopeName + " Attack", 0, 1500, 10,
+                 Float);
     addParameter(envId + "decay", EnvelopeName + " Decay", 0, 1500, 0, Float);
     addParameter(envId + "sustain", EnvelopeName + " Sustain", 0, 1, 1, Float);
-    addParameter(
-        envId + "release", EnvelopeName + " Release", 0, 1500, 10, Float);
+    addParameter(envId + "release", EnvelopeName + " Release", 0, 1500, 10,
+                 Float);
   }
-  addParameter(
-      "dist__filter_one_type", "Distortion Filter One", 1, 5, 1, Integer);
+
+  addParameter("dist__filter_one_type", "Distortion Filter One", 1, 5, 1,
+               Integer);
   addParameterModulate("dist__filter_one_cutoff",
-      "Distortion Filter One Cutoff", 20, 20000, 20, Float);
-  addParameter(
-      "dist__filter_two_type", "Distortion Filter Two", 1, 5, 1, Integer);
+                       "Distortion Filter One Cutoff", 20, 20000, 20, Float);
+  addParameter("dist__filter_two_type", "Distortion Filter Two", 1, 5, 1,
+               Integer);
   addParameterModulate("dist__filter_two_cutoff",
-      "Distortion Filter Two Cutoff", 20, 20000, 20, Float);
+                       "Distortion Filter Two Cutoff", 20, 20000, 20, Float);
   addParameter("dist__input_gain", "Distortion Input Gain", 0, 1.5, 1, Float);
   addParameter("dist__output_gain", "Distortion Output Gain", 0, 1.5, 1, Float);
   addParameter("dist__drive", "Distortion DRIVE", -16, 16, 0, Float);
   addParameter("dist__type", "Distortion Type", 1, 7, 1, Integer);
-  addParameterModulate(
-      "dist__dynamic", "Distortion Dynamic Parameter", 0, 1, 0, Float);
+  addParameterModulate("dist__dynamic", "Distortion Dynamic Parameter", 0, 1, 0,
+                       Float);
   addParameterModulate("dist__mix", "Distortion DRY/WET", 0, 1, 0.5, Float);
 }
 } // namespace VeNo::Core

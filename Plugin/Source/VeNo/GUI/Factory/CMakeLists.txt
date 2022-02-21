@@ -1,11 +1,11 @@
 add_sources(
-  ButtonFactory.cpp
-  ComponentFactory.cpp
-  KnobComponentFactory.cpp
-  LabelComponentFactory.cpp
-  SwitchFactory.cpp
-  SelectComponentFactory.cpp
-  SliderComponentFactory.cpp
-  WaveEditorFactory.cpp
-  MixedFactories.cpp
+        ButtonFactory.cpp
+        ComponentFactory.cpp
+        KnobComponentFactory.cpp
+        LabelComponentFactory.cpp
+        SwitchFactory.cpp
+        SelectComponentFactory.cpp
+        SliderComponentFactory.cpp
+        WaveEditorFactory.cpp
+        MixedFactories.cpp
 )

@@ -6,6 +6,6 @@ add_subdirectory(Sound)
 add_subdirectory(Utils)
 add_subdirectory(Window)
 add_sources(
-  PluginEditor.cpp
-  PluginProcessor.cpp
+        PluginEditor.cpp
+        PluginProcessor.cpp
 )

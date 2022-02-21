@@ -38,8 +38,8 @@ Fonts::~Fonts() {
   icons = nullptr;
 }
 
-void Fonts::drawIcon(
-    const juce::String &icon, juce::Graphics &g, juce::Rectangle<int> &space) {
+void Fonts::drawIcon(const juce::String &icon, juce::Graphics &g,
+                     juce::Rectangle<int> &space) {
   auto font = g.getCurrentFont();
   g.setFont(*Fonts::getIcons());
   g.drawText(icon, space, juce::Justification::centred, true);

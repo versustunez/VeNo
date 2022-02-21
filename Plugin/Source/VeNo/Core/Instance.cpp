@@ -3,7 +3,10 @@
 
 namespace VeNo::Core {
 std::vector<Instance *> Instance::m_instances = {};
-Instance::~Instance() { handler = nullptr; }
+Instance::~Instance() {
+  mainInterpreter = nullptr;
+  handler = nullptr;
+}
 Instance *Instance::get(size_t m_id) {
   // This should never be a problem tbh!
   return m_instances[m_id];

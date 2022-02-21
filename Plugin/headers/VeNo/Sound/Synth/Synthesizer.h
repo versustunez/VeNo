@@ -1,10 +1,12 @@
 #pragma once
 
+#include "ParameterEventHandler.h"
 #include "SynthVoice.h"
-#include "VeNo/Sound/Generation/OscillatorStructs.h"
+
 #include <JuceHeader.h>
 #include <VeNo/Core/Config.h>
 #include <VeNo/Core/Parameter/Handler.h>
+#include <VeNo/Sound/Generation/OscillatorStructs.h>
 
 #define MAX_VOICES 5
 
@@ -15,20 +17,33 @@ public:
   explicit Synthesizer(size_t instanceID);
   void processBlock(juce::AudioBuffer<float> &, juce::MidiBuffer &);
   size_t instanceID() const { return m_instanceId; };
-  Core::ParameterHandler *parameterHandler() { return m_parameterHandler; };
-  SynthVoice *voices() { return m_voices; };
+  Core::ParameterHandler *parameterHandler() const {
+    return m_parameterHandler;
+  };
+  Scope<SynthVoice> *voices() { return m_voices; };
+  void setSampleRate(double sampleRate);
+
+  void invalidateEnvelopes();
+
+  EnvelopeData &envelope();
+
+private:
+  void renderVoices(juce::AudioBuffer<float> &, int startSample,
+                    int numSamples) const;
+
+  void addEvents();
 
 private:
   friend MidiHandler;
-  void renderVoices(
-      juce::AudioBuffer<float> &, int startSample, int numSamples) const;
-  Core::Config *m_config{nullptr};
   size_t m_instanceId{0};
-  SynthVoice m_voices[MAX_VOICES]{};
   Core::ParameterHandler *m_parameterHandler{nullptr};
+  Core::Config *m_config{nullptr};
+  Scope<SynthVoice> m_voices[MAX_VOICES]{};
+  ParameterEventHandler m_parameterEventHandler{};
   uint64_t lastNoteOnCounter{0};
   bool hasActiveNote{false};
-  OscillatorData m_oscillators[MAX_OSCILLATORS]{};
+  Ref<OscillatorData> m_oscillators[OSCILLATORS];
+  Ref<EnvelopeData> m_envelope;
   juce::CriticalSection lock;
 };
 } // namespace VeNo::Audio

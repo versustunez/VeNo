@@ -1,7 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-
+namespace VeNo::GUI::Icons {
 typedef juce::String Icon;
 
 const Icon FontAwesome_500px = Icon::fromUTF8(u8"\uf26e");
@@ -1453,3 +1453,4 @@ const Icon FontAwesome_Yoast = Icon::fromUTF8(u8"\uf2b1");
 const Icon FontAwesome_Youtube = Icon::fromUTF8(u8"\uf167");
 const Icon FontAwesome_YoutubeSquare = Icon::fromUTF8(u8"\uf431");
 const Icon FontAwesome_Zhihu = Icon::fromUTF8(u8"\uf63f");
+}; // namespace VeNo::GUI

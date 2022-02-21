@@ -1,8 +1,8 @@
 add_sources(
-  Curve.cpp
-  Environment.cpp
-  FileHandler.cpp
-  Logging.cpp
-  Math.cpp
-  StringUtils.cpp
+        Curve.cpp
+        Environment.cpp
+        FileHandler.cpp
+        Logger.cpp
+        Math.cpp
+        StringUtils.cpp
 )

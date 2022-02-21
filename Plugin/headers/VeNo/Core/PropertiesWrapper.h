@@ -8,8 +8,8 @@
 namespace VeNo::Core {
 class Properties {
 public:
-  static Scope<Properties> create(
-      const char *file, const char *folder, const std::string &type = "xml") {
+  static Scope<Properties> create(const char *file, const char *folder,
+                                  const std::string &type = "xml") {
     juce::PropertiesFile::Options options;
     options.applicationName = file;
     options.folderName = folder;
@@ -35,12 +35,12 @@ public:
 
   void save() {
     root->sortChildElements(*this, true);
-    VUtils::FileHandler::writeFile(
-        m_file.getFullPathName().toStdString(), root->toString().toStdString());
+    VUtils::FileHandler::writeFile(m_file.getFullPathName().toStdString(),
+                                   root->toString().toStdString());
   }
 
-  static int compareElements(
-      const juce::XmlElement *first, const juce::XmlElement *second) {
+  static int compareElements(const juce::XmlElement *first,
+                             const juce::XmlElement *second) {
     auto firstIsProperty = first->getTagName().equalsIgnoreCase("property");
     auto secondIsProperty = second->getTagName().equalsIgnoreCase("property");
     if (firstIsProperty && secondIsProperty)

@@ -1,5 +1,6 @@
 #include "VeNo/Core/Instance.h"
 #include "VeNo/Core/Parameter/Handler.h"
+
 #include <VeNo/Sound/Generation/Oscillator.h>
 namespace VeNo::Audio
 // @TODO Implement Oscillator
@@ -21,25 +22,22 @@ bool Oscillator::setup(OscillatorData &osc, size_t instanceId) {
   state.randomPhase = handler->getOscParameter("random_phase", osc.id);
   state.stereo = handler->getOscParameter("stereo", osc.id);
   state.wavePosition = handler->getOscParameter("wave_position", osc.id);
-  state.attack = handler->getOscParameter("attack", osc.id);
-  state.decay = handler->getOscParameter("decay", osc.id);
-  state.sustain = handler->getOscParameter("sustain", osc.id);
-  state.release = handler->getOscParameter("release", osc.id);
+  DBGN("Created Oscillator State for: %d", osc.id);
   return true;
 }
 
-bool Oscillator::prepare(OscillatorData &osc, SingleVoiceData &voice) {
+bool Oscillator::prepare(OscillatorData &osc) {
   // the step we update all internal states for the oscillator-data like Detune
-  // and more Time to implement preparing of all oscillators -> it also needs to
-  // prepare all active voice frequencies
   return false;
 }
-bool Oscillator::update(OscillatorData &, SingleVoiceData &) {
+bool Oscillator::process(OscillatorData &osc, SingleVoiceData &voice) {
+  if (!osc.state.active->getBool())
+    return false;
   // update voice data
-  return false;
+  return true;
 }
 bool Oscillator::finish(OscillatorData &, SingleVoiceData &) {
-  // after hook maybe to shutdown something or more :) // its maybe to-be
+  // after hook maybe to shut down something or more :) // its maybe to-be
   // removed
   return false;
 }

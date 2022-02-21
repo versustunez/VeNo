@@ -8,9 +8,12 @@ const fs = require("fs"),
 let parameters = "";
 const root = config.json.root;
 
+function newLine() {
+    parameters += '\n';
+}
 function depth(depth) {
     for (let i = 0; i < depth; i++) {
-        parameters += "    ";
+        parameters += "  ";
     }
 }
 
@@ -27,7 +30,6 @@ function prepareName(item, id, showId) {
 }
 
 function createItem(item, tDepth, id, showID, i) {
-    depth(tDepth);
     let pre = prepareName(item, id, showID),
         name = pre.name,
         showName = pre.showName;
@@ -46,7 +48,9 @@ function createItem(item, tDepth, id, showID, i) {
 
 function createForType(items, config) {
     let count = config.count + 1;
-    parameters += `\n    for (int i = 1; i < ${count}; i++)\n    {\n`;
+    newLine();
+    depth(1);
+    parameters += `for (int i = 1; i < ${count}; i++) {\n`;
     depth(2);
     parameters += `std::string ${config.id}Id = "${config.id}" + std::to_string (i) + "__";\n`;
     depth(2);
@@ -54,7 +58,7 @@ function createForType(items, config) {
     for (let item of items) {
         createItem(item, 2, `${config.id}Id`, `${config.sid}Name`);
     }
-    parameters += "    }\n";
+    parameters += "  }\n";
 }
 
 for (let item of root) {
@@ -63,6 +67,7 @@ for (let item of root) {
 createForType(config.json.osc, config.json.oscConfig);
 createForType(config.json.lfo, config.json.lfoConfig);
 createForType(config.json.envelope, config.json.envelopeConfig);
+newLine();
 for (let item of config.json.distortion) {
     createItem(item, 1);
 }

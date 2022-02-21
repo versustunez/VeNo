@@ -1,5 +1,6 @@
 #pragma once
 #include "VeNo/Core/Instance.h"
+
 #include <VeNo/GUI/Components/BaseComponent.h>
 #include <VeNo/TypeDefs.h>
 
@@ -12,7 +13,7 @@ public:
   void paint(juce::Graphics &g) override;
   void resized() override;
 
-  void handle(Events::Event &event) override;
+  void handle(Events::Event *event) override;
 
 protected:
   void createLogo();

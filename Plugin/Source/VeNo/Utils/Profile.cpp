@@ -1,11 +1,10 @@
 #include <VUtils/Logging.h>
 #include <VeNo/Utils/Profile.h>
-
 #include <utility>
 
 namespace VeNo::Perf {
-void Profiler::begin(
-    const std::string &name, const std::string &filepath = "results.json") {
+void Profiler::begin(const std::string &name,
+                     const std::string &filepath = "results.json") {
   std::lock_guard lock(m_mutex);
   if (m_currentSession)
     internalEnd();
@@ -65,7 +64,8 @@ void Profiler::writeFooter() {
 }
 
 ProfilerTimer::ProfilerTimer(std::string name)
-    : m_name(std::move(name)), m_stopped(false) {
+    : m_name(std::move(name)),
+      m_stopped(false) {
   m_startTimepoint = std::chrono::steady_clock::now();
 }
 

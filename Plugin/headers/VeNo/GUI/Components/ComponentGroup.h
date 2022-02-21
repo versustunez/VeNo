@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseComponent.h"
+
 #include <JuceHeader.h>
 #include <VUtils/Logging.h>
 #include <VeNo/GUI/Flex.h>

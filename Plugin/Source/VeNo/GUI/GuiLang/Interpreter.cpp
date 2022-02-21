@@ -10,8 +10,8 @@ namespace VeNo::GUI {
 std::unordered_map<std::string, Ref<ComponentFactory>> Interpreter::factories =
     {};
 Interpreter::Interpreter(size_t id) : m_id(id) {}
-Ref<ComponentGroup> Interpreter::parseTree(
-    GUIParseItem *item, ComponentGroup *inGroup) {
+Ref<ComponentGroup> Interpreter::parseTree(GUIParseItem *item,
+                                           ComponentGroup *inGroup) {
   if (item == nullptr)
     return nullptr;
 #ifdef VENO_PROFILE
@@ -77,19 +77,21 @@ void Interpreter::parseMain(GUIParseItem *item) {
 }
 
 Ref<BaseComponent> Interpreter::createFromType(GUIParseItem *item,
-    const std::string &parameter, const std::string &name, size_t id) {
+                                               const std::string &parameter,
+                                               const std::string &name,
+                                               size_t id) {
   VENO_PROFILE_FUNCTION();
   if (factories.empty())
     initMapping();
   if (factories.find(item->component->name) != factories.end())
-    return factories[item->component->name]->create(
-        *item, parameter, name, id, this);
+    return factories[item->component->name]->create(*item, parameter, name, id,
+                                                    this);
   WARN(R"(Found unknown Component: "%s")", item->component->name.c_str());
   return nullptr;
 }
 
-BaseComponent *Interpreter::find(
-    const char *selector, ComponentGroup *inGroup) {
+BaseComponent *Interpreter::find(const char *selector,
+                                 ComponentGroup *inGroup) {
   VENO_PROFILE_FUNCTION();
   if (!inGroup)
     inGroup = componentGroup.get();
@@ -120,10 +122,6 @@ BaseComponent *Interpreter::find(
     }
   }
   return nullptr;
-}
-Interpreter::~Interpreter() { m_eventHandler = nullptr; }
-Events::EventHandler *Interpreter::eventHandler() {
-  return m_eventHandler.get();
 }
 bool Interpreter::contains(const char *name, GUIParseItem *item) {
   return item->properties.find(name) != item->properties.end();

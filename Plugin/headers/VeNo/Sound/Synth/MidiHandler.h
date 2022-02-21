@@ -4,8 +4,8 @@
 namespace VeNo::Audio {
 class MidiHandler {
 public:
-  static void handleMidiMessage(
-      juce::MidiMessage message, Synthesizer &synthesizer);
+  static void handleMidiMessage(juce::MidiMessage message,
+                                Synthesizer &synthesizer);
 
 private:
   MidiHandler() = default;

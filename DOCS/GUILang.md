@@ -22,6 +22,8 @@ It will interpret the GUI on Runtime for every opening don't make the layout to 
 - Select
 - Button
 - Switch
+- ValueBox
+- Logo
 
 ## Imports
 
@@ -99,9 +101,10 @@ If a Custom Component is needed ask if we can provide it or build it yourself :P
 
 ### Label
 
-| property | value        |
-|----------|--------------|
-| text     | text to show |
+| property | value                          |
+|----------|--------------------------------|
+| text     | text to show                   |
+| event    | can bind a event for listening |
 
 ### Knob
 

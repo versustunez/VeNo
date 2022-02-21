@@ -1,5 +1,6 @@
 #pragma once
 #include "../Structs.h"
+
 #include <VeNo/Core/Parameter/Parameter.h>
 #include <cstdint>
 
@@ -20,16 +21,12 @@ struct OscillatorState {
   Parameter *randomPhase;
   Parameter *stereo;
   Parameter *wavePosition;
-  Parameter *attack;
-  Parameter *decay;
-  Parameter *sustain;
-  Parameter *release;
 };
 
 struct OscillatorData {
-  uint8_t id = 0;
-  double *wave = nullptr;
-  OscillatorState state;
+  uint8_t id{0};
+  double *wave{nullptr};
+  OscillatorState state{};
 };
 
 // holds a state to phase offset and start
@@ -46,6 +43,6 @@ struct SingleVoiceData {
 };
 
 struct VoiceData {
-  SingleVoiceData oscillatorVoices[MAX_OSCILLATORS]{};
+  SingleVoiceData oscillatorVoices[OSCILLATORS]{};
 };
 } // namespace VeNo::Audio

@@ -36,8 +36,8 @@ void Config::initConfig() {
   DBGN("found @ %s", m_config->filename().c_str());
   m_scale = m_config->asDouble("editor.scale", 1.0);
 }
-void Config::registerEditor(
-    std::string &id, juce::AudioProcessorEditor *editor) {
+void Config::registerEditor(std::string &id,
+                            juce::AudioProcessorEditor *editor) {
   DBGN("ID: %s", id.c_str());
   initLayout();
   initTheme();
@@ -57,8 +57,8 @@ Config &Config::get() {
   static Config instance;
   return instance;
 }
-void Config::registerProcessor(
-    std::string &id, juce::AudioProcessor *processor) {
+void Config::registerProcessor(std::string &id,
+                               juce::AudioProcessor *processor) {
   DBGN("ID: %s", id.c_str());
   m_processors[id] = processor;
 }

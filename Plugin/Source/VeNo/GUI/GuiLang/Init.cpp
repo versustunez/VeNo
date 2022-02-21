@@ -27,8 +27,8 @@ void Initializer::parseMain(std::string &name) {
   if (name != mainFB && VUtils::FileHandler::fileExists(file))
     m_guiParser.emplace("Main", CreateRef<GUILangParser>(file, true));
   else
-    m_guiParser.emplace(
-        "Main", CreateRef<GUILangParser>(Files::MainGui, false));
+    m_guiParser.emplace("Main",
+                        CreateRef<GUILangParser>(Files::MainGui, false));
 
   auto &main = m_guiParser["Main"];
   main->parserName = mainFB;
@@ -63,20 +63,18 @@ GUIParseItem *Initializer::get(const std::string &name) {
   return nullptr;
 }
 GUIParseItem *Initializer::getOrCreate(const std::string &name) {
-  auto &layoutPath = VeNo::Core::Config::get().layoutPath;
   if (m_guiParser.find(name) == m_guiParser.end() ||
       m_guiParser[name] == nullptr) {
 #ifdef VENO_PROFILE
     VENO_PROFILE_SCOPE("Initializer::getOrCreate > " + name);
 #endif
-    auto fileName = layoutPath + name;
+    auto fileName = getPreparedFilePath(name);
     bool isBin = name.rfind("Bin::", 0) == 0;
-    bool fileExists = !isBin || VUtils::FileHandler::fileExists(fileName);
-    m_guiParser.emplace(
-        name, CreateRef<GUILangParser>(name, fileExists && !isBin));
+    bool fileExists = !isBin && VUtils::FileHandler::fileExists(fileName);
+    m_guiParser.emplace(name, CreateRef<GUILangParser>(name, fileExists));
     auto &item = m_guiParser[name];
     std::string content;
-    if (!isBin && fileExists)
+    if (fileExists)
       content = VUtils::FileHandler::readFile(fileName);
     else
       content = getBinaryContent(name);

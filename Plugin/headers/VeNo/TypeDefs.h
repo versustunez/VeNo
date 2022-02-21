@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <mutex>
+#include <queue>
 #include <unordered_map>
 
 namespace VeNo {
@@ -21,5 +22,18 @@ using Mutex = std::mutex;
 using Guard = std::lock_guard<Mutex>;
 
 template <typename T, typename S> using Map = std::unordered_map<T, S>;
+template <typename T> using Queue = std::queue<T>;
+template <typename T> using Vector = std::vector<T>;
 
+#define NO_COPY_BASE_CONSTRUCTOR(TypeName)                                     \
+public:                                                                        \
+  TypeName() = default;                                                        \
+                                                                               \
+private:                                                                       \
+  TypeName(const TypeName &) = delete;                                         \
+  void operator=(const TypeName) = delete
+
+#define NO_COPY(TypeName)                                                      \
+  TypeName(const TypeName &) = delete;                                         \
+  void operator=(const TypeName) = delete
 } // namespace VeNo

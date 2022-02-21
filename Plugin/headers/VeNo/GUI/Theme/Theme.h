@@ -1,6 +1,7 @@
 #pragma once
 
 #include "VeNo/Core/PropertiesWrapper.h"
+
 #include <JuceHeader.h>
 #include <VeNo/TypeDefs.h>
 #include <string>

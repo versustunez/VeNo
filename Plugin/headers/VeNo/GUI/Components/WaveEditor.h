@@ -8,7 +8,10 @@ public:
   void paint(juce::Graphics &) override;
   void resized() override;
 
+  void setColorComponent(const GUIColorComponent& colorComponent);
+
 protected:
   void afterParsing(Interpreter *) override;
+  GUIColorComponent m_color{};
 };
 } // namespace VeNo::GUI

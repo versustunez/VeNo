@@ -21,6 +21,7 @@ public:
   Ref<GUI::Interpreter> mainInterpreter{nullptr};
   Ref<Audio::Synthesizer> synthesizer{nullptr};
   Events::EventHandler eventHandler{id};
+  Audio::WaveHolder waveHolder{id};
 
 protected:
   Instance() = default;

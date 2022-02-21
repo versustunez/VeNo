@@ -5,7 +5,8 @@
 #include <VeNo/Utils/ProfileMacros.h>
 
 VeNoEditor::VeNoEditor(VeNoProcessor &p, std::string id)
-    : AudioProcessorEditor(&p), m_id(std::move(id)),
+    : AudioProcessorEditor(&p),
+      m_id(std::move(id)),
       m_instanceId(p.instance->id) {
   auto &config = VeNo::Core::Config::get();
   config.registerEditor(m_id, this);
@@ -19,9 +20,12 @@ VeNoEditor::VeNoEditor(VeNoProcessor &p, std::string id)
   juce::Desktop::getInstance().setGlobalScaleFactor((float)config.m_scale);
   setSize(width, height);
   addAndMakeVisible(mainInterpreter->componentGroup.get());
-  auto *properties = config.properties();
-  if (properties->asBool("useOpenGL", true))
-    setupGL(properties->asBool("vsync", true));
+  auto *properties_ = config.properties();
+  if (properties_->asBool("useOpenGL", true))
+    setupGL(properties_->asBool("vsync", true));
+
+  // yeah kinda weird hack
+  instance->state.waveEditorWindow = VeNo::CreateScope<VeNo::Windows::WaveEditorWindow>(m_instanceId);
 }
 
 void VeNoEditor::paint(juce::Graphics &g) {
@@ -29,6 +33,7 @@ void VeNoEditor::paint(juce::Graphics &g) {
   g.fillAll(juce::Colour(0, 0, 0));
 }
 VeNoEditor::~VeNoEditor() {
+  mainInterpreter.reset();
   VeNo::Core::Config::get().removeEditor(m_id);
   m_openGLContext.detach();
 }
@@ -40,9 +45,8 @@ void VeNoEditor::setupGL(bool vsync) {
   DBGN("Use OpenGL Rendering");
   m_openGLContext.setRenderer(this);
   if (!vsync && !m_openGLContext.setSwapInterval(0))
-    WARN("Cannot deactivate VSync");
+    ERR("Cannot deactivate VSync");
   m_openGLContext.setContinuousRepainting(true);
-
   m_openGLContext.attachTo(*this);
   m_openGLContext.makeActive();
 }

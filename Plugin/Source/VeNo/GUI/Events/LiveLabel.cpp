@@ -1,8 +1,12 @@
+#include "VUtils/StringUtils.h"
+
 #include <VeNo/GUI/Events/LiveLabel.h>
 
 namespace VeNo::GUIEvents {
 LiveLabel::LiveLabel(GUI::Knob *knob, bool isSemi, std::string showName)
-    : m_knob(knob), m_semiMode(isSemi), m_showName(std::move(showName)) {
+    : m_knob(knob),
+      m_semiMode(isSemi),
+      m_showName(std::move(showName)) {
   m_knob->slider()->addListener(this);
 }
 void LiveLabel::timerCallback() {
@@ -21,9 +25,8 @@ void LiveLabel::sliderValueChanged(juce::Slider *) {
     timerStarted = true;
   }
   ticks = 0;
-  char str[20];
-  snprintf(str, 20, "%.3f", m_knob->slider()->getValue());
-  m_knob->setText(str);
+  m_knob->setText(VUtils::StringUtils::toString(m_knob->slider()->getValue(),
+                                                m_knob->precision(), true));
 }
 void LiveLabel::stopLive() {
   ticks = 0;

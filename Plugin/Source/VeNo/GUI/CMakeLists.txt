@@ -3,8 +3,9 @@ add_subdirectory(Factory)
 add_subdirectory(GuiLang)
 add_subdirectory(Theme)
 add_sources(
-  Events/LiveLabel.cpp
-  Fonts/Fonts.cpp
-  GUIUtils.cpp
-  Flex.cpp
+        Events/LiveLabel.cpp
+        Events/ModulateMouseOpen.cpp
+        Fonts/Fonts.cpp
+        GUIUtils.cpp
+        Flex.cpp
 )

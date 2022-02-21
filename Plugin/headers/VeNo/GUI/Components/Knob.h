@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseComponent.h"
+
 #include <JuceHeader.h>
 
 typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
@@ -13,7 +14,7 @@ namespace VeNo::GUI {
 class Knob : public BaseComponent, public juce::Label::Listener {
 public:
   Knob(std::string name, std::string showName, size_t id);
-  ~Knob();
+  ~Knob() override;
   // Component
   void paint(juce::Graphics &g) override;
   void resized() override;
@@ -26,14 +27,21 @@ public:
 
   juce::Slider *slider();
   juce::Label *label();
-  void mouseDown(const juce::MouseEvent &event) override;
 
   static juce::Slider::SliderStyle getSliderStyle();
-  static void openPopupMenu();
+
+  void setTooltip(bool tooltip);
+  void setIsValueBox(bool valueBox) {
+    m_isValueBox = valueBox;
+    if (valueBox)
+      m_slider->setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+  };
+  [[nodiscard]] bool isValueBox() const { return m_isValueBox; }
 
 protected:
   Scope<juce::Slider> m_slider;
   Scope<SliderAttachment> m_attachment;
   Scope<GUIEvents::LiveLabel> m_liveLabel{nullptr};
+  bool m_isValueBox{false};
 };
 } // namespace VeNo::GUI

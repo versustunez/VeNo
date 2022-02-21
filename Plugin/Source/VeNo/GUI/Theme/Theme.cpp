@@ -1,5 +1,4 @@
 #include <VeNo/GUI/Theme/Theme.h>
-
 #include <utility>
 
 namespace VeNo::Theme {
@@ -57,56 +56,34 @@ bool Theme::colorExists(const std::string &color) {
 }
 std::string Theme::colorToString(Colors index) {
   switch (index) {
-  case Colors::bg:
-    return "color.primaryBG";
-  case Colors::bgTwo:
-    return "color.secondaryBG";
-  case Colors::accent:
-    return "color.primary";
-  case Colors::accentTwo:
-    return "color.secondary";
-  case Colors::clip:
-    return "color.clip";
-  case Colors::font:
-    return "color.font";
-  case Colors::LcdBg:
-    return "color.lcdBG";
-  case Colors::lcd:
-    return "color.lcd";
-  case Colors::logo:
-    return "color.logo";
-  case Colors::logoAccent:
-    return "color.logoPrimary";
+  case Colors::bg: return "color.primaryBG";
+  case Colors::bgTwo: return "color.secondaryBG";
+  case Colors::accent: return "color.primary";
+  case Colors::accentTwo: return "color.secondary";
+  case Colors::clip: return "color.clip";
+  case Colors::font: return "color.font";
+  case Colors::LcdBg: return "color.lcdBG";
+  case Colors::lcd: return "color.lcd";
+  case Colors::logo: return "color.logo";
+  case Colors::logoAccent: return "color.logoPrimary";
   case Colors::unknown:
-  default:
-    return "";
+  default: return "";
   }
 }
 juce::Colour Theme::getDefault(Colors index) {
   switch (index) {
-  case Colors::bg:
-    return {27, 27, 33};
-  case Colors::bgTwo:
-    return {66, 67, 74};
-  case Colors::accent:
-    return {31, 115, 255};
-  case Colors::accentTwo:
-    return {44, 40, 93};
-  case Colors::clip:
-    return {255, 23, 68};
-  case Colors::font:
-    return {255, 255, 255};
-  case Colors::lcd:
-    return {0, 129, 194};
-  case Colors::LcdBg:
-    return {0, 0, 0};
-  case Colors::logo:
-    return {255, 255, 255};
-  case Colors::logoAccent:
-    return {31, 115, 255};
+  case Colors::bg: return {27, 27, 33};
+  case Colors::bgTwo: return {66, 67, 74};
+  case Colors::accent: return {31, 115, 255};
+  case Colors::accentTwo: return {44, 40, 93};
+  case Colors::clip: return {255, 23, 68};
+  case Colors::font: return {255, 255, 255};
+  case Colors::lcd: return {0, 129, 194};
+  case Colors::LcdBg: return {0, 0, 0};
+  case Colors::logo: return {255, 255, 255};
+  case Colors::logoAccent: return {31, 115, 255};
   case Colors::unknown:
-  default:
-    return {255, 255, 255};
+  default: return {255, 255, 255};
   }
 }
 } // namespace VeNo::Theme

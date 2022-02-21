@@ -6,7 +6,7 @@
 namespace VeNo::Windows {
 WaveEditorWindow::WaveEditorWindow(size_t id)
     : juce::DocumentWindow(createName(id), juce::Colours::black,
-          juce::DocumentWindow::closeButton, true),
+                           juce::DocumentWindow::closeButton, true),
       m_id(id) {
   instance = Core::Instance::get(m_id);
   auto &config = Core::Config::get();
@@ -14,7 +14,6 @@ WaveEditorWindow::WaveEditorWindow(size_t id)
   // prepare V-GUI Lang to use WaveEditor
   interpreter.parseMain(config.guiInit.getOrCreate(
       config.properties()->asString("gui.wave", "Bin::WaveEditor")));
-  interpreter.componentGroup.get();
   auto &pos = interpreter.componentGroup->position();
   int w = pos.w > 0 ? pos.w : WAVEEDITOR_WIDTH;
   int h = pos.h > 0 ? pos.h : WAVEEDITOR_HEIGHT;
@@ -26,7 +25,7 @@ WaveEditorWindow::WaveEditorWindow(size_t id)
   setBounds(editorPos.x, editorPos.y, w, h);
   setAlwaysOnTop(false);
   setResizable(false, false);
-  setUsingNativeTitleBar(false);
+  setUsingNativeTitleBar(true);
   juce::DocumentWindow::setVisible(true);
   toFront(true);
   DBGN("Create WaveEditor");

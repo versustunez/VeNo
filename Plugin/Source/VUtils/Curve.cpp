@@ -1,8 +1,8 @@
 #include <VUtils/Curve.h>
 
 namespace VUtils {
-CurvePoint Curve::bezierCurve(
-    CurvePoint start, CurvePoint mid, CurvePoint end, double factor) {
+CurvePoint Curve::bezierCurve(CurvePoint start, CurvePoint mid, CurvePoint end,
+                              double factor) {
   double xa = getPoint(start.x, mid.x, factor);
   double ya = getPoint(start.y, mid.y, factor);
   double xb = getPoint(mid.x, end.x, factor);

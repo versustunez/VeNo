@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ComponentStates.h"
+
 #include <VeNo/Window/WaveEditor.h>
 #include <cstdlib>
 namespace VeNo::State {

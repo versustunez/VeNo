@@ -9,8 +9,8 @@ class Flex {
 public:
   Flex() = default;
   explicit Flex(std::unordered_map<std::string, std::string> &properties);
-  void setItems(
-      std::vector<Ref<BaseComponent>> &, std::vector<Ref<ComponentGroup>> &);
+  void setItems(std::vector<Ref<BaseComponent>> &,
+                std::vector<Ref<ComponentGroup>> &);
   void perform(juce::Rectangle<float> rectangle);
   void clear();
   void setJustifyContent(std::string &value);

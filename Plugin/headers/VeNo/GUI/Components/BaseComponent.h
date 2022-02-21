@@ -1,8 +1,11 @@
 #pragma once
 #include "../GuiLang/Structs.h"
 #include "VComponent.h"
+#include "VeNo/Core/Parameter/Parameter.h"
+
 #include <JuceHeader.h>
 #include <VeNo/Events/EventHandler.h>
+#include <VeNo/GUI/Events/ModulateMouseOpen.h>
 #include <VeNo/TypeDefs.h>
 
 namespace VeNo::GUI {
@@ -31,6 +34,11 @@ public:
   void setLabelPosition(const std::string &pos);
   void setEventHandler(Events::EventHandler *);
 
+  int precision();
+
+  void mouseEnter(const juce::MouseEvent &event) override;
+  void mouseExit(const juce::MouseEvent &event) override;
+
 protected:
   virtual void afterParsing(Interpreter *);
   std::string m_name;
@@ -40,6 +48,8 @@ protected:
                // GUI-Interpreter
   std::string m_selectorId;
   bool m_afterParsingCalled = false;
-  Events::EventHandler *m_handler{};
+  Events::EventHandler *m_handler{nullptr};
+  Core::Parameter* m_parameter{nullptr};
+  Scope<GUIEvents::ModulateMouseOpen> m_mousePicker{nullptr};
 };
 } // namespace VeNo::GUI

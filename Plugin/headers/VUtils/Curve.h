@@ -7,8 +7,8 @@ struct CurvePoint {
 };
 class Curve {
 public:
-  static CurvePoint bezierCurve(
-      CurvePoint start, CurvePoint mid, CurvePoint end, double factor);
+  static CurvePoint bezierCurve(CurvePoint start, CurvePoint mid,
+                                CurvePoint end, double factor);
 
 private:
   static double getPoint(double n1, double n2, double perc);

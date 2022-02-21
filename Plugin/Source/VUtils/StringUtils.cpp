@@ -1,5 +1,4 @@
 #include <VUtils/StringUtils.h>
-
 #include <functional>
 #include <iomanip>
 #include <sstream>
@@ -8,15 +7,16 @@
 
 namespace VUtils {
 void StringUtils::leftTrim(std::string &s) {
-  s.erase(s.begin(), std::find_if(s.begin(), s.end(),
-                         [](unsigned char ch) { return !std::isspace(ch); }));
+  s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+            return !std::isspace(ch);
+          }));
 }
 
 void StringUtils::rightTrim(std::string &s) {
   s.erase(std::find_if(s.rbegin(), s.rend(),
-              [](unsigned char ch) { return !std::isspace(ch); })
+                       [](unsigned char ch) { return !std::isspace(ch); })
               .base(),
-      s.end());
+          s.end());
 }
 
 void StringUtils::trim(std::string &s) {
@@ -39,8 +39,9 @@ std::string StringUtils::trimCopy(std::string s) {
   return s;
 }
 
-std::vector<std::string> StringUtils::split(
-    const std::string &s, const std::string &delimiter, int limit) {
+std::vector<std::string> StringUtils::split(const std::string &s,
+                                            const std::string &delimiter,
+                                            int limit) {
   size_t pos_start = 0, pos_end, delim_len = delimiter.length();
   std::string token;
   std::vector<std::string> res;
@@ -91,8 +92,8 @@ std::string StringUtils::urlEncode(const std::string &value) {
 
   return escaped.str();
 }
-std::string StringUtils::join(
-    const std::vector<std::string> &vector, const std::string &delimiter) {
+std::string StringUtils::join(const std::vector<std::string> &vector,
+                              const std::string &delimiter) {
   std::stringstream string;
   for (size_t i = 0; i < vector.size(); ++i) {
     if (i != 0)
@@ -134,5 +135,14 @@ double StringUtils::toNumber(std::string &string, double def) {
   if (pEnd == string)
     return def;
   return val;
+}
+std::string StringUtils::toString(double value, int precision, bool fixed) {
+  std::stringstream str{};
+  if (fixed) {
+    str.setf(std::ios::fixed);
+  }
+  str.precision(precision);
+  str << value;
+  return str.str();
 }
 } // namespace VUtils

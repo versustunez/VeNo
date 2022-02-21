@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Structs.h"
+
 #include <iostream>
 #include <regex>
 #include <string>
@@ -18,8 +19,8 @@ public:
   void setContent(const std::string &content);
   void parse(bool headOnly);
   static ImportItem getImportParameters(std::string &import);
-  static void setProperty(
-      GUIParseItem *item, std::string &name, std::string &value);
+  static void setProperty(GUIParseItem *item, std::string &name,
+                          std::string &value);
   std::string m_file;
   std::vector<std::string> m_lines;
   GUIParseItem *rootItem{};
@@ -35,8 +36,8 @@ public:
 
 protected:
   // Yeah Regex! :(
-  std::regex regex{"\\{(.*?)\\}",
-      std::regex_constants::ECMAScript | std::regex_constants::icase};
+  std::regex regex{"\\{(.*?)\\}", std::regex_constants::ECMAScript |
+                                      std::regex_constants::icase};
   static int getValue(std::string &value, int parentVal);
   static int getOffsetFromParent(GUIParseItem *pItem, bool b);
   std::string getParameterReplaced(std::string input);

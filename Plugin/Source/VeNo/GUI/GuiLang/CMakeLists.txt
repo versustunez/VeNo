@@ -1,5 +1,5 @@
 add_sources(
-  FactoryMapping.cpp
+        FactoryMapping.cpp
         Parser.cpp
         Init.cpp
         Interpreter.cpp

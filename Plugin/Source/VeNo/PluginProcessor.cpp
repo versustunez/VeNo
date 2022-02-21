@@ -15,8 +15,8 @@ VeNoProcessor::VeNoProcessor()
   VENO_PROFILE_BEGIN_SESSION("VeNo", "res://PROFILES/" + m_id);
 }
 
-void VeNoProcessor::processBlock(
-    juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages) {
+void VeNoProcessor::processBlock(juce::AudioBuffer<float> &buffer,
+                                 juce::MidiBuffer &midiMessages) {
   VENO_PROFILE_FUNCTION();
   auto *head = getPlayHead();
   if (head) {
@@ -53,9 +53,10 @@ void VeNoProcessor::prepareToPlay(double sampleRate, int /*blockSize*/) {
   if (config.sampleRate != sampleRate) {
     config.sampleRate = sampleRate;
   }
-  if (instance->synthesizer)
+  if (!instance->synthesizer)
     instance->synthesizer =
         VeNo::CreateRef<VeNo::Audio::Synthesizer>(instance->id);
+  instance->synthesizer->setSampleRate(sampleRate);
 }
 
 juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter() {

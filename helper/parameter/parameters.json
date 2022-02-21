@@ -21,6 +21,16 @@
       "type": "Float"
     },
     {
+      "name": "mod__wheel",
+      "showName": "Mod Wheel",
+      "modulateAble": false,
+      "tooltip": "Mod Wheel Midi Event",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Float"
+    },
+    {
       "name": "pitch__wheel",
       "showName": "Pitch Wheel",
       "modulateAble": false,
@@ -246,56 +256,6 @@
       "maxValue": 1,
       "minValue": 0,
       "type": "Float"
-    },
-    {
-      "name": "{id}__waveform_mix",
-      "showName": "{sid} Waveform Mix",
-      "modulateAble": true,
-      "tooltip": "How much should both of the Waveform Mixed",
-      "value": 0,
-      "maxValue": 1,
-      "minValue": 0,
-      "type": "Float"
-    },
-    {
-      "name": "{id}__attack",
-      "showName": "{sid} Attack",
-      "modulateAble": false,
-      "tooltip": "Oscillator Envelope Attack",
-      "value": 10,
-      "maxValue": 1500,
-      "minValue": 0,
-      "type": "Float"
-    },
-    {
-      "name": "{id}__decay",
-      "showName": "{sid} Decay",
-      "modulateAble": false,
-      "tooltip": "Oscillator Envelope Decay",
-      "value": 0,
-      "maxValue": 1500,
-      "minValue": 0,
-      "type": "Float"
-    },
-    {
-      "name": "{id}__sustain",
-      "showName": "{sid} Sustain",
-      "modulateAble": false,
-      "tooltip": "Oscillator Envelope Sustain",
-      "value": 1,
-      "maxValue": 1,
-      "minValue": 0,
-      "type": "Float"
-    },
-    {
-      "name": "{id}__release",
-      "showName": "{sid} Release",
-      "modulateAble": false,
-      "tooltip": "Oscillator Envelope Release",
-      "value": 10,
-      "maxValue": 1500,
-      "minValue": 0,
-      "type": "Float"
     }
   ],
   "lfoConfig": {
@@ -353,40 +313,10 @@
       "maxValue": 1,
       "minValue": 0,
       "type": "Boolean"
-    },
-    {
-      "name": "{id}__waveform_base",
-      "showName": "{sid} Primary Waveform",
-      "modulateAble": false,
-      "tooltip": "Main Waveform that is applied without Mix",
-      "value": 1,
-      "maxValue": 13,
-      "minValue": 1,
-      "type": "Integer"
-    },
-    {
-      "name": "{id}__waveform_sec",
-      "showName": "{sid} Secondary Waveform",
-      "modulateAble": false,
-      "tooltip": "Secondary Waveform that is applied with Mix",
-      "value": 4,
-      "maxValue": 13,
-      "minValue": 1,
-      "type": "Integer"
-    },
-    {
-      "name": "{id}__waveform_mix",
-      "showName": "{sid} Waveform Mix",
-      "modulateAble": true,
-      "tooltip": "How much should both of the Waveform Mixed",
-      "value": 0,
-      "maxValue": 1,
-      "minValue": 0,
-      "type": "Float"
     }
   ],
   "envelopeConfig": {
-    "count": 2,
+    "count": 4,
     "id": "env",
     "sid": "Envelope"
   },

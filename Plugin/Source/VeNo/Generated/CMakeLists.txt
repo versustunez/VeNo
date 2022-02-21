@@ -1,4 +1,4 @@
 add_sources(
-  GUIFiles.cpp
-  ParameterHandlerSetup.cpp
+        GUIFiles.cpp
+        ParameterHandlerSetup.cpp
 )

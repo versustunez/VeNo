@@ -25,7 +25,7 @@ public:
 
   static juce::Font *getIcons();
 
-  static void drawIcon(
-      const juce::String &icon, juce::Graphics &g, juce::Rectangle<int> &space);
+  static void drawIcon(const juce::String &icon, juce::Graphics &g,
+                       juce::Rectangle<int> &space);
 };
 } // namespace VeNo::GUI

@@ -2,9 +2,29 @@
 #include <VeNo/GUI/Components/BaseComponent.h>
 #include <VeNo/GUI/Fonts/Fonts.h>
 #include <VeNo/GUI/GUIUtils.h>
+
 namespace VeNo::GUI {
 BaseComponent::BaseComponent(std::string name, std::string showName, size_t id)
-    : m_name(std::move(name)), m_showName(std::move(showName)), m_id(id) {}
+    : m_name(std::move(name)),
+      m_showName(std::move(showName)),
+      m_id(id) {
+
+  auto *instance = Core::Instance::get(m_id);
+  if (instance) {
+    setEventHandler(&instance->eventHandler);
+    if (instance->handler->hasParameter(m_name.c_str())) {
+      addMouseListener(this, true);
+      auto *parameter = instance->handler->getModulateParameter(m_name);
+      if (parameter != nullptr) {
+        m_parameter = parameter;
+        m_mousePicker = CreateScope<GUIEvents::ModulateMouseOpen>(this);
+        addMouseListener(m_mousePicker.get(), true);
+      } else {
+        m_parameter = instance->handler->getParameter(m_name);
+      }
+    }
+  }
+}
 
 std::string &BaseComponent::name() { return m_name; }
 std::string &BaseComponent::showName() { return m_showName; }
@@ -13,7 +33,6 @@ size_t BaseComponent::id() const { return m_id; }
 void BaseComponent::createLabel(const std::string &text, bool visible) {
   m_label = std::make_unique<juce::Label>();
   setText(text);
-  m_label->setFont(*GUI::Fonts::getNormal());
   if (visible)
     addAndMakeVisible(*m_label);
 }
@@ -55,7 +74,7 @@ void BaseComponent::setLabelPosition(const std::string &label) {
     m_labelPosition = LabelPosition::CENTER;
   else {
     WARN("Label Position %s is unknown available: no,bottom,top,center",
-        label.c_str());
+         label.c_str());
   }
 }
 std::string &BaseComponent::selectorId() { return m_selectorId; }
@@ -66,13 +85,27 @@ void BaseComponent::setSelectorId(std::string selector) {
 void BaseComponent::afterParsing(Interpreter *) {}
 void BaseComponent::triggerAfterParsing(Interpreter *interpreter) {
   if (!m_afterParsingCalled) {
-    DBGN(
-        "Calling AfterParsing on %s -> %s", m_name.c_str(), m_showName.c_str());
     m_afterParsingCalled = true;
     afterParsing(interpreter);
   }
 }
 void BaseComponent::setEventHandler(Events::EventHandler *handler) {
   m_handler = handler;
+}
+
+int BaseComponent::precision() {
+  return m_parameter != nullptr ? m_parameter->precision() : 3;
+}
+void BaseComponent::mouseEnter(const juce::MouseEvent &) {
+  if (m_name.empty())
+    return;
+  auto tooltipEvent = new Events::TooltipEvent{};
+  tooltipEvent->text = Core::Instance::get(id())->handler->getShowName(m_name);
+  m_handler->triggerEvent("tooltip", tooltipEvent);
+}
+void BaseComponent::mouseExit(const juce::MouseEvent &) {
+  if (m_name.empty())
+    return;
+  m_handler->triggerEvent("tooltip", new Events::TooltipEvent{});
 }
 } // namespace VeNo::GUI

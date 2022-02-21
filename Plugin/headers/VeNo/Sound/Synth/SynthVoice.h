@@ -4,6 +4,7 @@
 #include <VeNo/Sound/Generation/OscillatorStructs.h>
 
 namespace VeNo::Audio {
+class Synthesizer;
 struct SynthVoice {
   VoiceData voiceData{};
   EnvelopeVoiceData envelopeData{};
@@ -16,9 +17,9 @@ struct SynthVoice {
 };
 
 struct SynthVoiceHelper {
-  static void noteOn(
-      SynthVoice &voice, int channel, int note, float velocity, bool legato);
-  static void noteOff(SynthVoice &voice, float velocity);
-  static void clear(SynthVoice &voice);
+  static void noteOn(Synthesizer &synth, SynthVoice &voice, int channel,
+                     int note, float velocity, bool legato);
+  static void noteOff(Synthesizer &synth, SynthVoice &voice, float velocity);
+  static void clear(Synthesizer &synth, SynthVoice &voice);
 };
 } // namespace VeNo::Audio

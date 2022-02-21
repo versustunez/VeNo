@@ -8,8 +8,8 @@ namespace VeNo::Audio {
 class Oscillator {
 public:
   static bool setup(OscillatorData &, size_t instanceId);
-  static bool prepare(OscillatorData &, SingleVoiceData &);
-  static bool update(OscillatorData &, SingleVoiceData &);
+  static bool prepare(OscillatorData &);
+  static bool process(OscillatorData &, SingleVoiceData &);
   static bool finish(OscillatorData &, SingleVoiceData &);
 
 protected:

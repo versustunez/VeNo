@@ -10,16 +10,16 @@ Flex::Flex(std::unordered_map<std::string, std::string> &properties) {
   setWrap(properties["flex-wrap"]);
 }
 void Flex::setItems(std::vector<Ref<BaseComponent>> &components,
-    std::vector<Ref<ComponentGroup>> &groups) {
+                    std::vector<Ref<ComponentGroup>> &groups) {
   for (auto &component : components) {
     auto &pos = component->pos;
     m_flexBox.items.add(
-        juce::FlexItem(*component).withMinWidth(pos.w).withMinHeight(pos.h));
+        juce::FlexItem(*component).withMinWidth((float)pos.w).withMinHeight((float)pos.h));
   }
   for (auto &component : groups) {
     auto &pos = component->position();
     m_flexBox.items.add(
-        juce::FlexItem(*component).withMinWidth(pos.w).withMinHeight(pos.h));
+        juce::FlexItem(*component).withMinWidth((float)pos.w).withMinHeight((float)pos.h));
   }
 }
 void Flex::perform(juce::Rectangle<float> rectangle) {

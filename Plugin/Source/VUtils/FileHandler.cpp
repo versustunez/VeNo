@@ -16,8 +16,8 @@ std::string FileHandler::readFile(const std::string &fileName) {
   return file.loadFileAsString().toStdString();
 }
 
-bool FileHandler::writeFile(
-    const std::string &fileName, const std::string &content) {
+bool FileHandler::writeFile(const std::string &fileName,
+                            const std::string &content) {
   if (!fileExists(fileName))
     return false;
   try {

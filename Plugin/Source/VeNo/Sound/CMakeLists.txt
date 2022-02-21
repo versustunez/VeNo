@@ -1,7 +1,4 @@
-add_sources(
-  Synth/MidiHandler.cpp
-  Synth/Synthesizer.cpp
-  Synth/SynthVoice.cpp
-  Generation/Envelope.cpp
-  Generation/Oscillator.cpp
-)
+add_subdirectory(Generation)
+add_subdirectory(Synth)
+add_subdirectory(Tables)
+add_sources(Structs.cpp)

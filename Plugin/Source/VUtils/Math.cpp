@@ -30,8 +30,8 @@ int Math::nextPowerOfTwo(double value) {
   v++;
   return (int)v;
 }
-double Math::cubicInterpolate(
-    double y0, double y1, double y2, double y3, double factor) {
+double Math::cubicInterpolate(double y0, double y1, double y2, double y3,
+                              double factor) {
   double a0, a1, a2, a3, mu2;
 
   mu2 = factor * factor;
@@ -43,7 +43,7 @@ double Math::cubicInterpolate(
   return (a0 * factor * mu2 + a1 * mu2 + a2 * factor + a3);
 }
 double Math::map(double value, double startCoord1, double endCoord1,
-    double startCoord2, double endCoord2) {
+                 double startCoord2, double endCoord2) {
   double offset = startCoord2;
   double ratio = (endCoord2 - startCoord2) / (endCoord1 - startCoord1);
   return ratio * (value - startCoord1) + offset;

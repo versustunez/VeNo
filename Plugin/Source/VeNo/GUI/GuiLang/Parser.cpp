@@ -64,7 +64,7 @@ void GUILangParser::parse(bool headOnly) {
         continue;
       } else
         WARN("Property Line is corrupted! \"%s\" @ Line %d", x.c_str(),
-            lineCount);
+             lineCount);
       continue;
     }
     if (headOnly) {
@@ -173,10 +173,11 @@ void GUILangParser::parse(bool headOnly) {
 }
 
 GUILangParser::GUILangParser(std::string file, bool isFile)
-    : m_file(std::move(file)), m_isFile(isFile),
+    : m_file(std::move(file)),
+      m_isFile(isFile),
       parserName(VUtils::FileHandler::getFileName(m_file)) {}
-void GUILangParser::setProperty(
-    GUIParseItem *item, std::string &name, std::string &value) {
+void GUILangParser::setProperty(GUIParseItem *item, std::string &name,
+                                std::string &value) {
   VENO_PROFILE_FUNCTION();
   if (name == "x")
     item->pos.x = getValue(value, item->parent ? item->parent->pos.w : 0);
@@ -188,6 +189,10 @@ void GUILangParser::setProperty(
     item->pos.h = getValue(value, item->parent ? item->parent->pos.h : 0);
   else if (name == "bind" && item->component != nullptr)
     item->component->parameter = value;
+  else if (name == "y-offset")
+    item->pos.y += getValue(value, item->parent ? item->parent->pos.w : 0);
+  else if (name == "x-offset")
+    item->pos.x += getValue(value, item->parent ? item->parent->pos.w : 0);
   else if (name == "position") {
     auto val = value == "automatic" ? GUIDisplay::BLOCK : GUIDisplay::FIXED;
     item->display.x = val;
@@ -236,6 +241,8 @@ ImportItem GUILangParser::getImportParameters(std::string &import) {
 // Will Look if we have a % number or a normal and return the real value
 int GUILangParser::getValue(std::string &value, int parentVal) {
   VENO_PROFILE_FUNCTION();
+  if (value.empty())
+    return parentVal;
   bool isPercent = false;
   if (value[value.length() - 1] == '%') {
     isPercent = true;
@@ -244,7 +251,7 @@ int GUILangParser::getValue(std::string &value, int parentVal) {
   auto newVal = VUtils::StringUtils::toNumber(value, 0);
   if (isPercent) {
     double val = newVal / 100.0;
-    newVal = parentVal * val;
+    newVal = (int)std::round(parentVal * val);
   }
   return newVal;
 }

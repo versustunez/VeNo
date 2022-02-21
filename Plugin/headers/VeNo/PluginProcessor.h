@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../JuceHeader.h"
+
 #include <VeNo/Core/Instance.h>
 
 class VeNoProcessor : public juce::AudioProcessor {

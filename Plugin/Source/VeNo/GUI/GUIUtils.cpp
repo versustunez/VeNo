@@ -17,8 +17,8 @@ int Utils::getScaledSize(int size) {
 float Utils::getScaledSize(float size) {
   return static_cast<float>(size * Config::get().m_scale);
 }
-juce::Path Utils::drawRectangleWithRadius(
-    int x, int y, int w, int h, float radius, juce::Graphics &g) {
+juce::Path Utils::drawRectangleWithRadius(int x, int y, int w, int h,
+                                          float radius, juce::Graphics &g) {
   juce::Path p;
   p.startNewSubPath(x, y);
   p.lineTo(x + w - radius, y);

@@ -17,23 +17,26 @@ protected:
   double m_max{};
   double m_min{};
   double m_value{};
+  int m_precision{0};
 
 public:
   Parameter(std::string name, std::string showName, double min, double max,
-      double value, size_t id);
-  virtual ~Parameter() = default;
+            double value, size_t id);
+  ~Parameter() override = default;
   bool getBool();
   int getInt();
   double getValue();
   virtual void setValue(double value);
   double getMin();
   double getMax();
+  int precision();
+  void calculatePrecision(float interval);
   std::string &getName();
   std::string &getShowName();
   Scope<juce::RangedAudioParameter> createParameter(ParameterTypes type);
   void parameterValueChanged(int parameterIndex, float newValue) override;
-  void parameterGestureChanged(
-      int parameterIndex, bool gestureIsStarting) override;
+  void parameterGestureChanged(int parameterIndex,
+                               bool gestureIsStarting) override;
 
   explicit operator bool() const { return m_value < 0.5; }
   explicit operator int() const { return (int)m_value; }
@@ -50,7 +53,7 @@ protected:
 
 public:
   ModulateParameter(std::string name, std::string showName, double min,
-      double max, double value, size_t id);
+                    double max, double value, size_t id);
   double getVoice(int voice);
   int getVoiceInt(int voice);
   void setVoiceValue(int voice, double value);
@@ -58,5 +61,11 @@ public:
   void addValue(double value);
   void addValueVoice(int voice, double value);
   void reset();
+
+  double operator[](int voice) {
+    if (voice == -1)
+      return m_value;
+    return m_values[voice];
+  }
 };
 } // namespace VeNo::Core

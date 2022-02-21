@@ -4,8 +4,7 @@
 #include <VeNo/Core/Parameter/Parameter.h>
 
 namespace VeNo::Core {
-void ParameterHandler::setupParameter ()
-{
+void ParameterHandler::setupParameter () {
 $s$
 }
-}
+} // namespace VeNo::Core

@@ -1,10 +1,13 @@
 add_sources(
-  BaseComponent.cpp
-  Button.cpp
-  ComponentGroup.cpp
-  Knob.cpp
-  Label.cpp
-  WaveEditor.cpp
-  Switch.cpp
-  Logo.cpp
+        BaseComponent.cpp
+        Button.cpp
+        ComponentGroup.cpp
+        Knob.cpp
+        Label.cpp
+        Logo.cpp
+        ScrollComponent.cpp
+        Switch.cpp
+        Tabbed.cpp
+        WaveEditor.cpp
+        WaveThumbnails.cpp
 )

@@ -12,11 +12,11 @@ struct Math {
   static double bezierBlend(double t);
   static double easeIn(double ratio);
   static double easeOut(double ratio);
-  static double cubicInterpolate(
-      double y0, double y1, double y2, double y3, double factor);
+  static double cubicInterpolate(double y0, double y1, double y2, double y3,
+                                 double factor);
   static double mixNormalized(double val1, double val2, double mix);
   static double map(double value, double startCoord1, double endCoord1,
-      double startCoord2, double endCoord2);
+                    double startCoord2, double endCoord2);
   static int nextPowerOfTwo(double value);
 };
 } // namespace VUtils

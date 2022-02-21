@@ -1,1 +1,4 @@
-add_sources(Profile.cpp)
+add_sources(
+        FFT.cpp
+        Profile.cpp
+)

@@ -1,11 +1,11 @@
-#include <VeNo/Core/Parameter/Parameter.h>
-
 #include <VUtils/Math.h>
+#include <VeNo/Core/Parameter/Parameter.h>
 #include <utility>
 
 namespace VeNo::Core {
 ModulateParameter::ModulateParameter(std::string name, std::string showName,
-    double min, double max, double value, size_t id)
+                                     double min, double max, double value,
+                                     size_t id)
     : Parameter(std::move(name), std::move(showName), min, max, value, id) {
   for (double &xvalue : m_values)
     xvalue = value;
@@ -34,8 +34,8 @@ void ModulateParameter::setValue(double value) {
 }
 void ModulateParameter::addValueVoice(int voice, double value) {
   m_matrix[voice] += value;
-  m_values[voice] = VUtils::Math::clamp(
-      m_matrix[voice] * (m_preMinMax) + m_min, m_min, m_max);
+  m_values[voice] = VUtils::Math::clamp(m_matrix[voice] * (m_preMinMax) + m_min,
+                                        m_min, m_max);
 }
 void ModulateParameter::addValue(double value) {
   m_matrixPos += value;

@@ -1,8 +1,8 @@
-#include <Assets.h>
-#include <VeNo/GUI/Components/Logo.h>
-
 #include "VUtils/Logging.h"
 #include "VeNo/Core/Instance.h"
+
+#include <Assets.h>
+#include <VeNo/GUI/Components/Logo.h>
 #include <utility>
 
 namespace VeNo::GUI {
@@ -17,14 +17,14 @@ void Logo::paint(juce::Graphics &g) { m_instance->state.logo->draw(g, 1.0); }
 
 void Logo::resized() {
   juce::RectanglePlacement placement = juce::RectanglePlacement::centred;
-  juce::Rectangle<float> react{
-      (float)pos.x, (float)pos.y, (float)pos.w, (float)pos.h};
+  juce::Rectangle<float> react{(float)pos.x, (float)pos.y, (float)pos.w,
+                               (float)pos.h};
   auto transform = placement.getTransformToFit(
       m_instance->state.logo->getDrawableBounds(), react);
   m_instance->state.logo->setTransform(transform);
 }
 
-void Logo::handle(Events::Event &) { createLogo(); }
+void Logo::handle(Events::Event *) { createLogo(); }
 void Logo::createLogo() {
   VeNo::Theme::Theme *theme = VeNo::Core::Config::get().theme().get();
   m_instance->state.logo = juce::Drawable::createFromImageData(
@@ -32,7 +32,8 @@ void Logo::createLogo() {
   if (!m_instance->state.logo->replaceColour(
           juce::Colours::white, theme->getDirectColor(Theme::Colors::logo)))
     ERR("Something went wrong swapping Color: WHITE");
-  if (!m_instance->state.logo->replaceColour(juce::Colours::black,
+  if (!m_instance->state.logo->replaceColour(
+          juce::Colours::black,
           theme->getDirectColor(Theme::Colors::logoAccent)))
     ERR("Something went wrong swapping Color: Black");
 }
