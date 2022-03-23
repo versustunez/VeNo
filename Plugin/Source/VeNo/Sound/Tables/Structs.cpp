@@ -13,9 +13,9 @@ Point &Point::operator<<(const std::string &_string) {
   auto values = VUtils::StringUtils::split(_string, "|");
   if (values.size() != 3)
     return *this;
-  x = (float)VUtils::StringUtils::toNumber(values[0], x);
-  y = (float)VUtils::StringUtils::toNumber(values[1], y);
-  value = (float)VUtils::StringUtils::toNumber(values[2], value);
+  x = (double)VUtils::StringUtils::toNumber(values[0], x);
+  y = (double)VUtils::StringUtils::toNumber(values[1], y);
+  value = (double)VUtils::StringUtils::toNumber(values[2], value);
   return *this;
 }
 
@@ -55,7 +55,7 @@ WaveTableGroup::~WaveTableGroup() { delete[] items; }
 
 WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
                                              size_t len) {
-  auto *items = new float[len];
+  auto *items = new float[len+1];
   for (auto &point : inPoints) {
     auto *next = point.next;
     if (!next)
@@ -67,16 +67,15 @@ WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
 
     auto start = size_t((point.data.x) * (double)len);
     size_t diff = end - start;
-    if (point.bezier && point.next) {
+    if (point.bezier) {
       size_t times = len * 2;
-      double midX =
-          VUtils::Math::map(point.curved.x, point.data.x, next->data.x, 0, 1);
+      double midX = VUtils::Math::map(point.curved.x, point.data.x, next->data.x, 0, 1);
       for (size_t ii = 0; ii < times; ++ii) {
         double factor = (double)ii / (double)times;
         auto curve = VUtils::Curve::bezierCurve({0, point.data.value},
                                                 {midX, point.curved.value},
                                                 {1, next->data.value}, factor);
-        auto pointX = size_t(std::round((double)diff * curve.x));
+        auto pointX = (size_t)std::round((double)diff * curve.x);
         auto position = std::clamp(start + pointX, start, end);
         items[position] = (float)VUtils::Math::clamp(curve.y, -1, 1) * -1;
       }
@@ -88,6 +87,7 @@ WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
       }
     }
   }
+  items[len] = items[0];
   auto fft = VeNo::Utils::FFT(order_lookup(len));
   fft.prepare(items, len);
   fft.forward();
@@ -95,6 +95,7 @@ WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
   delete[] items;
   return {fft.data(), len};
 }
+
 int WaveGenerator::order_lookup(size_t len) {
   switch (len) {
   case 65536: return 16;
@@ -112,6 +113,22 @@ int WaveGenerator::order_lookup(size_t len) {
   default: return 1;
   }
 }
+
+void WaveGenerator::downSample(Wave &dst, Wave &src) {
+  auto *items = new float[dst.len];
+  size_t to = 0;
+  for (size_t i = 0; i < src.len; i+=2, to++) {
+    items[to] = (float)VUtils::Math::lerp(src.items[i],src.items[i+1], 0.5);
+  }
+  auto fft = VeNo::Utils::FFT(order_lookup(dst.len));
+  fft.prepare(items, dst.len);
+  fft.forward();
+  fft.reverse();
+  delete[] items;
+  dst.items = fft.data();
+}
+
+
 std::string WaveUIPoints::to_string() {
   std::stringstream stream;
   for (auto &point : points) {

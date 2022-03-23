@@ -18,6 +18,7 @@ public:
   Parameter *getParameter(const std::string &prefix,
                           const std::string &parameter);
   Parameter *getOscParameter(const std::string &name, int id);
+  ModulateParameter *getOscModulateParameter(const std::string &name, int id);
   ModulateParameter *getModulateParameter(const std::string &name);
 
   Parameter *operator[](const char *name);

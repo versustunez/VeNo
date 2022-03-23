@@ -81,6 +81,7 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
 
   for (int i = 0; i < numSamples; ++i) {
     VENO_PROFILE_SCOPE("renderVoices[sample]");
+    Channel outChannel{};
     // Update Matrix here
     // matrix->update();
     if (Envelope::prepare(*m_envelope)) {
@@ -98,19 +99,22 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
           voice->envelopeData.state == EnvelopeState::IDLE)
         continue;
       double envelope = Envelope::process(voice->envelopeData, *m_envelope);
-      // if envelope is already 0 skip the voice because then we don't need to
-      // waste processing power
       if (envelope == 0)
         continue;
-      // Voice -> Update Frequency
       for (int j = 0; j < OSCILLATORS; ++j) {
-        Oscillator::process(*m_oscillators[j],
-                            voice->voiceData.oscillatorVoices[j]);
+        auto &voiceD = voice->voiceData.oscillatorVoices[j];
+        Oscillator::process(*m_oscillators[j], voiceD, voice->currentNote);
+        outChannel.left += voiceD.output.left * envelope;
+        outChannel.right += voiceD.output.right * envelope;
       }
     }
 
     // Create Rendering  Buffer
     // Do Post-Effect Chain after each voices
+
+    buffer.addSample(0, startSample, (float)outChannel.left);
+    buffer.addSample(1, startSample, (float)outChannel.right);
+    ++startSample;
   }
 }
 void Synthesizer::addEvents() {

@@ -136,7 +136,7 @@ void WaveEditor::mouseDown(const juce::MouseEvent &event) {
   float xPos = std::clamp((float)event.x / (float)getWidth(), 0.0f, 1.0f);
   auto &uiPoints = m_lib->getGroup(m_currentWave)->uiPoints;
   auto point = Utils::WavePoint::findNearest(uiPoints, xPos, yPos);
-  if (point.point != m_currentPoint.point) {
+  if (point.point != m_currentPoint.point || point.isCurvedPoint != m_currentPoint.isCurvedPoint) {
     m_currentPoint = point;
     repaint();
   }

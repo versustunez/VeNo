@@ -37,7 +37,8 @@ void WaveTableLib::remove(long index) {
 }
 
 RefGroup &WaveTableLib::getGroup(double wavePosition) {
-  auto index = (size_t)std::floor(wavePosition * (double)m_groups.size());
+  double max = (double)m_groups.size() - 1;
+  auto index = (size_t)std::round(wavePosition * max);
   return m_groups[index];
 }
 

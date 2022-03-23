@@ -2,13 +2,14 @@
 #include "BaseComponent.h"
 #include "Button.h"
 
+#include <VeNo/Events/WaveEvents.h>
 #include <VeNo/GUI/Flex.h>
 
 namespace VeNo::GUI {
 class WaveThumbnail : public BaseComponent {
 public:
   WaveThumbnail(const std::string &name, const std::string &showName, size_t id)
-      : BaseComponent(name, showName, id) {};
+      : BaseComponent(name, showName, id){};
   void mouseDown(const juce::MouseEvent &event) override;
   void paint(juce::Graphics &g) override;
   void generateWaveForm();
@@ -34,7 +35,7 @@ public:
   void regenerateCurrent();
   [[nodiscard]] size_t currentWave() const { return m_currentWave; }
 
-  void handleWaveThumb(WaveThumbnail* thumb, bool isEdit);
+  void handleWaveThumb(WaveThumbnail *thumb, GUI::WaveEditType editType);
 
 protected:
   void createThumbnail(size_t index, Audio::WaveTableLib *);

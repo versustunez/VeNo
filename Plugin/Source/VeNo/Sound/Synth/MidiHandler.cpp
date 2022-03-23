@@ -43,7 +43,7 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
       SynthVoiceHelper::noteOff(synthesizer, *voice, 1.0);
   }
   Core::ParameterHandler &handler = *synthesizer.parameterHandler();
-  bool legato = handler["mono_legato"];
+  bool legato = handler["mono_legato"]->getBool();
   int index = 0;
   int voiceToSteal = -1;
   int highestNote = -1;
@@ -51,7 +51,7 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
 
   for (int i = 0; i < MAX_VOICES; i++) {
     auto &voice = voices[i];
-    if (!voice->isActive) {
+    if (!voice->isActive || voice->envelopeData.state == EnvelopeState::IDLE) {
       voice->noteOnTime = ++synthesizer.lastNoteOnCounter;
       SynthVoiceHelper::noteOn(synthesizer, *voice, midiChannel, midiNoteNumber,
                                velocity, legato);

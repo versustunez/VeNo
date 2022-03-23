@@ -3,16 +3,9 @@
 #include <VeNo/Events/GUIEvents.h>
 #include <VeNo/GUI/Components/WaveThumbnails.h>
 #include <VeNo/GUI/Fonts/Icons.h>
+#include <VeNo/Utils/WavePointUtils.h>
 
 namespace VeNo::GUI {
-class WaveEditEvent : public Events::NoHandleEvent {
-public:
-  WaveEditEvent(bool _isEdit, GUI::WaveThumbnail *_thumbnail)
-      : isEdit(_isEdit),
-        thumbnail(_thumbnail) {}
-  bool isEdit;
-  GUI::WaveThumbnail *thumbnail;
-};
 WaveThumbnails::WaveThumbnails(const std::string &name,
                                const std::string &showName, size_t id)
     : BaseComponent(name, showName, id) {
@@ -27,7 +20,7 @@ WaveThumbnails::WaveThumbnails(const std::string &name,
       ->setCB([this](Events::Event *event) {
         auto waveEvent = event->as<WaveEditEvent>();
         if (waveEvent) {
-          handleWaveThumb(waveEvent->thumbnail, waveEvent->isEdit);
+          handleWaveThumb(waveEvent->thumbnail, waveEvent->type);
         }
       });
   m_components.push_back(m_addButton);
@@ -123,12 +116,13 @@ void WaveThumbnails::regenerateCurrent() {
   repaint();
 }
 
-void WaveThumbnails::handleWaveThumb(WaveThumbnail *thumb, bool isEdit) {
-  if (isEdit) {
+void WaveThumbnails::handleWaveThumb(WaveThumbnail *thumb,
+                                     WaveEditType editType) {
+  if (editType == WaveEditType::RESET) {
     thumb->lib->resetGroup(thumb->thumbId);
     thumb->generateWaveForm();
     thumb->repaint();
-  } else {
+  } else if (editType == WaveEditType::DELETE) {
     thumb->lib->remove((long)thumb->thumbId);
     m_components.erase(m_components.begin() + long(thumb->thumbId + 1));
     removeChildComponent(thumb);
@@ -141,6 +135,19 @@ void WaveThumbnails::handleWaveThumb(WaveThumbnail *thumb, bool isEdit) {
       newThumb->thumbId = i - 1;
     }
     updateSize();
+  } else if (editType == WaveEditType::DUPLICATE) {
+    size_t newIndex = Utils::WavePoint::duplicate(thumb->lib, thumb->thumbId);
+    createThumbnail(newIndex, thumb->lib);
+    m_currentWave = newIndex;
+    m_handler->triggerEvent("wave-change", new Events::ChangeEvent());
+    updateSize();
+  } else if (editType == WaveEditType::INTERPOLATE) {
+    Utils::WavePoint::interpolateWave(thumb->lib, m_currentWave, thumb->thumbId,
+                                      10);
+    m_components.erase(m_components.begin() + 1, m_components.end());
+    createThumbnails();
+    m_currentWave = 0;
+    m_handler->triggerEvent("wave-change", new Events::ChangeEvent());
   }
 }
 
@@ -180,23 +187,37 @@ void WaveThumbnail::generateWaveForm() {
 }
 
 void WaveThumbnail::mouseDown(const juce::MouseEvent &event) {
-  if (event.mods.isPopupMenu() && !isCurrent && drawBackground) {
-    juce::PopupMenu m;
+  if (!event.mods.isPopupMenu() || !drawBackground)
+    return;
+  juce::PopupMenu m;
+  if (!isCurrent) {
     m.addItem(1, "Delete");
     m.addItem(2, "Reset");
-    m.showMenuAsync({}, [this](int result) {
-      switch (result) {
-      case 1:
-        m_handler->triggerEvent("wave-event", new WaveEditEvent(false, this));
-        break;
-      case 2:
-        m_handler->triggerEvent("wave-event", new WaveEditEvent(true, this));
-        break;
-      default:
-        // don't do anything because yeah we don't want to ;)
-        break;
-      }
-    });
   }
+  m.addItem(3, "Duplicate");
+  m.addItem(4, "Interpolate");
+  m.showMenuAsync({}, [this](int result) {
+    switch (result) {
+    case 1:
+      m_handler->triggerEvent("wave-event",
+                              new WaveEditEvent(WaveEditType::DELETE, this));
+      break;
+    case 2:
+      m_handler->triggerEvent("wave-event",
+                              new WaveEditEvent(WaveEditType::RESET, this));
+      break;
+    case 3:
+      m_handler->triggerEvent("wave-event",
+                              new WaveEditEvent(WaveEditType::DUPLICATE, this));
+      break;
+    case 4:
+      m_handler->triggerEvent("wave-event",
+                              new WaveEditEvent(WaveEditType::INTERPOLATE, this));
+      break;
+    default:
+      // don't do anything because yeah we don't want to ;)
+      break;
+    }
+  });
 }
 } // namespace VeNo::GUI

@@ -5,13 +5,17 @@
 #include <cmath>
 
 namespace VeNo::Audio {
-void WaveTableCreator::generate(Vector<WavePoint> &inPoints, WaveTableGroup* group) {
+void WaveTableCreator::generate(Vector<WavePoint> &inPoints,
+                                WaveTableGroup *group) {
   auto &config = Core::Config::get();
+  if (config.sampleRate < 0) {
+    return;
+  }
   int maxHarms = (int)std::lround(config.sampleRate / (3.0 * 20));
   auto len = (size_t)VUtils::Math::nextPowerOfTwo(maxHarms) * 2;
   size_t times = 1;
   size_t last = len;
-  while (last > 2) {
+  while (last > 64) {
     last >>= 1u;
     times++;
   }

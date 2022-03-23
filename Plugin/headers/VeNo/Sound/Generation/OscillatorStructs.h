@@ -8,24 +8,29 @@ namespace VeNo::Audio {
 // holds the Pointers to Parameters for easy Access
 struct OscillatorState {
   typedef Core::Parameter Parameter;
+  typedef Core::ModulateParameter ModParameter;
   Parameter *active;
   Parameter *voices;
-  Parameter *semitones;
-  Parameter *cents;
-  Parameter *level;
-  Parameter *panning;
-  Parameter *detuneAmount;
-  Parameter *detuneDense;
+  ModParameter *semitones;
+  ModParameter *cents;
+  ModParameter *level;
+  ModParameter *panning;
+  ModParameter *detuneAmount;
+  ModParameter *detuneDense;
   Parameter *detuneMode;
-  Parameter *phase;
+  ModParameter *phase;
   Parameter *randomPhase;
-  Parameter *stereo;
+  ModParameter *stereo;
   Parameter *wavePosition;
+  Parameter *pitchWheel;
+  Parameter *pitchBendUp;
+  Parameter *pitchBendDown;
+  WaveTableLib *lib;
 };
 
 struct OscillatorData {
-  uint8_t id{0};
-  double *wave{nullptr};
+  int id{0};
+  Ref<WaveTableGroup> group{};
   OscillatorState state{};
 };
 
@@ -36,10 +41,12 @@ struct UnisonVoice {
 };
 
 struct SingleVoiceData {
-  uint8_t id = 0;
-  uint8_t voices = 1; // min voices 1 :) 0 voices = deactivated
+  double frequency{};
+  int id = 0;
+  int voices = 1; // min voices 1 :) 0 voices = deactivated
   UnisonVoice unisonVoices[MAX_UNISON_VOICES]{};
   Channel outData[MAX_UNISON_VOICES]{};
+  Channel output{};
 };
 
 struct VoiceData {

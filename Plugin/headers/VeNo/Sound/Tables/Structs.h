@@ -65,5 +65,6 @@ struct WaveGeneratorData {
 struct WaveGenerator {
   static WaveGeneratorData createArray(Vector<WavePoint> &inPoints, size_t len);
   static int order_lookup(size_t len);
+  static void downSample(Wave &dst, Wave &src);
 };
 } // namespace VeNo::Audio
