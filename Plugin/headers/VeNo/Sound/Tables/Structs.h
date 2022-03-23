@@ -15,7 +15,6 @@ struct Point {
     return out;
   }
   Point &operator<<(const std::string &_string);
-  NO_COPY_BASE_CONSTRUCTOR(Point);
 };
 
 struct WavePoint {
@@ -28,7 +27,16 @@ struct WavePoint {
 
   [[nodiscard]] std::string to_string() const;
   void from_string(const std::string &);
-  NO_COPY_BASE_CONSTRUCTOR(WavePoint);
+};
+
+struct WaveUIPoints {
+  Vector<WavePoint> points;
+  std::string to_string();
+  void from_string(const std::string&);
+  void addCurvedPoint(float x, float y, float val, Point point, bool isEdge);
+  void addPoint(float x, float y, float val, bool isEdge);
+  void updateNeighbours();
+  void updateCurved();
 };
 
 struct Wave {
@@ -42,17 +50,20 @@ struct Wave {
 struct WaveTableGroup {
   ~WaveTableGroup();
   Wave *items{nullptr};
+  WaveUIPoints uiPoints;
   size_t len{0};
+  size_t index{0};
   NO_COPY_BASE_CONSTRUCTOR(WaveTableGroup);
 };
+
 struct WaveGeneratorData {
   float *data{nullptr};
   size_t size{0};
   NO_COPY_BASE_CONSTRUCTOR(WaveGeneratorData);
 };
+
 struct WaveGenerator {
-  static WaveGeneratorData createArray(std::vector<WavePoint> &inPoints,
-                                       size_t len);
+  static WaveGeneratorData createArray(Vector<WavePoint> &inPoints, size_t len);
   static int order_lookup(size_t len);
 };
 } // namespace VeNo::Audio

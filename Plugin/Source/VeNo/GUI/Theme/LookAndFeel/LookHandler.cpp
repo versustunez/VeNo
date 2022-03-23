@@ -182,21 +182,23 @@ void LookHandler::drawBubble(juce::Graphics &graphics,
   getLook()->drawBubble(graphics, component, tip, body);
 }
 void LookHandler::drawButtonText(juce::Graphics &graphics,
-                                 juce::TextButton &button,
-                                 bool shouldDrawButtonAsHighlighted,
-                                 bool shouldDrawButtonAsDown) {
-  auto* buttonOrNull = Utils::instanceOf<Button>(button.getParentComponent());
+                                 juce::TextButton &button, bool, bool) {
+  auto *buttonOrNull = Utils::instanceOf<Button>(button.getParentComponent());
   if (buttonOrNull && buttonOrNull->isIconButton()) {
     auto font = graphics.getCurrentFont();
     graphics.setColour(theme->getDirectColor(Colors::font));
     graphics.setFont(*Fonts::getIcons());
-    auto rect = juce::Rectangle<int> (0, 0, button.getWidth (), button.getHeight ());
-    graphics.drawText(button.getButtonText(), rect, juce::Justification::centred, true);
+    auto rect =
+        juce::Rectangle<int>(0, 0, button.getWidth(), button.getHeight());
+    graphics.drawText(button.getButtonText(), rect,
+                      juce::Justification::centred, true);
     graphics.setFont(font);
   } else {
-    LookAndFeel_V2::drawButtonText(
-        graphics, button, shouldDrawButtonAsHighlighted, shouldDrawButtonAsDown);
+    graphics.setFont(Fonts::getNormal()->getTypefacePtr());
+    graphics.setColour(theme->getDirectColor(Colors::font));
+    juce::Rectangle<int> rect{0, 0, button.getWidth(), button.getHeight()};
+    graphics.drawText(button.getButtonText(), rect,
+                      juce::Justification::centred, true);
   }
-
 }
 } // namespace VeNo::GUI

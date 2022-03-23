@@ -11,6 +11,12 @@ void EventHandler::handle(std::string &name) {
     m_events[name]->handle();
 }
 EventHandler::EventHandler(size_t id) : m_id(id) {}
+EventHandler::~EventHandler() noexcept {
+  for (auto *owningHandler : m_owningHandlers) {
+    delete owningHandler;
+  }
+  m_owningHandlers.clear();
+}
 void EventHandler::addHandler(const std::string &name, Handler *handler) {
   DBGN("[%p], Registered EventHandler: %s", this, name.c_str());
   m_handler[name] = handler;

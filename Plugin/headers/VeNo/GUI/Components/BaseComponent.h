@@ -39,6 +39,17 @@ public:
   void mouseEnter(const juce::MouseEvent &event) override;
   void mouseExit(const juce::MouseEvent &event) override;
 
+  // LOOK for direct children of this component
+  template <class ClassType> ClassType *child() {
+    auto &children = getChildren();
+    for (auto&childComponent : children) {
+      auto component = dynamic_cast<ClassType *>(childComponent);
+      if (component)
+        return component;
+    }
+    return nullptr;
+  }
+
 protected:
   virtual void afterParsing(Interpreter *);
   std::string m_name;
@@ -49,7 +60,7 @@ protected:
   std::string m_selectorId;
   bool m_afterParsingCalled = false;
   Events::EventHandler *m_handler{nullptr};
-  Core::Parameter* m_parameter{nullptr};
+  Core::Parameter *m_parameter{nullptr};
   Scope<GUIEvents::ModulateMouseOpen> m_mousePicker{nullptr};
 };
 } // namespace VeNo::GUI

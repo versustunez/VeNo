@@ -1,6 +1,6 @@
 #pragma once
 #include <VeNo/Definitions.h>
-#include <VeNo/Sound/Tables/TableGenerator.h>
+#include <VeNo/Sound/Tables/WaveLib.h>
 
 namespace VeNo::Audio {
 struct Channel {
@@ -10,6 +10,6 @@ struct Channel {
 
 struct WaveHolder {
   explicit WaveHolder(size_t id);
-  Scope<WaveTableGenerator> generators[OSCILLATORS];
+  Scope<WaveTableLib> generators[OSCILLATORS];
 };
 } // namespace VeNo::Audio

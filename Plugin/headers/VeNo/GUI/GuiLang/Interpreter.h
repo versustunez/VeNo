@@ -27,6 +27,7 @@ protected:
   Ref<BaseComponent> createFromType(GUIParseItem *item,
                                     const std::string &parameter,
                                     const std::string &name, size_t id);
+  void triggerAfterParsing(ComponentGroup *inGroup = nullptr);
   static void initMapping();
 };
 } // namespace VeNo::GUI

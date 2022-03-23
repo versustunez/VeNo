@@ -3,9 +3,8 @@
 namespace VeNo::Audio {
 WaveHolder::WaveHolder(size_t id) {
   for (auto &generator : generators) {
-    generator = CreateScope<WaveTableGenerator>();
+    generator = CreateScope<WaveTableLib>();
     generator->setInstanceId(id);
-    generator->init();
   }
 }
 } // namespace VeNo::Audio

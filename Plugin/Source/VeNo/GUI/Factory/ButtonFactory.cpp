@@ -17,6 +17,8 @@ Ref<BaseComponent> ButtonFactory::create(GUIParseItem &item,
     comp->setAction(item["action"]);
   if (item.has("filled"))
     comp->setFilled(item["filled"] == "true");
+  if (item.has("icon"))
+    comp->setIcon(item["icon"]);
   doBase(comp.get(), item, interpreter);
   return comp;
 }

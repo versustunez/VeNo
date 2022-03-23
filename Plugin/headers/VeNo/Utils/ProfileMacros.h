@@ -1,7 +1,6 @@
 #include "Profile.h"
 #include "Timer.h"
 // Inspired from Hazel :)
-#define VENO_PROFILE 0
 #if VENO_PROFILE
 // Resolve which function signature macro will be used. Note that this only
 // is resolved when the (pre)compiler starts, so the syntax highlighting

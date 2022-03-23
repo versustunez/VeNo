@@ -7,6 +7,8 @@ ScrollComponent::ScrollComponent(const std::string &name,
                                  const std::string &showName, size_t id)
     : BaseComponent(name, showName, id) {
   m_viewport = CreateRef<juce::Viewport>();
+  m_viewport->setScrollOnDragEnabled(true);
+  m_viewport->setScrollBarsShown(false, false, true, false);
   addAndMakeVisible(m_viewport.get());
 }
 

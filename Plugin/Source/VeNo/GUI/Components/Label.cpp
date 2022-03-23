@@ -67,8 +67,7 @@ LabelEventListener::~LabelEventListener() {
 }
 
 void LabelEventListener::handle(Events::Event *event) {
-  auto *tooltipEventOrNull =
-      Utils::instanceOf<Events::Event, Events::TooltipEvent>(event);
+  auto *tooltipEventOrNull = event->as<Events::TooltipEvent>();
   if (tooltipEventOrNull != nullptr) {
     m_label->setText(tooltipEventOrNull->text);
   }

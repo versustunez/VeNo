@@ -7,6 +7,9 @@ class Event {
 public:
   virtual ~Event() = default;
   virtual void handle(){};
+  template <class AsClass> AsClass *as() {
+    return dynamic_cast<AsClass *>(this);
+  }
 };
 
 class NoHandleEvent : public Event {

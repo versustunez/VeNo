@@ -21,7 +21,7 @@ public:
 protected:
   Scope<juce::TextButton> m_button;
   std::string m_action;
-  bool m_isFilledButton;
-  bool m_isIconButton;
+  bool m_isFilledButton{false};
+  bool m_isIconButton{false};
 };
 } // namespace VeNo::GUI

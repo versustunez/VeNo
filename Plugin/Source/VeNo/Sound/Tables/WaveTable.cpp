@@ -5,23 +5,22 @@
 #include <cmath>
 
 namespace VeNo::Audio {
-void WaveTable::generate(Vector<WavePoint> &inPoints) {
+void WaveTableCreator::generate(Vector<WavePoint> &inPoints, WaveTableGroup* group) {
   auto &config = Core::Config::get();
   int maxHarms = (int)std::lround(config.sampleRate / (3.0 * 20));
-  m_len = (size_t)VUtils::Math::nextPowerOfTwo(maxHarms) * 2;
-  points = &inPoints;
+  auto len = (size_t)VUtils::Math::nextPowerOfTwo(maxHarms) * 2;
   size_t times = 1;
-  size_t last = m_len;
+  size_t last = len;
   while (last > 2) {
     last >>= 1u;
     times++;
   }
-  m_group->len = times;
-  m_group->items = new Wave[times];
-  double topFreq = 2.0 / 3.0 / (double(m_len));
-  size_t l = m_len;
+  group->len = times;
+  group->items = new Wave[times];
+  double topFreq = 2.0 / 3.0 / (double(len));
+  size_t l = len;
   for (size_t i = 0; i < times; ++i) {
-    auto &item = m_group->items[i];
+    auto &item = group->items[i];
     item.freq = topFreq;
     item.len = l;
     auto out = WaveGenerator::createArray(inPoints, l);

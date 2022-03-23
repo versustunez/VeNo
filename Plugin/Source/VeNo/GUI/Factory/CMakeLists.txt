@@ -6,6 +6,5 @@ add_sources(
         SwitchFactory.cpp
         SelectComponentFactory.cpp
         SliderComponentFactory.cpp
-        WaveEditorFactory.cpp
         MixedFactories.cpp
 )

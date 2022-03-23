@@ -57,6 +57,10 @@ void VeNoProcessor::prepareToPlay(double sampleRate, int /*blockSize*/) {
     instance->synthesizer =
         VeNo::CreateRef<VeNo::Audio::Synthesizer>(instance->id);
   instance->synthesizer->setSampleRate(sampleRate);
+  // YES SAMPLE RATE CHANGED REGENERATE ALL OF THEM ;)
+  for (auto &generator : instance->waveHolder.generators) {
+    generator->regenerateAll();
+  }
 }
 
 juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter() {

@@ -1,5 +1,5 @@
 add_sources(
         Structs.cpp
-        TableGenerator.cpp
+        WaveLib.cpp
         WaveTable.cpp
 )

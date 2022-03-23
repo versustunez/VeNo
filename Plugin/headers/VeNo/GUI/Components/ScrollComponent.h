@@ -8,6 +8,7 @@ public:
   void setViewComponent(Ref<BaseComponent> component);
   void resized() override;
 
+  BaseComponent* component() { return m_component.get(); }
 protected:
   Ref<BaseComponent> m_component;
   Ref<juce::Viewport> m_viewport;

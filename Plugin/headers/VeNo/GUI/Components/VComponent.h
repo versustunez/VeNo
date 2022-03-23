@@ -13,5 +13,9 @@ public:
   static Ref<T> create(size_t id) {
     return CreateRef<T>("", "", id);
   }
+
+  template <class AsClass> AsClass *as() {
+    return dynamic_cast<AsClass *>(this);
+  }
 };
 } // namespace VeNo::GUI

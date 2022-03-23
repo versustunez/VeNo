@@ -48,8 +48,6 @@ Ref<ComponentGroup> Interpreter::parseTree(GUIParseItem *item,
         group->groups.push_back(parsed);
     }
   }
-  for (auto &component : group->components)
-    component->triggerAfterParsing(this);
   return group;
 }
 Ref<BaseComponent> Interpreter::createComponent(GUIParseItem *item) {
@@ -73,6 +71,9 @@ void Interpreter::parseMain(GUIParseItem *item) {
   auto parsed = parseTree(item, nullptr);
   if (parsed != nullptr)
     componentGroup = parsed;
+  if (componentGroup == nullptr)
+    return;
+  triggerAfterParsing(componentGroup.get());
   componentGroup->showChildren();
 }
 
@@ -118,12 +119,31 @@ BaseComponent *Interpreter::find(const char *selector,
         if (el)
           return el;
       }
-      break;
     }
   }
   return nullptr;
 }
 bool Interpreter::contains(const char *name, GUIParseItem *item) {
   return item->properties.find(name) != item->properties.end();
+}
+void Interpreter::triggerAfterParsing(ComponentGroup *inGroup) {
+  VENO_PROFILE_FUNCTION();
+  if (inGroup == nullptr)
+    return;
+
+  std::queue<ComponentGroup*> groups;
+
+  groups.push(inGroup);
+  while (!groups.empty()) {
+    auto* rawGroup = groups.front();
+    groups.pop();
+    if (rawGroup == nullptr)
+      continue ;
+    for (auto &group : rawGroup->groups)
+      groups.push(group.get());
+
+    for (auto &component : rawGroup->components)
+      component->triggerAfterParsing(this);
+  }
 }
 } // namespace VeNo::GUI

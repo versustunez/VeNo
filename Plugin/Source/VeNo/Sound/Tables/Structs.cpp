@@ -50,10 +50,10 @@ void WavePoint::from_string(const std::string &string) {
   }
 }
 
-Wave::~Wave() { delete items; }
-WaveTableGroup::~WaveTableGroup() { delete items; }
+Wave::~Wave() { delete[] items; }
+WaveTableGroup::~WaveTableGroup() { delete[] items; }
 
-WaveGeneratorData WaveGenerator::createArray(std::vector<WavePoint> &inPoints,
+WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
                                              size_t len) {
   auto *items = new float[len];
   for (auto &point : inPoints) {
@@ -83,8 +83,7 @@ WaveGeneratorData WaveGenerator::createArray(std::vector<WavePoint> &inPoints,
     } else {
       for (size_t ii = 0; ii < diff; ++ii) {
         double factor = (double)ii / (double)diff;
-        double value =
-            VUtils::Math::lerp(point.data.value, next->data.value, factor);
+        double value = VUtils::Math::lerp(point.data.value, next->data.value, factor);
         items[start + ii] = (float)VUtils::Math::clamp(value, -1, 1) * -1;
       }
     }
@@ -111,6 +110,69 @@ int WaveGenerator::order_lookup(size_t len) {
   case 64: return 6;
   case 32: return 5;
   default: return 1;
+  }
+}
+std::string WaveUIPoints::to_string() {
+  std::stringstream stream;
+  for (auto &point : points) {
+    stream << point.to_string() << "||";
+  }
+  return stream.str();
+}
+void WaveUIPoints::from_string(const std::string &data) {
+  auto split = VUtils::StringUtils::split(data, "||");
+  points.clear();
+  for (auto &item : split) {
+    if (item.empty())
+      break;
+    WavePoint wavePoint;
+    wavePoint.from_string(item);
+    points.push_back(wavePoint);
+  }
+}
+
+void WaveUIPoints::addCurvedPoint(float x, float y, float val, Point point,
+                                  bool isEdge) {
+  points.push_back({});
+  auto &last = points.back();
+  last.data.x = x;
+  last.data.y = y;
+  last.data.value = val;
+  last.isEdge = isEdge;
+  last.bezier = true;
+  last.curved.x = point.x;
+  last.curved.y = point.y;
+  last.curved.value = point.value;
+}
+
+void WaveUIPoints::addPoint(float x, float y, float val, bool isEdge) {
+  points.push_back({});
+  auto &last = points.back();
+  last.data.x = x;
+  last.data.y = y;
+  last.data.value = val;
+  last.isEdge = isEdge;
+}
+void WaveUIPoints::updateNeighbours() {
+  for (size_t i = 0; i < points.size(); i++) {
+    auto &current = points[i];
+    if (i > 0)
+      current.previous = &points[i - 1];
+    else
+      current.previous = nullptr;
+    if (i < points.size() - 1)
+      current.next = &points[i + 1];
+    else
+      current.next = nullptr;
+  }
+}
+void WaveUIPoints::updateCurved() {
+  for (auto &point : points) {
+    if (point.bezier && point.curved.value == -500 && point.next) {
+      point.curved.x = (point.data.x + point.next->data.x) / 2;
+      point.curved.y = (point.data.y + point.next->data.y) / 2;
+      point.curved.value = (point.data.value + point.next->data.value) / 2;
+    }
   }
 }
 } // namespace VeNo::Audio

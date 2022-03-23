@@ -2,13 +2,8 @@
 #include <VeNo/Sound/Tables/Structs.h>
 
 namespace VeNo::Audio {
-class WaveTable {
+class WaveTableCreator {
 public:
-  WaveTableGroup *m_group = new WaveTableGroup();
-  Vector<WavePoint> *points{nullptr};
-  size_t m_len = 0;
-  void generate(Vector<WavePoint> &points);
-
-  NO_COPY_BASE_CONSTRUCTOR(WaveTable);
+  static void generate(Vector<WavePoint> &points, WaveTableGroup* group);
 };
 } // namespace VeNo::Audio

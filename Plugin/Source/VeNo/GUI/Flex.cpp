@@ -9,8 +9,9 @@ Flex::Flex(std::unordered_map<std::string, std::string> &properties) {
   setDirection(properties["flex-direction"]);
   setWrap(properties["flex-wrap"]);
 }
-void Flex::setItems(std::vector<Ref<BaseComponent>> &components,
-                    std::vector<Ref<ComponentGroup>> &groups) {
+void Flex::setItems(Vector<Ref<BaseComponent>> &components,
+                    Vector<Ref<ComponentGroup>> &groups) {
+  m_flexBox.items.clear();
   for (auto &component : components) {
     auto &pos = component->pos;
     m_flexBox.items.add(
