@@ -26,12 +26,11 @@ public:
   explicit Theme(Ref<Core::Properties> file);
   ~Theme();
   void init();
-  juce::Colour getDirectColor(Colors index);
-  juce::Colour getColor(const std::string &name);
+  juce::Colour getColor(Colors index);
   void setColor(Colors index, juce::Colour *colour);
   static juce::Colour getDefault(Colors index);
 
-  bool colorExists(const std::string &color);
+  Colors getColorIndex(const std::string &color);
 
 protected:
   void getColourFromConfig(Colors index);

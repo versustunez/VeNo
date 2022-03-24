@@ -64,7 +64,22 @@ public:
 class WaveThumbnailsFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
-                            const std::string &name, size_t id, Interpreter *) override;
+                            const std::string &name, size_t id,
+                            Interpreter *) override;
+};
+
+class TabbedFactory : public ComponentFactory {
+public:
+  Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
+                            const std::string &name, size_t id,
+                            Interpreter *) override;
+};
+
+class TabFactory : public ComponentFactory {
+public:
+  Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
+                            const std::string &name, size_t id,
+                            Interpreter *) override;
 };
 
 } // namespace VeNo::GUI

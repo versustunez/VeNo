@@ -1,5 +1,6 @@
 #pragma once
 #include "../GuiLang/Structs.h"
+#include "ComponentGroup.h"
 #include "VComponent.h"
 #include "VeNo/Core/Parameter/Parameter.h"
 
@@ -29,6 +30,8 @@ public:
   void createLabel(const std::string &text, bool visible);
   void setText(const std::string &text);
   void triggerAfterParsing(Interpreter *);
+
+  virtual void addChild(const Ref<ComponentGroup>&){};
 
   Position resize();
   void setLabelPosition(const std::string &pos);

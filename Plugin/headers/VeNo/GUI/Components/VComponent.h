@@ -11,7 +11,7 @@ public:
   }
   template <class T>
   static Ref<T> create(size_t id) {
-    return CreateRef<T>("", "", id);
+    return CreateRef<T>("", "Unknown", id);
   }
 
   template <class AsClass> AsClass *as() {

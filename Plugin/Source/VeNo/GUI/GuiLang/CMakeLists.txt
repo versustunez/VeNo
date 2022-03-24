@@ -1,6 +1,7 @@
 add_sources(
         FactoryMapping.cpp
-        Parser.cpp
+        UIParser.cpp
+        UIUtils.cpp
         Init.cpp
         Interpreter.cpp
 )

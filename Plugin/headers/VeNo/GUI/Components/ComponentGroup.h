@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BaseComponent.h"
+#include "VComponent.h"
 
 #include <JuceHeader.h>
 #include <VUtils/Logging.h>
@@ -9,6 +9,7 @@
 #include <VeNo/TypeDefs.h>
 
 namespace VeNo::GUI {
+class BaseComponent;
 class ComponentGroup : public VComponent {
 public:
   ~ComponentGroup() override;
@@ -26,6 +27,8 @@ public:
   std::string id();
   Position &position();
   Scope<Flex> flex{nullptr};
+
+  GUIColorComponent& color() { return m_color; }
 
 protected:
   GUIColorComponent m_color;

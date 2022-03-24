@@ -32,13 +32,10 @@ void Theme::init() {
   m_colorMapping["logo"] = Colors::logo;
   m_colorMapping["logoAccent"] = Colors::logoAccent;
 }
-juce::Colour Theme::getDirectColor(Colors index) {
+juce::Colour Theme::getColor(Colors index) {
   if (m_colours[index] != nullptr)
     return *m_colours[index];
   return {255, 255, 255};
-}
-juce::Colour Theme::getColor(const std::string &name) {
-  return getDirectColor(m_colorMapping[name]);
 }
 void Theme::setColor(Colors index, juce::Colour *colour) {
   delete m_colours[index];
@@ -51,8 +48,11 @@ void Theme::getColourFromConfig(Colors index) {
   m_colours[index] = new juce::Colour(juce::Colour::fromString(
       m_configFile->asString(key, color.toString().toStdString())));
 }
-bool Theme::colorExists(const std::string &color) {
-  return m_colorMapping.find(color) != m_colorMapping.end();
+Colors Theme::getColorIndex(const std::string &color) {
+  if(m_colorMapping.find(color) != m_colorMapping.end()) {
+    return m_colorMapping[color];
+  }
+  return Colors::unknown;
 }
 std::string Theme::colorToString(Colors index) {
   switch (index) {

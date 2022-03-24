@@ -77,7 +77,7 @@ void LookHandler::drawLabel(juce::Graphics &graphics, juce::Label &label) {
 void LookHandler::drawTabAreaBehindFrontButton(juce::TabbedButtonBar &,
                                                juce::Graphics &g, int w,
                                                int h) {
-  g.setColour(theme->getDirectColor(Colors::bgTwo).withAlpha(0.5f));
+  g.setColour(theme->getColor(Colors::bgTwo).withAlpha(0.5f));
   g.drawLine(0, h, w, h);
 }
 
@@ -104,12 +104,12 @@ void LookHandler::drawPopupMenuItem(
     g.setColour(findColour(juce::PopupMenu::textColourId).withAlpha(0.3f));
     g.fillRect(r.removeFromTop(1));
   } else {
-    auto textColour = theme->getDirectColor(Colors::font);
+    auto textColour = theme->getColor(Colors::font);
     auto r = area.reduced(1);
     if (isHighlighted && isActive) {
-      g.setColour(theme->getDirectColor(Colors::accent).withAlpha(0.4f));
+      g.setColour(theme->getColor(Colors::accent).withAlpha(0.4f));
       g.fillRect(r);
-      g.setColour(theme->getDirectColor(Colors::font));
+      g.setColour(theme->getColor(Colors::font));
     } else {
       g.setColour(textColour.withMultipliedAlpha(isActive ? 1.0f : 0.5f));
     }
@@ -141,7 +141,7 @@ void LookHandler::drawPopupMenuItem(
                      1);
 
     if (isTicked) {
-      g.setColour(theme->getDirectColor(Colors::accent));
+      g.setColour(theme->getColor(Colors::accent));
       g.fillRect(0, 0, 5, r.getHeight());
     }
   }
@@ -149,11 +149,11 @@ void LookHandler::drawPopupMenuItem(
 
 void LookHandler::drawPopupMenuBackground(juce::Graphics &g, int width,
                                           int height) {
-  g.fillAll(theme->getDirectColor(Colors::bg));
+  g.fillAll(theme->getColor(Colors::bg));
   juce::ignoreUnused(width, height);
 
 #if !JUCE_MAC
-  g.setColour(theme->getDirectColor(Colors::bg).withAlpha(0.2f));
+  g.setColour(theme->getColor(Colors::bg).withAlpha(0.2f));
   g.drawRect(0, 0, width, height);
 #endif
 }
@@ -186,7 +186,7 @@ void LookHandler::drawButtonText(juce::Graphics &graphics,
   auto *buttonOrNull = Utils::instanceOf<Button>(button.getParentComponent());
   if (buttonOrNull && buttonOrNull->isIconButton()) {
     auto font = graphics.getCurrentFont();
-    graphics.setColour(theme->getDirectColor(Colors::font));
+    graphics.setColour(theme->getColor(Colors::font));
     graphics.setFont(*Fonts::getIcons());
     auto rect =
         juce::Rectangle<int>(0, 0, button.getWidth(), button.getHeight());
@@ -195,7 +195,7 @@ void LookHandler::drawButtonText(juce::Graphics &graphics,
     graphics.setFont(font);
   } else {
     graphics.setFont(Fonts::getNormal()->getTypefacePtr());
-    graphics.setColour(theme->getDirectColor(Colors::font));
+    graphics.setColour(theme->getColor(Colors::font));
     juce::Rectangle<int> rect{0, 0, button.getWidth(), button.getHeight()};
     graphics.drawText(button.getButtonText(), rect,
                       juce::Justification::centred, true);

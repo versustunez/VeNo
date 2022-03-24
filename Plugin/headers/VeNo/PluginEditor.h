@@ -1,7 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include <VeNo/GUI/GuiLang/Parser.h>
+#include <VeNo/GUI/GuiLang/UIParser.h>
 #include <VeNo/PluginEditor.h>
 #include <VeNo/PluginProcessor.h>
 #include <string>

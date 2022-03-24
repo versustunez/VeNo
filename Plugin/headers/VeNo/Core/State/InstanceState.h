@@ -13,6 +13,5 @@ public:
   size_t m_id;
   Scope<juce::Drawable> logo;
   Scope<Windows::WaveEditorWindow> waveEditorWindow{};
-  int currentEditingOscillator{0};
 };
 } // namespace VeNo::State

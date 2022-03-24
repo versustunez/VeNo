@@ -1,4 +1,6 @@
 #pragma once
+
+#include <VeNo/GUI/Theme/Theme.h>
 #include <VeNo/TypeDefs.h>
 #include <string>
 #include <unordered_map>
@@ -8,52 +10,50 @@ namespace VeNo::GUI {
 enum GUIDisplay { FIXED = 0, BLOCK };
 
 struct Position {
-  int x;
-  int y;
-  int w;
-  int h;
+  int x, y, w, h;
 };
 
 struct Display {
-  GUIDisplay x{GUIDisplay::FIXED};
-  GUIDisplay y{GUIDisplay::FIXED};
+  GUIDisplay x{}, y{};
 };
+
 struct GUIColorComponent {
-  bool hasColor = false;
+  bool hasColor{false};
   bool isPreColor = false;
-  std::string preColor;
-  uint8_t colors[4] = {0, 0, 0, 255};
-  GUIColorComponent() = default;
-  ~GUIColorComponent() = default;
+  Theme::Colors preColor{Theme::Colors::unknown};
+  juce::Colour color;
+  u8 colors[4] = {0, 0, 0, 255};
 };
+
 struct GUIComponent {
-  std::string name;
-  std::string parameter;
+  VString name;
+  VString parameter;
 };
 
 struct ImportItem {
-  std::string name;
+  VString name;
   Map<std::string, std::string> params;
 };
 
 struct GUIParseItem {
-  ~GUIParseItem();
+  ~GUIParseItem() {
+    for (auto &item : items)
+      delete item;
+    delete component;
+  };
   GUIParseItem() = default;
   GUIParseItem(GUIParseItem &) = delete;
-  std::string name;
-  std::unordered_map<std::string, std::string> properties;
-  std::vector<GUIParseItem *> items; // we delete everything here ;)
+  VString name;
+  Map<VString, VString> properties;
+  Vector<GUIParseItem *> items; // we delete everything here ;)
   GUIParseItem *parent = nullptr;
   GUIComponent *component = nullptr;
   GUIColorComponent colorComponent;
   Display display{};
-  // we have x,y,w,h by default also a gui_parameter
   Position pos = {0, 0, 1, 1};
-
   bool has(const char *m_name) {
     return properties.find(m_name) != properties.end();
   }
-
-  std::string &operator[](const char *_name);
+  VString &operator[](const char *_name) { return this->properties[_name]; }
 };
 } // namespace VeNo::GUI

@@ -16,7 +16,7 @@ void ComponentGroup::paint(juce::Graphics &g) {
     g.fillAll();
   }
   if (m_showGroupName) {
-    g.setColour(theme->getDirectColor(Theme::Colors::font));
+    g.setColour(theme->getColor(Theme::Colors::font));
     int lineHeight = 16.0;
     g.drawText(m_showName, 0, 1, getWidth(), lineHeight + 2,
                juce::Justification::centred);

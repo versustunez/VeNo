@@ -9,6 +9,8 @@ void Interpreter::initMapping() {
   factories["Switch"] = CreateRef<SwitchFactory>();
   factories["Button"] = CreateRef<ButtonFactory>();
   factories["Logo"] = CreateRef<LogoFactory>();
+  factories["Tabbed"] = CreateRef<TabbedFactory>();
+  factories["Tab"] = CreateRef<TabFactory>();
   /* factories["Select"] = ComponentID::SELECT;*/
 }
 } // namespace VeNo::GUI

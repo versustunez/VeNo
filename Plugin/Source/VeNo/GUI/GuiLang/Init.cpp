@@ -4,18 +4,19 @@
 #include <VeNo/Utils/ProfileMacros.h>
 
 namespace VeNo::GUI {
-Ref<GUILangParser> &Initializer::createParser(std::string &name) {
+Ref<UIParser> &Initializer::createParser(std::string &name) {
   if (m_guiParser.find(name) == m_guiParser.end()) {
 #ifdef VENO_PROFILE
     VENO_PROFILE_SCOPE("Initializer::createParser > " + name);
 #endif
-    m_guiParser.emplace(
-        name, CreateRef<GUILangParser>(getPreparedFilePath(name), true));
+    m_guiParser.emplace(name, CreateRef<UIParser>());
     auto &parser = m_guiParser[name];
-    if (parser->m_file.rfind("Bin::", 0) != 0)
-      parser->load();
+    parser->setName(name);
+    auto file = getPreparedFilePath(name);
+    if (file.rfind("Bin::", 0) != 0)
+      parser->loadFile(file);
     else
-      parser->setContent(getBinaryContent(parser->m_file));
+      parser->setContent(getBinaryContent(file));
   }
   return m_guiParser[name];
 }
@@ -24,16 +25,14 @@ void Initializer::parseMain(std::string &name) {
   VENO_PROFILE_FUNCTION();
   auto mainFB = "Bin::MainGUI";
   auto file = name == mainFB ? mainFB : getPreparedFilePath(name);
-  if (name != mainFB && VUtils::FileHandler::fileExists(file))
-    m_guiParser.emplace("Main", CreateRef<GUILangParser>(file, true));
+  m_guiParser.emplace("Main", CreateRef<UIParser>());
+  auto& main = m_guiParser["Main"];
+  if (VUtils::FileHandler::fileExists(file))
+    main->loadFile(file);
   else
-    m_guiParser.emplace("Main",
-                        CreateRef<GUILangParser>(Files::MainGui, false));
-
-  auto &main = m_guiParser["Main"];
-  main->parserName = mainFB;
-  main->load();
-  main->parse(false);
+    main->setContent(Files::MainGui);
+  main->setName(mainFB);
+  main->parse();
 }
 std::string Initializer::getPreparedFilePath(const std::string &name) {
   if (name.find("Bin::", 0) == 0)
@@ -59,7 +58,7 @@ std::string Initializer::getBinaryContent(const std::string &name) {
 GUIParseItem *Initializer::get(const std::string &name) {
   if (m_guiParser.find(name) != m_guiParser.end() &&
       m_guiParser[name] != nullptr)
-    return m_guiParser[name]->rootItem;
+    return m_guiParser[name]->rootItem();
   return nullptr;
 }
 GUIParseItem *Initializer::getOrCreate(const std::string &name) {
@@ -71,16 +70,15 @@ GUIParseItem *Initializer::getOrCreate(const std::string &name) {
     auto fileName = getPreparedFilePath(name);
     bool isBin = name.rfind("Bin::", 0) == 0;
     bool fileExists = !isBin && VUtils::FileHandler::fileExists(fileName);
-    m_guiParser.emplace(name, CreateRef<GUILangParser>(name, fileExists));
+    m_guiParser.emplace(name, CreateRef<UIParser>());
     auto &item = m_guiParser[name];
-    std::string content;
-    if (fileExists)
-      content = VUtils::FileHandler::readFile(fileName);
-    else
-      content = getBinaryContent(name);
-    item->setContent(content);
-    item->parse(false);
+    if (fileExists) {
+      item->loadFile(fileName);
+    } else {
+      item->setContent(getBinaryContent(name));
+    }
+    item->parse();
   }
-  return m_guiParser[name]->rootItem;
+  return m_guiParser[name]->rootItem();
 }
 } // namespace VeNo::GUI

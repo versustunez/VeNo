@@ -11,9 +11,8 @@ namespace VeNo::GUI {
 WaveEditor::WaveEditor(std::string name, const std::string &showName, size_t id)
     : BaseComponent(std::move(name), showName, id) {
   auto *instance = Core::Instance::get(id);
-  m_lib =
-      instance->waveHolder.generators[instance->state.currentEditingOscillator]
-          .get();
+  // we get the current WaveTableLib -> is set before and will be fetched here... this includes LFOs and DistModule
+  m_lib = instance->waveHolder.current();
   m_handler->addHandler("wave-change", this);
   m_handler->createOrGet<Events::EventCB>("wave-update")
       ->setCB([this](Events::Event *) { m_thumbnails->regenerateCurrent(); });
@@ -87,7 +86,7 @@ void WaveEditor::drawDots(juce::Graphics &graphics) {
   float dotSize = height * GUI_DOT_SIZE;
   float halfDot = dotSize / 2;
   auto *theme = Core::Config::get().theme().get();
-  graphics.setColour(theme->getDirectColor(Theme::Colors::accent));
+  graphics.setColour(theme->getColor(Theme::Colors::accent));
   for (auto &point : points) {
     if (m_currentPoint.point == &point)
       continue;
@@ -101,7 +100,7 @@ void WaveEditor::drawDots(juce::Graphics &graphics) {
 
   if (m_currentPoint.point) {
     auto *point = m_currentPoint.point;
-    graphics.setColour(theme->getDirectColor(Theme::Colors::accentTwo));
+    graphics.setColour(theme->getColor(Theme::Colors::accentTwo));
     if (point->bezier && point->next)
       graphics.drawEllipse(point->curved.x * width - halfDot,
                            point->curved.y * height - halfDot, dotSize, dotSize,

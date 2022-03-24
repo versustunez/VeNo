@@ -1,8 +1,10 @@
 #include <VeNo/GUI/ComponentFactories.h>
 #include <VeNo/GUI/Components/Logo.h>
 #include <VeNo/GUI/Components/ScrollComponent.h>
+#include <VeNo/GUI/Components/Tabbed.h>
 #include <VeNo/GUI/Components/WaveEditor.h>
 #include <VeNo/GUI/Components/WaveThumbnails.h>
+
 namespace VeNo::GUI {
 Ref<BaseComponent> LogoFactory::create(GUIParseItem &item,
                                        const std::string &parameter,
@@ -34,5 +36,24 @@ Ref<BaseComponent> WaveThumbnailsFactory::create(GUIParseItem &item,
   comp->createThumbnails();
   scrollComponent->setViewComponent(comp);
   return scrollComponent;
+}
+
+Ref<BaseComponent> TabbedFactory::create(GUIParseItem &,
+                                         const std::string &parameter,
+                                         const std::string &name, size_t id,
+                                         Interpreter *) {
+  return CreateRef<TabbedComponent>(parameter, name, id);
+}
+
+Ref<BaseComponent> TabFactory::create(GUIParseItem &item,
+                                      const std::string &parameter,
+                                      const std::string &name, size_t id,
+                                      Interpreter *) {
+  auto tab = CreateRef<TabComponent>(parameter, name, id);
+  auto theme = Core::Config::get().theme().get();
+  tab->setColor(item.colorComponent.isPreColor
+                    ? theme->getColor(item.colorComponent.preColor)
+                    : item.colorComponent.color);
+  return tab;
 }
 } // namespace VeNo::GUI

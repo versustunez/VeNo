@@ -20,6 +20,7 @@ constexpr Ref<T> CreateRef(Args &&...args) {
 
 using Mutex = std::mutex;
 using Guard = std::lock_guard<Mutex>;
+using VString = std::string;
 
 template <typename T, typename S> using Map = std::unordered_map<T, S>;
 template <typename T> using Queue = std::queue<T>;

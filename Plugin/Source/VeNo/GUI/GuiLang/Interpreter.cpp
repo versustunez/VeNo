@@ -34,6 +34,14 @@ Ref<ComponentGroup> Interpreter::parseTree(GUIParseItem *item,
       comp->pos = item->pos;
       inGroup->components.push_back(comp);
     }
+    Ref<ComponentGroup> innerGroup = CreateRef<ComponentGroup>();
+    for (auto &i : item->items) {
+      auto parsed = parseTree(i, innerGroup.get());
+      if (parsed != nullptr) {
+        innerGroup->groups.push_back(parsed);
+      }
+    }
+    comp->addChild(innerGroup);
     return nullptr;
   } else {
     if (guiItem.has("flex") && guiItem["flex"] == "true")
@@ -131,14 +139,14 @@ void Interpreter::triggerAfterParsing(ComponentGroup *inGroup) {
   if (inGroup == nullptr)
     return;
 
-  std::queue<ComponentGroup*> groups;
+  std::queue<ComponentGroup *> groups;
 
   groups.push(inGroup);
   while (!groups.empty()) {
-    auto* rawGroup = groups.front();
+    auto *rawGroup = groups.front();
     groups.pop();
     if (rawGroup == nullptr)
-      continue ;
+      continue;
     for (auto &group : rawGroup->groups)
       groups.push(group.get());
 

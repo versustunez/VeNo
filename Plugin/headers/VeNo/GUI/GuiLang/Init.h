@@ -2,7 +2,7 @@
 
 #include "../GUIFiles.h"
 #include "Interpreter.h"
-#include "Parser.h"
+#include "UIParser.h"
 
 namespace VeNo::GUI {
 struct preDefinedBinary {
@@ -14,7 +14,7 @@ struct Initializer {
   ~Initializer();
 
   void parseMain(std::string &name);
-  std::shared_ptr<GUILangParser> &createParser(std::string &name);
+  std::shared_ptr<UIParser> &createParser(std::string &name);
 
 protected:
   static std::string getPreparedFilePath(const std::string &name);
@@ -25,7 +25,7 @@ public:
   GUIParseItem *getOrCreate(const std::string &name);
 
 protected:
-  std::unordered_map<std::string, Ref<VeNo::GUI::GUILangParser>> m_guiParser;
+  std::unordered_map<std::string, Ref<VeNo::GUI::UIParser>> m_guiParser;
   preDefinedBinary preDefinedBinaries[5] = {{"Oscillator", &Files::OSC},
                                             {"LFO", &Files::EMPTY},
                                             {"Filter", &Files::EMPTY},

@@ -30,11 +30,10 @@ void Logo::createLogo() {
   m_instance->state.logo = juce::Drawable::createFromImageData(
       BinaryData::Logo_svg, BinaryData::Logo_svgSize);
   if (!m_instance->state.logo->replaceColour(
-          juce::Colours::white, theme->getDirectColor(Theme::Colors::logo)))
+          juce::Colours::white, theme->getColor(Theme::Colors::logo)))
     ERR("Something went wrong swapping Color: WHITE");
   if (!m_instance->state.logo->replaceColour(
-          juce::Colours::black,
-          theme->getDirectColor(Theme::Colors::logoAccent)))
+          juce::Colours::black, theme->getColor(Theme::Colors::logoAccent)))
     ERR("Something went wrong swapping Color: Black");
 }
 } // namespace VeNo::GUI

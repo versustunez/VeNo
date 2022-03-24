@@ -3,7 +3,7 @@
 #include <JuceHeader.h>
 #include <VeNo/Core/PropertiesWrapper.h>
 #include <VeNo/GUI/GuiLang/Init.h>
-#include <VeNo/GUI/GuiLang/Parser.h>
+#include <VeNo/GUI/GuiLang/UIParser.h>
 #include <VeNo/GUI/Theme/LookAndFeel/LookHandler.h>
 #include <VeNo/GUI/Theme/Theme.h>
 #include <VeNo/TypeDefs.h>

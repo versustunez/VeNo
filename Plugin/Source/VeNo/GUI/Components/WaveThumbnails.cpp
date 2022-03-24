@@ -55,9 +55,7 @@ void WaveThumbnails::setupFlex() {
 void WaveThumbnails::handle(Events::Event *event) {
   if (event->as<Events::ButtonClickedEvent>() != nullptr) {
     auto *instance = Core::Instance::get(m_id);
-    auto *lib = instance->waveHolder
-                    .generators[instance->state.currentEditingOscillator]
-                    .get();
+    auto *lib = instance->waveHolder.current();
     auto index = lib->createGroup()->index;
     createThumbnail(index, lib);
     m_currentWave = index;
@@ -102,9 +100,7 @@ void WaveThumbnails::createThumbnail(size_t index, Audio::WaveTableLib *lib) {
 
 void WaveThumbnails::createThumbnails() {
   auto *instance = Core::Instance::get(m_id);
-  auto *lib =
-      instance->waveHolder.generators[instance->state.currentEditingOscillator]
-          .get();
+  auto *lib = instance->waveHolder.current();
   for (size_t i = 0; i < lib->size(); ++i) {
     createThumbnail(i, lib);
   }
@@ -154,11 +150,11 @@ void WaveThumbnails::handleWaveThumb(WaveThumbnail *thumb,
 void WaveThumbnail::paint(juce::Graphics &graphics) {
   auto *theme = Core::Config::get().theme().get();
   if (drawBackground) {
-    graphics.setColour(theme->getDirectColor(Theme::Colors::bgTwo));
+    graphics.setColour(theme->getColor(Theme::Colors::bgTwo));
     graphics.fillRect(0, 0, getWidth(), getHeight());
   }
-  graphics.setColour(theme->getDirectColor(isCurrent ? Theme::Colors::accentTwo
-                                                     : Theme::Colors::accent));
+  graphics.setColour(theme->getColor(isCurrent ? Theme::Colors::accentTwo
+                                               : Theme::Colors::accent));
   juce::PathStrokeType strokeType{0.4f};
   graphics.strokePath(m_path, strokeType, juce::AffineTransform());
 }
