@@ -54,7 +54,7 @@ Position BaseComponent::resize() {
       return {0, height, getWidth(), secHeight};
     } else if (position == LabelPosition::BOTTOM) {
       m_label->setBounds(0, secHeight, getWidth(), labelHeight);
-      return {0, height - labelHeight, getWidth(), secHeight};
+      return {0, 0, getWidth(), secHeight};
     } else if (position == LabelPosition::CENTER) {
       int halfHeight = (getHeight() - height) / 2;
       m_label->setBounds(0, halfHeight, getWidth(), labelHeight);

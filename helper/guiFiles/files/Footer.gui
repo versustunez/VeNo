@@ -1,0 +1,53 @@
+#Pitch  {
+    y: 5%
+    width: 20%
+    height: 90%
+    position-x: automatic
+
+    @Label {
+        text: Pitch Range
+        width: 50%
+    }
+
+    @ValueBox#Up {
+        y: 12.5%
+        bind: pitchbend__up
+        height: 75%
+        width: 25%
+        label: no
+        tooltip: false
+    }
+
+    @ValueBox#Down {
+        y: 12.5%
+        bind: pitchbend__down
+        height: 75%
+        width: 25%
+        label: no
+        tooltip: false
+    }
+}
+
+@Label#Tooltip {
+    width: 60%
+    event: tooltip
+}
+
+#Legato/Porta {
+    width: 20%
+    y: 5%
+    height: 90%
+    position-x: automatic
+
+    @Switch {
+        bind: mono_legato
+        width: 50%
+    }
+    @Knob {
+        bind: portamento
+        width: 50%
+        height: 100%
+        label: no
+        tooltip: true
+    }
+}

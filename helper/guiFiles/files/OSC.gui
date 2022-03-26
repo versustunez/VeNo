@@ -1,5 +1,222 @@
-@Knob {
-    bind: osc{osc}__level
-    w: 80
-    h: 140
+#OSCGroup {
+    position-y: automatic
+    #CTRL {
+        x: 0
+        y: 0
+        background: secondaryBG
+        width: 100%
+        height: 30
+
+        @Switch {
+            bind: osc{i}__active
+            noText: true
+            w: 20
+            h: 20
+            x: 10
+            y: 5
+        }
+        @Button {
+            mode: push
+            text: Copy
+            w: 70
+            h: 20
+            x: 40
+            y: 5
+            action: cpyOsc
+        }
+        @Button {
+            mode: push
+            text: Paste
+            w: 70
+            h: 20
+            x: 120
+            y: 5
+            action: pstOsc
+        }
+    }
+
+    #WaveForm {
+        header: true
+        background: primary
+        width: 100%
+        height: 160
+    }
+
+    #WaveFormControls {
+        width: 100%
+        height: 55
+        background: primaryBG
+        flex: true
+        align-items: center
+        justify-content: space-around
+
+        #PhaseGroup {
+            width: 105
+            position-x: automatic
+            @Label {
+                text: Phase
+                width: 40
+            }
+            @Knob {
+                bind: osc{i}__phase
+                tooltip: true
+                label: no
+                width: 40
+            }
+        }
+
+        @Button {
+            filled: true
+            text: Editor
+            width: 80
+            height: 30
+        }
+
+        @Switch#Random {
+            bind: osc{i}__random_phase
+            width: 80
+            height: 30
+        }
+
+        #WavePosition {
+            width: 105
+            position-x: automatic
+            @Label {
+                text: Wave
+                width: 40
+            }
+            @Knob {
+                bind: osc{i}__wave_position
+                tooltip: true
+                label: no
+                width: 40
+            }
+        }
+    }
+
+    #OSCControls {
+        #OSCPartOne {
+            background: secondaryBG
+            x: 0
+            width: 100
+            height: 180
+
+            @Knob#Level {
+                bind: osc{i}__level
+                label-value: semi
+                w: 80
+                h: 70
+                x: 10
+                y: 10
+            }
+            @Knob#Pan {
+                bind: osc{i}__panning
+                label-value: semi
+                w: 80
+                h: 70
+                x: 10
+                y: 90
+            }
+        }
+        #OSCPartTwo {
+            background: secondaryBG
+            flex: true
+            justify-content: space-around
+            align-items: center
+            x: 100
+            height: 40
+            width: 350
+            #SemitonesGroup {
+                width: 100
+                height: 80%
+                position-x: automatic
+                @Label {
+                    text: Semi
+                    width: 40
+                }
+                @ValueBox {
+                    bind: osc{i}__semitones
+                    full-width: true
+                    tooltip: false
+                    label: no
+                    width: 60
+                }
+            }
+            #FineGroup {
+                width: 100
+                height: 80%
+                position-x: automatic
+                @Label {
+                    text: Fine
+                    width: 40
+                }
+                @ValueBox {
+                    bind: osc{i}__cents
+                    full-width: true
+                    tooltip: false
+                    label: no
+                    width: 60
+                }
+            }
+            #StereoGroup {
+                width: 100
+                height: 80%
+                position-x: automatic
+                @Label {
+                    text: Wide
+                    width: 40
+                }
+                @ValueBox {
+                    bind: osc{i}__stereo
+                    full-width: true
+                    tooltip: false
+                    label: no
+                    width: 60
+                }
+            }
+
+        }
+        #OSCPartThree {
+            background: secondaryBG
+            x: 100
+            y: 40
+            height: 140
+            width: 350
+            flex: true
+            justify-content: space-around
+            align-items: center
+
+            #LeftBox {
+                width: 100
+                height: 80%
+                position-x: automatic
+                flex: true
+                flex-direction: column
+                @ValueBox#Voices {
+                    bind: osc{i}__voices
+                    height: 50
+                    full-width: true
+                    tooltip: false
+                }
+
+                @Select#Detune Mode {
+                    bind: osc{i}__detune_mode
+                    height: 50
+                    preset: detune
+                }
+            }
+
+            @Knob#Detune Amount {
+                bind: osc{i}__detune_amount
+                label-value: semi
+                width: 80
+                height: 80
+            }
+            @Knob#Detune Dense {
+                bind: osc{i}__detune_dense
+                width: 80
+                height: 80
+            }
+        }
+    }
 }

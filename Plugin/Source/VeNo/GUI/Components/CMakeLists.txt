@@ -5,7 +5,9 @@ add_sources(
         Knob.cpp
         Label.cpp
         Logo.cpp
+        NestedComponent.cpp
         ScrollComponent.cpp
+        SelectComponent.cpp
         Switch.cpp
         Tabbed.cpp
         WaveEditor.cpp

@@ -26,10 +26,9 @@ public:
 
 protected:
   std::unordered_map<std::string, Ref<VeNo::GUI::UIParser>> m_guiParser;
-  preDefinedBinary preDefinedBinaries[5] = {{"Oscillator", &Files::OSC},
-                                            {"LFO", &Files::EMPTY},
-                                            {"Filter", &Files::EMPTY},
-                                            {"LCD", &Files::EMPTY},
+  preDefinedBinary preDefinedBinaries[4] = {{"OSC", &Files::OSC},
+                                            {"Footer", &Files::Footer},
+                                            {"Sidebar", &Files::Sidebar},
                                             {"WaveEditor", &Files::WaveEditor}};
 };
 } // namespace VeNo::GUI

@@ -18,8 +18,21 @@ void ScrollComponent::setViewComponent(Ref<BaseComponent> component) {
 }
 void ScrollComponent::resized() {
   if (m_viewport != nullptr) {
-    m_viewport->setBounds(0, 0, getWidth(), getHeight());
-    m_viewport->setViewPosition(0,0);
+    m_viewport->setBounds(0, 0, pos.w, pos.h);
+    m_viewport->setViewPosition(0, 0);
   }
+
+  if (m_nestedComponent) {
+    m_nestedComponent->resizeComponent();
+  }
+}
+void ScrollComponent::addChild(const Ref<ComponentGroup> &param) {
+  if (m_component != nullptr)
+    return;
+  if (m_nestedComponent == nullptr) {
+    m_nestedComponent = VComponent::create<NestedComponent>(m_id);
+    setViewComponent(m_nestedComponent);
+  }
+  m_nestedComponent->addChild(param);
 }
 } // namespace VeNo::GUI

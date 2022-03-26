@@ -201,4 +201,9 @@ void LookHandler::drawButtonText(juce::Graphics &graphics,
                       juce::Justification::centred, true);
   }
 }
+void LookHandler::drawTabbedButtonBarBackground(juce::TabbedButtonBar &bar,
+                                                juce::Graphics &graphics) {
+  graphics.setColour(theme->getColor(Colors::bg));
+  graphics.fillAll();
+}
 } // namespace VeNo::GUI

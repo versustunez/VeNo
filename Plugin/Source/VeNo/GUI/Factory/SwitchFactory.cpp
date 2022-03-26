@@ -10,6 +10,9 @@ Ref<BaseComponent> SwitchFactory::create(GUIParseItem &item,
   if (item.has("on") && item.has("off")) {
     comp->setOnOffText(item["on"], item["off"]);
   }
+  if (item.has("noText")) {
+    comp->setOnOffText("", "");
+  }
   comp->setButtonText(item.has("text") ? item["text"] : name);
   doBase(comp.get(), item, interpreter);
   return comp;

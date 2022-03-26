@@ -1,0 +1,74 @@
+@Logo {
+    height: 60
+    width: 100%
+}
+
+#LCD {
+    -- @TODO: Implement LCD Component -> it will listen to the bg :>
+    h: 160
+    bg: lcdBG
+}
+
+#Preset {
+    -- @TODO: Implement Preset Component
+    header: true
+    h: 50
+    bg: secondaryBG
+}
+
+#Mixer {
+    h: 130
+    flex: true
+    justify-content: space-around
+    bg: 0,0,0,70
+
+    [4](
+        #OSC{it0} {
+            w: 20%
+            header: true
+            position-y: automatic
+            @Switch {
+                h: 30
+                x: 5%
+                w: 90%
+                bind: osc{it0}__active
+                on: On
+                off: Off
+            }
+            @Knob#Volume {
+                h: 70
+                bind: osc{it0}__level
+                label: bottom
+                label-value: semi
+            }
+        }
+    )
+}
+
+#Master Volume {
+    y-offset: 10
+    w: 50%
+    h: 175
+    x: 25%
+
+    @Knob#Master {
+        bind: master__volume
+        label: top
+        label-value: semi
+    }
+}
+
+#ModKnobs {
+    h: 90
+    position-x: automatic
+    y-offset: 20
+    flex: true
+    justify-content: space-around
+
+    [4](
+        @Knob {
+            w: 20%
+            bind: mod{it0}
+        }
+    )
+}

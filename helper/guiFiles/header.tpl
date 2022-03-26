@@ -5,10 +5,6 @@
 namespace VeNo::GUI {
 struct Files {
   static std::string EMPTY;
-  static std::string MainGui;
-  static std::string OSC;
-  static std::string WaveEditor;
-  static std::string Footer;
-  static std::string Sidebar;
+$s$
 };
 } // namespace VeNo::GUI

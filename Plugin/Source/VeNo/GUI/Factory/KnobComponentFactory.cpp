@@ -22,6 +22,8 @@ Ref<BaseComponent> KnobComponentFactory::create(GUIParseItem &item,
     if (labelVal != "off")
       comp->enableLiveLabel(labelVal == "semi");
   }
+  if (isValueBox && item.has("full-width"))
+    comp->enableFullWidth();
   doBase(comp.get(), item, interpreter);
   return comp;
 }

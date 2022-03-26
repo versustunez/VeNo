@@ -23,9 +23,6 @@ VeNoEditor::VeNoEditor(VeNoProcessor &p, std::string id)
   auto *properties_ = config.properties();
   if (properties_->asBool("useOpenGL", true))
     setupGL(properties_->asBool("vsync", true));
-
-  // yeah kinda weird hack
-  instance->state.waveEditorWindow = VeNo::CreateScope<VeNo::Windows::WaveEditorWindow>(m_instanceId);
 }
 
 void VeNoEditor::paint(juce::Graphics &g) {

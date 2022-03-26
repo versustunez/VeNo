@@ -31,17 +31,20 @@ public:
   static juce::Slider::SliderStyle getSliderStyle();
 
   void setTooltip(bool tooltip);
+  void enableFullWidth() { m_isFullWidth = true; }
   void setIsValueBox(bool valueBox) {
     m_isValueBox = valueBox;
     if (valueBox)
       m_slider->setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
   };
   [[nodiscard]] bool isValueBox() const { return m_isValueBox; }
+  [[nodiscard]] bool isFullWidth() const { return m_isFullWidth; }
 
 protected:
   Scope<juce::Slider> m_slider;
   Scope<SliderAttachment> m_attachment;
   Scope<GUIEvents::LiveLabel> m_liveLabel{nullptr};
   bool m_isValueBox{false};
+  bool m_isFullWidth{false};
 };
 } // namespace VeNo::GUI

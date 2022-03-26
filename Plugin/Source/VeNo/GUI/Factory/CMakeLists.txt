@@ -4,7 +4,6 @@ add_sources(
         KnobComponentFactory.cpp
         LabelComponentFactory.cpp
         SwitchFactory.cpp
-        SelectComponentFactory.cpp
         SliderComponentFactory.cpp
         MixedFactories.cpp
 )

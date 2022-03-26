@@ -159,11 +159,18 @@ void FlatLook::drawValueBox(juce::Graphics &graphics, int x, int y, int width,
   auto valueString =
       VUtils::StringUtils::toString(slider.getMaximum(), knob->precision() + 2, true);
   auto font = graphics.getCurrentFont();
-  auto textWidth = std::clamp(font.getStringWidth(valueString), 0, width);
-  auto rectX = x + ((width / 2) - (textWidth / 2));
   graphics.setColour(theme->getColor(Colors::accent));
-  graphics.drawRect(juce::Rectangle<int>(rectX, y, textWidth, height).toFloat(),
-                    1.0f);
+  if (knob->isFullWidth()) {
+    graphics.drawRect(juce::Rectangle<int>(x, y, width, height).toFloat(),
+                      1.0f);
+  } else {
+    auto textWidth = std::clamp(font.getStringWidth(valueString), 0, width);
+    auto rectX = x + ((width / 2) - (textWidth / 2));
+
+    graphics.drawRect(juce::Rectangle<int>(rectX, y, textWidth, height).toFloat(),
+                      1.0f);
+  }
+
   graphics.setColour(theme->getColor(Colors::font));
   graphics.drawFittedText(
       VUtils::StringUtils::toString(slider.getValue(), knob->precision(), true),

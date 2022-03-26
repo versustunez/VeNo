@@ -72,6 +72,9 @@ public:
                       bool shouldDrawButtonAsHighlighted,
                       bool shouldDrawButtonAsDown) override;
 
+  void drawTabbedButtonBarBackground(juce::TabbedButtonBar &bar,
+                                     juce::Graphics &graphics) override;
+
 protected:
   void drawBasedOnKnob(juce::Graphics &g, int x, int y, int width, int height,
                        float sliderPosProportional, float rotaryStartAngle,

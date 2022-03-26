@@ -24,6 +24,7 @@ public:
   void setPosition(Position pos);
   void setShowName(std::string name);
   void setSelectorId(std::string id);
+  Position getDirectChildrenSize();
   std::string id();
   Position &position();
   Scope<Flex> flex{nullptr};

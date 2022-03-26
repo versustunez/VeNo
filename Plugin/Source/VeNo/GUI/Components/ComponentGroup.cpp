@@ -61,4 +61,29 @@ std::string ComponentGroup::id() { return m_selector_id; }
 void ComponentGroup::setSelectorId(std::string name) {
   m_selector_id = std::move(name);
 }
+
+Position ComponentGroup::getDirectChildrenSize() {
+  Position _pos{};
+  for (auto &item : components) {
+    auto w = item->pos.x + item->pos.w;
+    if (w > _pos.w) {
+      _pos.w = w;
+    }
+    auto h = item->pos.y + item->pos.h;
+    if (h > _pos.h) {
+      _pos.h = h;
+    }
+  }
+  for (auto &item : groups) {
+    auto w = item->m_pos.x + item->m_pos.w;
+    if (w > _pos.w) {
+      _pos.w = w;
+    }
+    auto h = item->m_pos.y + item->m_pos.h;
+    if (h > _pos.h) {
+      _pos.h = h;
+    }
+  }
+  return _pos;
+}
 } // namespace VeNo::GUI

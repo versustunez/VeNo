@@ -5,29 +5,49 @@
 
 w: 560
 h: 320
-bg: primaryBG
+bg: secondaryBG
 position-x: automatic
 
 #EditorSpace {
+    width: 450
     @WaveEditor {
         x: 10
         y: 10
         width: 430
         height: 280
+        -- WaveEditor is the only Component that will listen to the background property
+        background: 33,33,33,255
     }
     #Bar {
-        background: secondaryBG
+        background: primaryBG
         height: 20
         y: 300
         position-x: automatic
-        @Label {
-            width: 40%
-            text: X
+        #LabelContainer {
+            width: 100
+            position-x: automatic
+            @Label {
+                width: 20
+                text: X:
+            }
+            @Label {
+                id: xPoint
+                text-align: centredLeft
+                text: 0.0000
+            }
         }
-
-        @Label {
-            width: 40%
-            text: Y
+        #LabelContainer {
+            width: 100
+            position-x: automatic
+            @Label {
+                width: 20
+                text: Y:
+            }
+            @Label {
+                id: yPoint
+                text-align: centredLeft
+                text: 0.0000
+            }
         }
     }
 }
@@ -35,25 +55,31 @@ position-x: automatic
 #WaveSidebar {
     w: 110
     h: 320
-    background: secondaryBG
+    background: primaryBG
 
-    #Scroll {
-       header: true
-       height: 250
+    @WaveThumbnails {
+       x: 0
+       y: 10
+       height: 240
     }
 
     #Buttons {
+        y: 250
         width: 100%
         height: 70
 
-        @Button#Save {
+        @Button {
+            filled: true
+            text: Save
             x: 10
             y: 10
             width: 90
             height: 20
         }
-        @Button#Load {
-            y: 40
+        @Button {
+            filled: true
+            text: Load
+            y: 42
             x: 10
             width: 90
             height: 20

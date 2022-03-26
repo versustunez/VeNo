@@ -20,6 +20,7 @@ void Theme::init() {
   getColourFromConfig(Colors::lcd);
   getColourFromConfig(Colors::logo);
   getColourFromConfig(Colors::logoAccent);
+  getColourFromConfig(Colors::root);
 
   m_colorMapping["primaryBG"] = Colors::bg;
   m_colorMapping["secondaryBG"] = Colors::bgTwo;
@@ -31,6 +32,7 @@ void Theme::init() {
   m_colorMapping["lcd"] = Colors::lcd;
   m_colorMapping["logo"] = Colors::logo;
   m_colorMapping["logoAccent"] = Colors::logoAccent;
+  m_colorMapping["rootBG"] = Colors::root;
 }
 juce::Colour Theme::getColor(Colors index) {
   if (m_colours[index] != nullptr)
@@ -49,7 +51,7 @@ void Theme::getColourFromConfig(Colors index) {
       m_configFile->asString(key, color.toString().toStdString())));
 }
 Colors Theme::getColorIndex(const std::string &color) {
-  if(m_colorMapping.find(color) != m_colorMapping.end()) {
+  if (m_colorMapping.find(color) != m_colorMapping.end()) {
     return m_colorMapping[color];
   }
   return Colors::unknown;
@@ -66,6 +68,7 @@ std::string Theme::colorToString(Colors index) {
   case Colors::lcd: return "color.lcd";
   case Colors::logo: return "color.logo";
   case Colors::logoAccent: return "color.logoPrimary";
+  case Colors::root: return "color.rootBG";
   case Colors::unknown:
   default: return "";
   }
@@ -82,6 +85,7 @@ juce::Colour Theme::getDefault(Colors index) {
   case Colors::LcdBg: return {0, 0, 0};
   case Colors::logo: return {255, 255, 255};
   case Colors::logoAccent: return {31, 115, 255};
+  case Colors::root: return {11, 11, 11};
   case Colors::unknown:
   default: return {255, 255, 255};
   }

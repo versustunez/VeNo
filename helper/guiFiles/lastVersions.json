@@ -1,5 +1,8 @@
 {
-    "MainGui": "492fd0ad5d1b4d25a98c8a0dd5c4e064a20a8fbcac451a22fc1b6a5c2b38796c",
-    "OSC": "1c05092a6a1f869fdc25942e8a8f1a834daefaf4711a95f98964608e1857133f",
-    "WaveEditor": "95545691de4d2b0156b994ac38f62c41fecfdaaf2587fdb645429beb86aab9f9"
+    "MainGui": "cc25b618608a29456801b31d188edb7fc4b5d30e082e5a96a19cd2e02f54a867",
+    "OSC": "f0b33a271148a9abe9917f684d82964178257213730f01bb1c6610db71bd88c5",
+    "WaveEditor": "ac2abd5a735fe9d662649a7e9eb5333dfb107dd8569d7871b0788f2862f9cd86",
+    "Footer": "2547db2ed15b9d9de6d710d45bf569e49dc05891f417499c3baac4978a9b9df4",
+    "Sidebar": "f577e7ac225881ae9b74479ef8195516e2e0a8ba55c36028ee0d300576b706ee",
+    "__content": "MainGui,OSC,WaveEditor,Footer,Sidebar"
 }

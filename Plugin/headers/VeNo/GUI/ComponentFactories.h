@@ -68,6 +68,13 @@ public:
                             Interpreter *) override;
 };
 
+class ScrollComponentFactory : public ComponentFactory {
+public:
+  Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
+                            const std::string &name, size_t id,
+                            Interpreter *) override;
+};
+
 class TabbedFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
@@ -76,6 +83,20 @@ public:
 };
 
 class TabFactory : public ComponentFactory {
+public:
+  Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
+                            const std::string &name, size_t id,
+                            Interpreter *) override;
+};
+
+class SelectFactory : public ComponentFactory {
+public:
+  Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
+                            const std::string &name, size_t id,
+                            Interpreter *) override;
+};
+
+class GroupFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
                             const std::string &name, size_t id,

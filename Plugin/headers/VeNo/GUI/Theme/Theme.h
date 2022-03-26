@@ -18,7 +18,8 @@ enum class Colors {
   LcdBg,
   lcd,
   logo,
-  logoAccent
+  logoAccent,
+  root
 };
 
 class Theme {

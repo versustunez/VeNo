@@ -33,15 +33,15 @@ Ref<ComponentGroup> Interpreter::parseTree(GUIParseItem *item,
     if (comp != nullptr) {
       comp->pos = item->pos;
       inGroup->components.push_back(comp);
-    }
-    Ref<ComponentGroup> innerGroup = CreateRef<ComponentGroup>();
-    for (auto &i : item->items) {
-      auto parsed = parseTree(i, innerGroup.get());
-      if (parsed != nullptr) {
-        innerGroup->groups.push_back(parsed);
+      Ref<ComponentGroup> innerGroup = CreateRef<ComponentGroup>();
+      for (auto &i : item->items) {
+        auto parsed = parseTree(i, innerGroup.get());
+        if (parsed != nullptr) {
+          innerGroup->groups.push_back(parsed);
+        }
       }
+      comp->addChild(innerGroup);
     }
-    comp->addChild(innerGroup);
     return nullptr;
   } else {
     if (guiItem.has("flex") && guiItem["flex"] == "true")

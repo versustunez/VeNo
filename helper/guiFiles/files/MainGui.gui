@@ -3,60 +3,86 @@
 ~Name: MainTheme
 ~Look: Flat
 
+-- ROOT
 w: 1200
 h: 700
-bg: primaryBG
+bg: rootBG
+position-x: automatic
 
-#GroupOne {
-    w: 80%
-    h: 150
+-- Layout
+#Sidebar {
+    header: Sidebar
+    w: 25%
+    h: 100%
     bg: primaryBG
-
-    @Knob {
-        id: osc1
-        bind: osc1__level
-        x: 10
-        y: 10
-        w: 130
-        h: 130
-        label: top
-        label-value: semi
+    position-y: automatic
+    @import Sidebar
+}
+#Content {
+    position-y: automatic
+    w: 75%
+    -- MAIN TAB BAR
+    #Tab {
+        h: 65%
+        position-x: automatic
+        @Tabbed {
+            w: 50%
+            [4](
+                @Tab {
+                    name: OSC{it0}
+                    color: 0,0,0,0
+                    @import OSC;i={it0}
+                }
+            )
+        }
+        @Tabbed {
+            w: 50%
+            @Tab {
+                name: Filter
+            }
+            @Tab {
+                name: FX
+            }
+            @Tab {
+                name: Config
+            }
+        }
     }
+    #BottomGroup {
+        h: 35%
+        position-y: automatic
+        #ModulatorsTabs {
+            h: 80%
+            position-x: automatic
+            @Tabbed {
+                width: 50%
+                [4](
+                    @Tab#Env{it0} {
+                    }
+                )
+            }
+            @Tabbed {
+                width: 50%
+                [2](
+                    @Tab#LFO{it0} {
+                    }
+                )
+                [2](
+                    @Tab#Random{it0} {
+                    }
+                )
+            }
+        }
 
-    @Knob {
-        id: osc1
-        bind: osc1__level
-        x: 400
-        y: 10
-        w: 130
-        h: 130
-        label: center
-        label-value: semi
-    }
-
-    @Knob#Main Volume {
-        bind: osc1__level
-        x: 200
-        y: 10
-        w: 130
-        h: 130
-        label: bottom
-        label-value: always
+        #Controls {
+            h: 20%
+            width: 100%
+            bg: primaryBG
+            position-x: automatic
+            @import Footer
+        }
     }
 }
-@Switch {
-    bind: osc1__active
-    x: 70%
-    y: 180
-    w: 10%
-    h: 50
-}
 
-#OSC1 {
-    header: true
-    w: 50%
-    h: 300
-    y: 300
-    bg: secondaryBG
-    @import Oscillator;osc=1
-}
+
+

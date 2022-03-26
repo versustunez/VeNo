@@ -1,6 +1,7 @@
 #include <VeNo/GUI/ComponentFactories.h>
 #include <VeNo/GUI/Components/Logo.h>
 #include <VeNo/GUI/Components/ScrollComponent.h>
+#include <VeNo/GUI/Components/SelectComponent.h>
 #include <VeNo/GUI/Components/Tabbed.h>
 #include <VeNo/GUI/Components/WaveEditor.h>
 #include <VeNo/GUI/Components/WaveThumbnails.h>
@@ -38,6 +39,18 @@ Ref<BaseComponent> WaveThumbnailsFactory::create(GUIParseItem &item,
   return scrollComponent;
 }
 
+Ref<BaseComponent> ScrollComponentFactory::create(GUIParseItem &item,
+                                                  const std::string &parameter,
+                                                  const std::string &name,
+                                                  size_t id, Interpreter *) {
+
+  auto comp = CreateRef<ScrollComponent>(parameter, name, id);
+  if (item.has("axis")) {
+    comp->setWidthMode(item["axis"] == "x");
+  }
+  return comp;
+}
+
 Ref<BaseComponent> TabbedFactory::create(GUIParseItem &,
                                          const std::string &parameter,
                                          const std::string &name, size_t id,
@@ -56,4 +69,21 @@ Ref<BaseComponent> TabFactory::create(GUIParseItem &item,
                     : item.colorComponent.color);
   return tab;
 }
+
+Ref<BaseComponent> SelectFactory::create(GUIParseItem &,
+                                         const std::string &parameter,
+                                         const std::string &name, size_t id,
+                                         Interpreter *) {
+
+  auto comp = CreateRef<Select>(parameter, name, id);
+  // @TODO: ADD PRESET AND VALUE MODE ;)
+  return comp;
+}
+
+Ref<BaseComponent> GroupFactory::create(GUIParseItem &, const std::string &parameter,
+                          const std::string &name, size_t id,
+                          Interpreter *) {
+  return CreateRef<NestedComponent>(parameter, name, id);
+}
+
 } // namespace VeNo::GUI
