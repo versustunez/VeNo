@@ -1,9 +1,10 @@
-#include "VeNo/Core/Instance.h"
-#include "VeNo/Core/Parameter/Handler.h"
+#include "VeNo/Sound/DSP/Detune/Detune.h"
 
+#include <VeNo/Core/Instance.h>
+#include <VeNo/Core/Parameter/Handler.h>
 #include <VeNo/Sound/Generation/Oscillator.h>
+#include <VeNo/Utils/Random.h>
 namespace VeNo::Audio
-// @TODO Implement Oscillator
 {
 bool Oscillator::setup(OscillatorData &osc, size_t instanceId) {
   // get all audio parameter references needed for the oscillator
@@ -59,46 +60,84 @@ void Oscillator::updateFrequency(OscillatorData &osc, SingleVoiceData &voice,
   double pitchPos = wheelPos >= 0 ? state.pitchBendUp->getValue()
                                   : state.pitchBendDown->getValue();
   double pitchBend = wheelPos == 0 ? 0.0 : pitchPos * wheelPos;
-  auto semitones = state.semitones->getVoice(voice.id);
-  auto cents = state.cents->getVoice(voice.id) / 100.0;
+  auto semitones = (*state.semitones)[-1];
+  auto cents = (*state.cents)[-1] / 100.0;
   double midi =
       std::clamp(currentNote + semitones + cents + pitchBend, 0.0, 127.0);
   voice.frequency = std::exp((midi - 69) * std::log(2) / 12) * 440.0f;
+  Detune::update(osc.detuneState, osc.state, (int)midi);
 }
 
 void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice) {
+  auto voiceCount = osc.state.voices->getInt();
+  if (voiceCount == 0) {
+    voice.output.left = 0;
+    voice.output.right = 0;
+    return;
+  }
+
   double sR = Core::Config::get().sampleRate;
   double inc = voice.frequency / sR;
-  voice.output.left = 0;
-  voice.output.right = 0;
   size_t currentTable = 0;
   while ((currentTable < (osc.group->len - 1) &&
-          (inc >= osc.group->items[currentTable].freq)))
-  {
+          (inc >= osc.group->items[currentTable].freq))) {
     ++currentTable;
   }
-  auto& table = osc.group->items[currentTable];
-  for (int i = 0; i < voice.voices; ++i) {
-    auto& d = voice.unisonVoices[i];
-    d.phaseInc = (float)inc;
-    d.phaseOffset += d.phaseInc;
-    d.phaseOffset -= float(d.phaseOffset >= 1.0);
-
-    // LETS GO ;)
-    double val = d.phaseOffset * (double) table.len;
-    int value = (int) val;
-    int temp = (int) val + 1;
-    double sum = table.items[value];
-    double sum2 = table.items[temp];
-
-    double fraction = val - (double) value;
-    double finalSum = sum + fraction * (sum2 - sum);
-    voice.output.left += finalSum;
-    voice.output.right += finalSum;
+  auto &table = osc.group->items[currentTable];
+  auto output = renderVoice(voice, inc, table, 0,
+                            osc.detuneState); // first Voice because its special
+  voice.output.left = output;
+  voice.output.right = output;
+  if (voiceCount > 1) {
+    double dOut[2] = {0,0};
+    double detuneOut = 0;
+    for (int i = 1; i < voiceCount; ++i) {
+      output = renderVoice(voice, inc, table, i, osc.detuneState);
+      dOut[i&1] = output * 0.33333333;
+      detuneOut+=output;
+    }
+    double amount = osc.state.detuneAmount->getValue();
+    dOut[0] *= amount;
+    dOut[1] *= amount;
+    detuneOut *= osc.state.detuneAmount->getValue();
+    detuneOut /= (double) (voiceCount - 1);
+    voice.output.left += detuneOut + dOut[0];
+    voice.output.right += detuneOut + dOut[1];
   }
 
   double vol = osc.state.level->getVoice(voice.id);
   voice.output.left *= vol;
   voice.output.right *= vol;
+}
+float Oscillator::renderVoice(SingleVoiceData &voice, double inc,
+                                const Wave &table, int idx, DetuneState& state) {
+  auto &d = voice.unisonVoices[idx];
+  d.phaseInc = (float)inc * state.lookup[idx];
+  d.phaseOffset += d.phaseInc;
+  d.phaseOffset -= float(d.phaseOffset >= 1.0);
+
+  // LETS GO ;)
+  double val = d.phaseOffset * (double)table.len;
+  int value = (int)val;
+  int temp = (int)val + 1;
+  double sum = table.items[value];
+  double sum2 = table.items[temp];
+
+  double fraction = val - (double)value;
+  double finalSum = sum + fraction * (sum2 - sum);
+  return finalSum;
+}
+
+void Oscillator::prepareVoice(OscillatorData &osc, SingleVoiceData voice) {
+  auto &random = Utils::Random::get();
+  if (osc.state.randomPhase->getBool()) {
+    for (auto &unisonVoice : voice.unisonVoices) {
+      unisonVoice.phaseOffset = (float)random.generate();
+    }
+  } else {
+    for (auto &unisonVoice : voice.unisonVoices) {
+      unisonVoice.phaseOffset = (float)osc.state.phase->getValue();
+    }
+  }
 }
 } // namespace VeNo::Audio

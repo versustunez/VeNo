@@ -3,7 +3,6 @@
 #include <VeNo/GUI/Fonts/Fonts.h>
 
 namespace VeNo::Core {
-Config *Config::m_instance = nullptr;
 Mutex Config::createGuard{};
 Config::Config() {
   using VUtils::FileHandler;

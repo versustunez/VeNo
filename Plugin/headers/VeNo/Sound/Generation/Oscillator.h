@@ -12,9 +12,13 @@ public:
   static bool process(OscillatorData &, SingleVoiceData &, int currentNote);
   static bool finish(OscillatorData &, SingleVoiceData &);
 
+  static void prepareVoice(OscillatorData &osc, SingleVoiceData voice);
+
 protected:
   static void updateFrequency(OscillatorData&, SingleVoiceData&, int currentNote);
   static void render(OscillatorData&, SingleVoiceData&);
   Oscillator() = default;
+  static float renderVoice(SingleVoiceData &voice, double inc,
+                             const Wave &table, int idx, DetuneState& state);
 };
 } // namespace VeNo::Audio

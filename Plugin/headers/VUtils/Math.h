@@ -18,5 +18,6 @@ struct Math {
   static double map(double value, double startCoord1, double endCoord1,
                     double startCoord2, double endCoord2);
   static int nextPowerOfTwo(double value);
+  static double centsToRatio(double cents);
 };
 } // namespace VUtils

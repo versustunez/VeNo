@@ -80,10 +80,25 @@ Ref<BaseComponent> SelectFactory::create(GUIParseItem &,
   return comp;
 }
 
-Ref<BaseComponent> GroupFactory::create(GUIParseItem &, const std::string &parameter,
-                          const std::string &name, size_t id,
-                          Interpreter *) {
+Ref<BaseComponent> GroupFactory::create(GUIParseItem &,
+                                        const std::string &parameter,
+                                        const std::string &name, size_t id,
+                                        Interpreter *) {
   return CreateRef<NestedComponent>(parameter, name, id);
+}
+
+Ref<BaseComponent> WaveFormFactory::create(GUIParseItem &item,
+                                           const std::string &parameter,
+                                           const std::string &name, size_t id,
+                                           Interpreter *) {
+  auto waveform = CreateRef<WaveForm>(parameter, name, id);
+  if (item.has("osc") && item["osc"] == "true") {
+    waveform->setIsOscillator(true);
+  }
+  waveform->setWaveId((size_t)VUtils::StringUtils::toNumber(item["wave"], 1) -
+                      1);
+  waveform->init();
+  return waveform;
 }
 
 } // namespace VeNo::GUI

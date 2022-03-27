@@ -213,7 +213,7 @@
       "modulateAble": false,
       "tooltip": "Detune Mode",
       "value": 1,
-      "maxValue": 3,
+      "maxValue": 2,
       "minValue": 1,
       "type": "Integer"
     },

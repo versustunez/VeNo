@@ -1,11 +1,12 @@
-#include "VeNo/Sound/Tables/WaveTable.h"
-
 #include <VeNo/Sound/Tables/WaveLib.h>
+#include <VeNo/Sound/Tables/WaveTable.h>
+#include <VeNo/Utils/ProfileMacros.h>
 #include <cassert>
 #include <cmath>
 
 namespace VeNo::Audio {
 RefGroup WaveTableLib::createGroup(bool add) {
+  VENO_PROFILE_FUNCTION();
   RefGroup group = CreateRef<WaveTableGroup>();
   auto &points = group->uiPoints;
   points.addCurvedPoint(0, 1, -1, {}, true);
@@ -43,6 +44,7 @@ RefGroup &WaveTableLib::getGroup(double wavePosition) {
 }
 
 void WaveTableLib::regenerateAll() {
+  VENO_PROFILE_FUNCTION();
   for (size_t i = 0; i < m_groups.size(); ++i) {
     auto &oldGroup = m_groups[i];
     auto group = CreateRef<Audio::WaveTableGroup>();

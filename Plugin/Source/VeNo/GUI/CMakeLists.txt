@@ -6,6 +6,7 @@ add_sources(
         Events/LiveLabel.cpp
         Events/ModulateMouseOpen.cpp
         Fonts/Fonts.cpp
-        GUIUtils.cpp
+        ActionRegistry.cpp
         Flex.cpp
+        GUIUtils.cpp
 )

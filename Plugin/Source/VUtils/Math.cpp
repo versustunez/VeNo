@@ -48,4 +48,8 @@ double Math::map(double value, double startCoord1, double endCoord1,
   double ratio = (endCoord2 - startCoord2) / (endCoord1 - startCoord1);
   return ratio * (value - startCoord1) + offset;
 }
+
+double Math::centsToRatio(double cents) {
+  return std::pow (2.0, cents / (double) 1200);
+}
 } // namespace VUtils

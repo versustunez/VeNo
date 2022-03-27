@@ -2,6 +2,7 @@
 #include "../Structs.h"
 
 #include <VeNo/Core/Parameter/Parameter.h>
+#include <VeNo/Sound/DSP/Detune/DetuneStruct.h>
 #include <cstdint>
 
 namespace VeNo::Audio {
@@ -32,6 +33,7 @@ struct OscillatorData {
   int id{0};
   Ref<WaveTableGroup> group{};
   OscillatorState state{};
+  DetuneState detuneState;
 };
 
 // holds a state to phase offset and start
@@ -43,7 +45,6 @@ struct UnisonVoice {
 struct SingleVoiceData {
   double frequency{};
   int id = 0;
-  int voices = 1; // min voices 1 :) 0 voices = deactivated
   UnisonVoice unisonVoices[MAX_UNISON_VOICES]{};
   Channel outData[MAX_UNISON_VOICES]{};
   Channel output{};

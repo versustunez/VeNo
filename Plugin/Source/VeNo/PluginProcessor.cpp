@@ -24,9 +24,6 @@ void VeNoProcessor::processBlock(juce::AudioBuffer<float> &buffer,
     getPlayHead()->getCurrentPosition(currentPositionInfo);
   }
   buffer.clear();
-  // oversampling only if less than 96khz everything above should fine by itself
-  // and "too hungry"
-
   if (instance->synthesizer)
     instance->synthesizer->processBlock(buffer, midiMessages);
 }
@@ -35,13 +32,16 @@ juce::AudioProcessorEditor *VeNoProcessor::createEditor() {
   return new VeNoEditor(*this, m_id);
 }
 
+// @TODO: Important needed
 void VeNoProcessor::getStateInformation(juce::MemoryBlock &) {
   VENO_PROFILE_FUNCTION();
 }
 
+// @TODO: IMPORTANT needed;)
 void VeNoProcessor::setStateInformation(const void *, int) {
   VENO_PROFILE_FUNCTION();
 }
+
 VeNoProcessor::~VeNoProcessor() {
   VeNo::Core::Config::get().removeProcessor(m_id);
   VeNo::Core::Instance::remove(instance->id);

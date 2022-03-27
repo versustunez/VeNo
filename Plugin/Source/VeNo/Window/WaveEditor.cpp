@@ -12,7 +12,8 @@ WaveEditorWindow::WaveEditorWindow(size_t id)
   auto &config = Core::Config::get();
 
   // prepare V-GUI Lang to use WaveEditor
-  auto mainUIContent = config.properties()->asString("gui.wave", "Bin::WaveEditor");
+  auto mainUIContent =
+      config.properties()->asString("gui.wave", "Bin::WaveEditor");
   interpreter.parseMain(config.guiInit.getOrCreate(mainUIContent));
   auto &pos = interpreter.componentGroup->position();
   int w = pos.w > 0 ? pos.w : WAVEEDITOR_WIDTH;
@@ -32,6 +33,10 @@ WaveEditorWindow::WaveEditorWindow(size_t id)
 }
 WaveEditorWindow::~WaveEditorWindow() {
   DBGN("Delete WaveEditor");
+  std::string editor_closed =
+      "wave-editor-closed_" +
+      std::to_string(instance->waveHolder.currentTable());
+  instance->eventHandler.triggerEvent(editor_closed, new Events::RemoveEvent());
   instance->state.waveEditorWindow = nullptr;
 }
 void WaveEditorWindow::closeButtonPressed() {

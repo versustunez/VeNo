@@ -17,6 +17,7 @@ EventHandler::~EventHandler() noexcept {
   }
   m_owningHandlers.clear();
 }
+// @TODO: Allow Multi Handle for Same Parameter
 void EventHandler::addHandler(const std::string &name, Handler *handler) {
   DBGN("[%p], Registered EventHandler: %s", this, name.c_str());
   m_handler[name] = handler;

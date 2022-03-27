@@ -91,7 +91,6 @@ void WaveThumbnails::createThumbnail(size_t index, Audio::WaveTableLib *lib) {
   thumbnail->pos.w = getWidth() - 10;
   thumbnail->setSize(thumbnail->pos.w, thumbnail->pos.h);
   thumbnail->addMouseListener(this, true);
-  thumbnail->generateWaveForm();
   thumbnail->isCurrent = true;
   m_currentThumbnail = thumbnail.get();
   m_components.push_back(thumbnail);
@@ -207,13 +206,58 @@ void WaveThumbnail::mouseDown(const juce::MouseEvent &event) {
                               new WaveEditEvent(WaveEditType::DUPLICATE, this));
       break;
     case 4:
-      m_handler->triggerEvent("wave-event",
-                              new WaveEditEvent(WaveEditType::INTERPOLATE, this));
+      m_handler->triggerEvent(
+          "wave-event", new WaveEditEvent(WaveEditType::INTERPOLATE, this));
       break;
     default:
       // don't do anything because yeah we don't want to ;)
       break;
     }
   });
+}
+void WaveThumbnail::resized() { generateWaveForm(); }
+WaveForm::WaveForm(const std::string &name, const std::string &showName,
+                   size_t id)
+    : BaseComponent(name, showName, id) {
+  m_thumbnail = CreateRef<WaveThumbnail>(m_name, m_showName, m_id);
+  addAndMakeVisible(*m_thumbnail);
+}
+
+void WaveForm::init() {
+  if (m_isOscillator) {
+    auto string = "osc" + std::to_string(m_waveId + 1) + "__wave_position";
+    m_handler->addHandler(string, this);
+  }
+  std::string editor_closed = "wave-editor-closed_" + std::to_string(m_waveId);
+  m_handler->addHandler(editor_closed, this);
+  auto *instance = Core::Instance::get(m_id);
+  m_thumbnail->drawBackground = false;
+  m_thumbnail->lib = instance->waveHolder.generators[m_waveId].get();
+  m_thumbnail->thumbId = 0; // this will update correctly based on changes ;)
+  m_thumbnail->setSize(getWidth(), getHeight());
+  m_isInit = true;
+}
+
+void WaveForm::resized() {
+  if (m_thumbnail && m_isInit) {
+    m_thumbnail->setSize(getWidth(), getHeight());
+  }
+}
+
+void WaveForm::handle(Events::Event *) {
+  if (m_isOscillator) {
+    auto string = "osc" + std::to_string(m_waveId + 1) + "__wave_position";
+    auto val =
+        Core::Instance::get(m_id)->treeState->getParameter(string)->getValue();
+    auto index = (size_t)std::floor(val * ((double)m_thumbnail->lib->size() - 1));
+    if (m_thumbnail->thumbId != index || m_thumbnail->lib->isOutdated()) {
+      m_thumbnail->thumbId = index;
+      m_thumbnail->generateWaveForm();
+      repaint();
+    }
+  } else {
+    m_thumbnail->generateWaveForm();
+    repaint();
+  }
 }
 } // namespace VeNo::GUI

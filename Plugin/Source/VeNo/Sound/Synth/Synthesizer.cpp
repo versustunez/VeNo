@@ -72,7 +72,7 @@ void Synthesizer::setSampleRate(double sampleRate) {
   m_envelope->needRecalculate = true;
 }
 void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
-                               int startSample, int numSamples) const {
+                               int startSample, int numSamples) {
   VENO_PROFILE_FUNCTION();
   // If VeNo is not playing any note he will skip rendering anything also
   // skipping Matrix because that's how it should be
@@ -93,14 +93,24 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
       Oscillator::prepare(*oscillator);
     }
 
-    for (const auto &voice : m_voices) {
+    for (auto &voice : m_voices) {
       VENO_PROFILE_SCOPE("Render Voice");
       if (!voice->isActive || voice->velocity == 0 ||
           voice->envelopeData.state == EnvelopeState::IDLE)
         continue;
       double envelope = Envelope::process(voice->envelopeData, *m_envelope);
-      if (envelope == 0)
+      if (envelope == 0) {
+        // clear Voice
+        if (voice->isDirty)
+          SynthVoiceHelper::clear(*this, *voice.get());
         continue;
+      }
+      if (voice->isDirty){
+        for (int j = 0; j < OSCILLATORS; ++j) {
+          Oscillator::prepareVoice(*m_oscillators[j], voice->voiceData.oscillatorVoices[j]);
+        }
+      }
+
       for (int j = 0; j < OSCILLATORS; ++j) {
         auto &voiceD = voice->voiceData.oscillatorVoices[j];
         Oscillator::process(*m_oscillators[j], voiceD, voice->currentNote);

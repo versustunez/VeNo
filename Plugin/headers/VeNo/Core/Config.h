@@ -11,7 +11,6 @@
 
 namespace VeNo::Core {
 struct Config {
-  static Config *m_instance;
   static Config &get();
   void registerEditor(std::string &id, juce::AudioProcessorEditor *editor);
   void removeEditor(std::string &id);

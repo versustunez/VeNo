@@ -14,6 +14,7 @@ struct SynthVoice {
   float velocity{0.0};
   uint64_t noteOnTime{0};
   bool legato{false};
+  bool isDirty{true};
 };
 
 struct SynthVoiceHelper {

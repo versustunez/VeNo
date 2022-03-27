@@ -10,6 +10,7 @@ public:
   void setIcon(const juce::String&);
   void resized() override;
   void setAction(std::string event);
+  std::string& action() { return m_action; }
   void buttonClicked(juce::Button *button) override;
 
   bool isFilled();

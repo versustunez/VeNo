@@ -17,6 +17,7 @@ public:
   Audio::WaveTableLib *lib{nullptr};
   bool drawBackground{true};
   bool isCurrent{false};
+  void resized() override;
 
 protected:
   juce::Path m_path;
@@ -44,5 +45,23 @@ protected:
   Ref<Button> m_addButton{};
   Flex m_flex{};
   WaveThumbnail *m_currentThumbnail{nullptr};
+};
+
+class WaveForm : public BaseComponent, public Events::Handler {
+public:
+  WaveForm(const std::string &name, const std::string &showName,
+                 size_t id);
+  void setIsOscillator(bool isOsc) { m_isOscillator = isOsc; }
+  void setWaveId(size_t idx) { m_waveId = idx; }
+  void init();
+  void resized() override;
+
+  void handle(Events::Event *event) override;
+
+protected:
+  bool m_isOscillator{false};
+  size_t m_waveId{0};
+  Ref<WaveThumbnail> m_thumbnail;
+  bool m_isInit{false};
 };
 } // namespace VeNo::GUI

@@ -23,6 +23,7 @@ VeNoEditor::VeNoEditor(VeNoProcessor &p, std::string id)
   auto *properties_ = config.properties();
   if (properties_->asBool("useOpenGL", true))
     setupGL(properties_->asBool("vsync", true));
+  instance->state.actionRegistry = VeNo::CreateScope<VeNo::GUI::ActionRegistry>(m_instanceId);
 }
 
 void VeNoEditor::paint(juce::Graphics &g) {
@@ -30,6 +31,8 @@ void VeNoEditor::paint(juce::Graphics &g) {
   g.fillAll(juce::Colour(0, 0, 0));
 }
 VeNoEditor::~VeNoEditor() {
+  auto *instance = VeNo::Core::Instance::get(m_instanceId);
+  instance->state.actionRegistry.reset(nullptr);
   mainInterpreter.reset();
   VeNo::Core::Config::get().removeEditor(m_id);
   m_openGLContext.detach();

@@ -103,4 +103,11 @@ public:
                             Interpreter *) override;
 };
 
+class WaveFormFactory : public ComponentFactory {
+public:
+  Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
+                            const std::string &name, size_t id,
+                            Interpreter *) override;
+};
+
 } // namespace VeNo::GUI

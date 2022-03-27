@@ -1,8 +1,8 @@
-#include "VeNo/Core/Config.h"
-
 #include <VUtils/Logging.h>
 #include <VUtils/StringUtils.h>
+#include <VeNo/Core/Config.h>
 #include <VeNo/GUI/GuiLang/UIUtils.h>
+#include <VeNo/Utils/ProfileMacros.h>
 #include <cmath>
 
 namespace VeNo::GUI {
@@ -11,6 +11,7 @@ std::regex UIUtils::s_regEx =
     std::regex("\\{(.*?)\\}",
                std::regex_constants::ECMAScript | std::regex_constants::icase);
 int UIUtils::getValue(VString value, int parentValue) {
+  VENO_PROFILE_FUNCTION();
   if (value.empty())
     return parentValue;
   bool isPercent = false;
@@ -28,6 +29,7 @@ int UIUtils::getValue(VString value, int parentValue) {
 
 int UIUtils::getOffsetFromParent(GUIParseItem *item,
                                  UIUtils::Direction direction) {
+  VENO_PROFILE_FUNCTION();
   int value = 0;
   // look on all previous heights
   for (auto *local : item->items) {
@@ -36,6 +38,7 @@ int UIUtils::getOffsetFromParent(GUIParseItem *item,
   return value;
 }
 VString UIUtils::getParameterReplaced(UIParser *parser, VString &input) {
+  VENO_PROFILE_FUNCTION();
   if (input.find('{', 0) == VString::npos) {
     return input;
   }
@@ -53,6 +56,7 @@ VString UIUtils::getParameterReplaced(UIParser *parser, VString &input) {
   return input;
 }
 void UIUtils::setProperty(GUIParseItem *item, VString &name, VString &value) {
+  VENO_PROFILE_FUNCTION();
   auto *parent = item->parent;
   // clang-format off
   // SET POSITION STUFF
@@ -88,6 +92,7 @@ void UIUtils::setProperty(GUIParseItem *item, VString &name, VString &value) {
   // clang-format on
 }
 ImportItem UIUtils::getImportParameters(UIParser *parser, VString &import) {
+  VENO_PROFILE_FUNCTION();
   import = getParameterReplaced(parser, import);
   auto split = VUtils::StringUtils::split(import, ";");
   ImportItem importItem{split[0]};
@@ -101,6 +106,7 @@ ImportItem UIUtils::getImportParameters(UIParser *parser, VString &import) {
   return importItem;
 }
 void UIUtils::setColor(GUIParseItem *item, VString &value) {
+  VENO_PROFILE_FUNCTION();
   item->colorComponent.hasColor = true;
   // preColor is a part we will fetch the Theme::Colors::index ;)
   auto color = Core::Config::get().theme()->getColorIndex(value);

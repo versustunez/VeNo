@@ -1,3 +1,4 @@
+add_subdirectory(DSP)
 add_subdirectory(Generation)
 add_subdirectory(Synth)
 add_subdirectory(Tables)

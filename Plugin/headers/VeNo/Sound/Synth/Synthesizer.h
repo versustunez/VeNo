@@ -29,7 +29,7 @@ public:
 
 private:
   void renderVoices(juce::AudioBuffer<float> &, int startSample,
-                    int numSamples) const;
+                    int numSamples);
 
   void addEvents();
 

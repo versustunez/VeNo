@@ -19,6 +19,8 @@ struct WaveHolder {
     m_currentTable = currentTable;
   }
 
+  size_t currentTable() { return m_currentTable; }
+
 protected:
   size_t m_currentTable{0};
 };
