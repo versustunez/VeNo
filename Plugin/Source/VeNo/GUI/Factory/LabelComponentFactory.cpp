@@ -7,7 +7,7 @@ namespace VeNo::GUI {
 Ref<BaseComponent> LabelComponentFactory::create(GUIParseItem &item,
                                                  const std::string &parameter,
                                                  const std::string &name,
-                                                 size_t id,
+                                                 InstanceID id,
                                                  Interpreter *interpreter) {
   auto comp = CreateRef<Label>(parameter, name, id);
   comp->setText(item["text"]);

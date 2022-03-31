@@ -7,7 +7,7 @@
 
 namespace VeNo::GUI {
 
-Logo::Logo(std::string name, std::string showName, size_t id)
+Logo::Logo(std::string name, std::string showName, InstanceID id)
     : BaseComponent(std::move(name), std::move(showName), id) {
   m_instance = VeNo::Core::Instance::get(m_id);
   createLogo();

@@ -6,7 +6,7 @@ namespace VeNo::GUI {
 class LabelEventListener;
 class Label : public BaseComponent {
 public:
-  Label(std::string name, std::string showName, size_t id);
+  Label(std::string name, std::string showName, InstanceID id);
   void setText(std::string text);
   void setAlign(const std::string& align);
   void resized() override;

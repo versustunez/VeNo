@@ -16,7 +16,7 @@ protected:
   void addEditorActions();
 
 protected:
-  size_t m_id{0};
+  InstanceID m_id{0};
   Events::EventHandler *m_handler;
   Vector<VString> m_actions;
   Vector<Ref<Events::EventCB>> m_eventCB;

@@ -4,7 +4,7 @@
 namespace VeNo::GUI {
 class Button : public BaseComponent, public juce::Button::Listener {
 public:
-  Button(const std::string &name, const std::string &showName, size_t id);
+  Button(const std::string &name, const std::string &showName, InstanceID id);
   ~Button() override;
   void setButtonText(const std::string &);
   void setIcon(const juce::String&);

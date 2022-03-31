@@ -16,13 +16,13 @@ class Interpreter;
 
 class BaseComponent : public VComponent {
 public:
-  BaseComponent(std::string name, std::string showName, size_t id);
+  BaseComponent(std::string name, std::string showName, InstanceID id);
   ~BaseComponent() override = default;
 
   void setSelectorId(std::string selector);
   std::string &name();
   std::string &showName();
-  size_t id() const;
+  InstanceID id() const;
   std::string &selectorId();
   LabelPosition m_labelPosition = LabelPosition::BOTTOM;
   Position pos{};
@@ -58,8 +58,7 @@ protected:
   std::string m_name;
   std::string m_showName;
   Scope<juce::Label> m_label;
-  size_t m_id; // ID is the id to the Instance! it's provided by the
-               // GUI-Interpreter
+  InstanceID m_id;
   std::string m_selectorId;
   bool m_afterParsingCalled = false;
   Events::EventHandler *m_handler{nullptr};

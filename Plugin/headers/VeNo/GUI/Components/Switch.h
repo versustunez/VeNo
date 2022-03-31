@@ -10,7 +10,7 @@ struct SwitchStateText {
 };
 class Switch : public BaseComponent {
 public:
-  Switch(const std::string &name, const std::string &showName, size_t id);
+  Switch(const std::string &name, const std::string &showName, InstanceID id);
   ~Switch() override;
   void setButtonText(const std::string &);
   void resized() override;

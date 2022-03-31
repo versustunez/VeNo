@@ -28,7 +28,7 @@ public:
   }
 
   ~Properties() {
-    DBGN("Close PropertyFile: %s", filename().c_str());
+    DBGN("Close PropertyFile: {}", filename().c_str());
     save();
     root.reset(nullptr);
   }

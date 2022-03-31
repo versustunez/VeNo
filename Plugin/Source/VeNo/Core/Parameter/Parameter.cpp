@@ -6,7 +6,7 @@
 
 namespace VeNo::Core {
 Parameter::Parameter(std::string name, std::string showName, double min,
-                     double max, double value, size_t id)
+                     double max, double value, InstanceID id)
     : m_id(id),
       m_name(std::move(name)),
       m_showName(std::move(showName)),

@@ -5,7 +5,7 @@
 #include <VeNo/Core/Parameter/Handler.h>
 
 namespace VeNo::Core {
-ParameterHandler::ParameterHandler(size_t id) : m_id(id) {}
+ParameterHandler::ParameterHandler(InstanceID id) : m_id(id) {}
 ParameterHandler::~ParameterHandler() {
   for (auto &param : m_parameters)
     delete param.second;

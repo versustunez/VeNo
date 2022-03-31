@@ -2,7 +2,7 @@
 
 namespace VeNo::GUI {
 NestedComponent::NestedComponent(const std::string &name,
-                                 const std::string &showName, size_t id)
+                                 const std::string &showName, InstanceID id)
     : BaseComponent(name, showName, id) {}
 
 void NestedComponent::addChild(const Ref<ComponentGroup> &param) {

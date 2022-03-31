@@ -19,6 +19,6 @@ protected:
   static void render(OscillatorData&, SingleVoiceData&);
   Oscillator() = default;
   static float renderVoice(SingleVoiceData &voice, double inc,
-                             const Wave &table, int idx, DetuneState& state);
+                             const Wave &table, int idx);
 };
 } // namespace VeNo::Audio

@@ -9,7 +9,7 @@
 namespace VeNo::GUI {
 class WaveEditor : public BaseComponent, public Events::Handler {
 public:
-  WaveEditor(std::string, const std::string &, size_t);
+  WaveEditor(std::string, const std::string &, InstanceID);
   void paint(juce::Graphics &) override;
   void paintOverChildren(juce::Graphics &g) override;
   void resized() override;

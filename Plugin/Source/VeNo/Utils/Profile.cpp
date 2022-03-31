@@ -13,11 +13,11 @@ void Profiler::begin(const std::string &name,
   m_outputStream.open(resolvedPath, std::fstream::out);
   m_outputStream.flush();
   if (m_outputStream.is_open()) {
-    LOG("Started Profile File: %s (%s)", name.c_str(), resolvedPath.c_str());
+    LOG("Started Profile File: {} ({})", name.c_str(), resolvedPath.c_str());
     m_currentSession = new Session({name});
     writeHeader();
   } else
-    ERR("Profiler cannot open Profiler File %s", resolvedPath.c_str());
+    ERR("Profiler cannot open Profiler File {}", resolvedPath.c_str());
 }
 void Profiler::end() {
   std::lock_guard lock(m_mutex);

@@ -5,7 +5,7 @@
 namespace VeNo::GUI {
 Ref<BaseComponent> ButtonFactory::create(GUIParseItem &item,
                                          const std::string &parameter,
-                                         const std::string &name, size_t id,
+                                         const std::string &name, InstanceID id,
                                          Interpreter *interpreter) {
   auto comp = CreateRef<Button>(parameter, name, id);
   if (item.has("text"))

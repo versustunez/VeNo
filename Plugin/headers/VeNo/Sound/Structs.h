@@ -11,7 +11,7 @@ struct Channel {
 
 struct WaveHolder {
   static constexpr int size = OSCILLATORS + LFOS + 1;
-  explicit WaveHolder(size_t id);
+  explicit WaveHolder(InstanceID id);
   WaveTableLib *current() { return generators[m_currentTable].get(); }
   Scope<WaveTableLib> generators[size]; // + 1 because of the DIST_MODULE
   void setCurrentTable(size_t currentTable) {

@@ -4,7 +4,7 @@
 namespace VeNo::GUI {
 
 TabbedComponent::TabbedComponent(const std::string &name,
-                                 const std::string &showName, size_t id)
+                                 const std::string &showName, InstanceID id)
     : BaseComponent(name, showName, id) {
 
   m_tab = CreateRef<juce::TabbedComponent>(
@@ -31,7 +31,7 @@ void TabbedComponent::addChild(const Ref<ComponentGroup> &group) {
 void TabbedComponent::resized() { m_tab->setSize(getWidth(), getHeight()); }
 
 TabComponent::TabComponent(const std::string &name, const std::string &showName,
-                           size_t id)
+                           InstanceID id)
     : BaseComponent(name, showName, id) {}
 
 void TabComponent::addChild(const Ref<ComponentGroup> &group) {

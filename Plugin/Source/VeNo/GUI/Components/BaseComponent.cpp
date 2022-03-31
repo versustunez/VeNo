@@ -4,7 +4,7 @@
 #include <VeNo/GUI/GUIUtils.h>
 
 namespace VeNo::GUI {
-BaseComponent::BaseComponent(std::string name, std::string showName, size_t id)
+BaseComponent::BaseComponent(std::string name, std::string showName, InstanceID id)
     : m_name(std::move(name)),
       m_showName(std::move(showName)),
       m_id(id) {
@@ -73,7 +73,7 @@ void BaseComponent::setLabelPosition(const std::string &label) {
   else if (label == "center")
     m_labelPosition = LabelPosition::CENTER;
   else {
-    WARN("Label Position %s is unknown available: no,bottom,top,center",
+    WARN("Label Position {} is unknown available: no,bottom,top,center",
          label.c_str());
   }
 }

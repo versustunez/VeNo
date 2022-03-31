@@ -13,6 +13,7 @@ Synthesizer::Synthesizer(size_t instanceID) : m_instanceId(instanceID) {
   m_config = &Core::Config::get();
   auto *instance = Core::Instance::get(instanceID);
   m_parameterHandler = instance->handler.get();
+  m_masterVolume = m_parameterHandler->getModulateParameter("master__volume");
   m_envelope = CreateRef<EnvelopeData>();
   Envelope::setup(*m_envelope, m_instanceId, "env1");
   for (auto &m_voice : m_voices) {
@@ -114,14 +115,16 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
       for (int j = 0; j < OSCILLATORS; ++j) {
         auto &voiceD = voice->voiceData.oscillatorVoices[j];
         Oscillator::process(*m_oscillators[j], voiceD, voice->currentNote);
-        outChannel.left += voiceD.output.left * envelope;
-        outChannel.right += voiceD.output.right * envelope;
+        outChannel.left += voiceD.output.left * envelope * 0.25;
+        outChannel.right += voiceD.output.right * envelope * 0.25;
       }
     }
 
     // Create Rendering  Buffer
     // Do Post-Effect Chain after each voices
 
+    outChannel.left *= m_masterVolume->getValue();
+    outChannel.right *= m_masterVolume->getValue();
     buffer.addSample(0, startSample, (float)outChannel.left);
     buffer.addSample(1, startSample, (float)outChannel.right);
     ++startSample;
@@ -131,10 +134,10 @@ void Synthesizer::addEvents() {
   VENO_PROFILE_FUNCTION();
   m_parameterEventHandler.setSynthesizer(this);
   auto &handler = Core::Instance::get(m_instanceId)->eventHandler;
-  handler.addHandler("env1_attack", &m_parameterEventHandler);
-  handler.addHandler("env1_decay", &m_parameterEventHandler);
-  handler.addHandler("env1_release", &m_parameterEventHandler);
-  handler.addHandler("env1_sustain", &m_parameterEventHandler);
+  handler.addHandler("env1__attack", &m_parameterEventHandler);
+  handler.addHandler("env1__decay", &m_parameterEventHandler);
+  handler.addHandler("env1__release", &m_parameterEventHandler);
+  handler.addHandler("env1__sustain", &m_parameterEventHandler);
 }
 void Synthesizer::invalidateEnvelopes() { m_envelope->needRecalculate = true; }
 EnvelopeData &Synthesizer::envelope() { return *m_envelope; }

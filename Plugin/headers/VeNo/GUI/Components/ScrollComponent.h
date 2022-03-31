@@ -5,7 +5,7 @@ namespace VeNo::GUI {
 class ScrollComponent : public BaseComponent {
 public:
   ScrollComponent(const std::string &name, const std::string &showName,
-                  size_t id);
+                  InstanceID id);
   void setViewComponent(Ref<BaseComponent> component);
   void resized() override;
 

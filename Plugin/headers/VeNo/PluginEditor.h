@@ -25,7 +25,7 @@ public:
 
 protected:
   std::string m_id;
-  size_t m_instanceId;
+  InstanceID m_instanceId;
   VeNo::Ref<VeNo::GUI::Interpreter> mainInterpreter{nullptr};
   juce::OpenGLContext m_openGLContext;
 };

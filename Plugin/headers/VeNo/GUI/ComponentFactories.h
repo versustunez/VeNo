@@ -10,7 +10,7 @@ class ComponentFactory {
 public:
   virtual Ref<BaseComponent> create(GUIParseItem &item,
                                     const std::string &parameter,
-                                    const std::string &name, size_t id,
+                                    const std::string &name, InstanceID id,
                                     Interpreter *interpreter);
   static void setSelector(BaseComponent *component, GUIParseItem &item);
   static void doBase(BaseComponent *, GUIParseItem &, Interpreter *);
@@ -19,7 +19,7 @@ public:
 class LabelComponentFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &item, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *interpreter) override;
 };
 
@@ -28,7 +28,7 @@ public:
   KnobComponentFactory() = default;
   explicit KnobComponentFactory(bool isValueBox);
   Ref<BaseComponent> create(GUIParseItem &item, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *interpreter) override;
   bool isValueBox{false};
 };
@@ -36,77 +36,77 @@ public:
 class WaveEditorFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &item, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *interpreter) override;
 };
 
 class SwitchFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &item, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *interpreter) override;
 };
 
 class ButtonFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &item, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *interpreter) override;
 };
 
 class LogoFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &item, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *interpreter) override;
 };
 
 class WaveThumbnailsFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *) override;
 };
 
 class ScrollComponentFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *) override;
 };
 
 class TabbedFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *) override;
 };
 
 class TabFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *) override;
 };
 
 class SelectFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *) override;
 };
 
 class GroupFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *) override;
 };
 
 class WaveFormFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
-                            const std::string &name, size_t id,
+                            const std::string &name, InstanceID id,
                             Interpreter *) override;
 };
 

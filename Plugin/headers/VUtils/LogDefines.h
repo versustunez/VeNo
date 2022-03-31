@@ -9,16 +9,16 @@
 #endif
 
 #ifndef ERROR_COLOR
-#define ERROR_COLOR "31"
+#define ERROR_COLOR 31
 #endif
 #ifndef INFO_COLOR
-#define INFO_COLOR "34"
+#define INFO_COLOR 34
 #endif
 #ifndef DEBUG_COLOR
-#define DEBUG_COLOR "32"
+#define DEBUG_COLOR 32
 #endif
 #ifndef WARN_COLOR
-#define WARN_COLOR "33"
+#define WARN_COLOR 33
 #endif
 #ifndef TIME_FORMAT
 #define TIME_FORMAT "%d-%m-%Y %H:%M:%S"

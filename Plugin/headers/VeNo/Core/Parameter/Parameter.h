@@ -11,7 +11,7 @@ enum ParameterTypes { Integer = 0, Float, Boolean };
 
 class Parameter : public juce::AudioProcessorParameter::Listener {
 protected:
-  size_t m_id{};
+  InstanceID m_id{};
   std::string m_name;
   std::string m_showName;
   double m_max{};
@@ -21,7 +21,7 @@ protected:
 
 public:
   Parameter(std::string name, std::string showName, double min, double max,
-            double value, size_t id);
+            double value, InstanceID id);
   ~Parameter() override = default;
   bool getBool();
   int getInt();
@@ -53,7 +53,7 @@ protected:
 
 public:
   ModulateParameter(std::string name, std::string showName, double min,
-                    double max, double value, size_t id);
+                    double max, double value, InstanceID id);
   double getVoice(int voice);
   int getVoiceInt(int voice);
   void setVoiceValue(int voice, double value);

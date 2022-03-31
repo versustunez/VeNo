@@ -6,7 +6,7 @@
 #include <utility>
 
 namespace VeNo::GUI {
-Knob::Knob(std::string name, std::string showName, size_t id)
+Knob::Knob(std::string name, std::string showName, InstanceID id)
     : BaseComponent(std::move(name), std::move(showName), id) {
   m_labelPosition = LabelPosition::BOTTOM;
   m_slider = CreateScope<juce::Slider>();

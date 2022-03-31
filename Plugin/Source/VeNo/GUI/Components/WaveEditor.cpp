@@ -8,7 +8,7 @@
 #include <utility>
 
 namespace VeNo::GUI {
-WaveEditor::WaveEditor(std::string name, const std::string &showName, size_t id)
+WaveEditor::WaveEditor(std::string name, const std::string &showName, InstanceID id)
     : BaseComponent(std::move(name), showName, id) {
   auto *instance = Core::Instance::get(id);
   // we get the current WaveTableLib -> is set before and will be fetched here... this includes LFOs and DistModule

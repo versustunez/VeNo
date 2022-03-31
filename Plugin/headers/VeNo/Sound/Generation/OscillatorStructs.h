@@ -33,7 +33,6 @@ struct OscillatorData {
   int id{0};
   Ref<WaveTableGroup> group{};
   OscillatorState state{};
-  DetuneState detuneState;
 };
 
 // holds a state to phase offset and start
@@ -48,6 +47,7 @@ struct SingleVoiceData {
   UnisonVoice unisonVoices[MAX_UNISON_VOICES]{};
   Channel outData[MAX_UNISON_VOICES]{};
   Channel output{};
+  DetuneState detuneState;
 };
 
 struct VoiceData {

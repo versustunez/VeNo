@@ -1,3 +1,5 @@
+#include "VeNo/Utils/Timer.h"
+
 #include <VUtils/Curve.h>
 #include <VUtils/Logging.h>
 #include <VUtils/Math.h>
@@ -13,9 +15,9 @@ Point &Point::operator<<(const std::string &_string) {
   auto values = VUtils::StringUtils::split(_string, "|");
   if (values.size() != 3)
     return *this;
-  x = (double)VUtils::StringUtils::toNumber(values[0], x);
-  y = (double)VUtils::StringUtils::toNumber(values[1], y);
-  value = (double)VUtils::StringUtils::toNumber(values[2], value);
+  x = (float)VUtils::StringUtils::toNumber(values[0], x);
+  y = (float)VUtils::StringUtils::toNumber(values[1], y);
+  value = (float)VUtils::StringUtils::toNumber(values[2], value);
   return *this;
 }
 
@@ -53,9 +55,25 @@ void WavePoint::from_string(const std::string &string) {
 Wave::~Wave() { delete[] items; }
 WaveTableGroup::~WaveTableGroup() { delete[] items; }
 
+size_t findNextValidSpot(const float* items, int size, int idx, int direction) {
+  int startIdx = idx;
+  do {
+    idx = idx + direction;
+    idx = idx < 0 ? size - 1 : idx > size ? 0 : idx;
+    // exit condition... we reached the same spot again
+    if (startIdx == idx) {
+      break;
+    }
+  } while(items[idx] != -1000);
+  return (size_t)idx;
+}
+
 WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
                                              size_t len) {
   auto *items = new float[len+1];
+  for (size_t i = 0; i < len+1; ++i)
+    items[i] = -1000; // invalid value!
+
   for (auto &point : inPoints) {
     auto *next = point.next;
     if (!next)
@@ -88,6 +106,27 @@ WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
     }
   }
   items[len] = items[0];
+  size_t invalidSpots = 0;
+  {
+    Timer timer;
+    for (size_t i = 0; i <= len; ++i) {
+      if (items[i] == -1000) {
+        invalidSpots++;
+        size_t prev = findNextValidSpot(items, (int)len, (int)i, -1);
+        size_t next = findNextValidSpot(items, (int)len, (int)i, 1);
+        if (prev == i || next == i) {
+          // we found no valid spot trigger error and break
+          ERR("Found no valid spot...");
+          break;
+        }
+        items[i] = (float)VUtils::Math::lerp(items[prev], items[next], 0.5);
+      }
+    }
+    if (invalidSpots > 0) {
+      DBGN("Time needed: {}", timer.elapsedMillis());
+      DBGN("Found {} Invalid Spots that are fixed", invalidSpots);
+    }
+  }
   auto fft = VeNo::Utils::FFT(order_lookup(len));
   fft.prepare(items, len);
   fft.forward();

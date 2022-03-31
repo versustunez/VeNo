@@ -8,7 +8,7 @@
 namespace VeNo::GUI {
 class WaveThumbnail : public BaseComponent {
 public:
-  WaveThumbnail(const std::string &name, const std::string &showName, size_t id)
+  WaveThumbnail(const std::string &name, const std::string &showName, InstanceID id)
       : BaseComponent(name, showName, id){};
   void mouseDown(const juce::MouseEvent &event) override;
   void paint(juce::Graphics &g) override;
@@ -25,7 +25,7 @@ protected:
 class WaveThumbnails : public BaseComponent, public Events::Handler {
 public:
   WaveThumbnails(const std::string &name, const std::string &showName,
-                 size_t id);
+                 InstanceID id);
 
   void resized() override;
   void updateSize();
@@ -50,7 +50,7 @@ protected:
 class WaveForm : public BaseComponent, public Events::Handler {
 public:
   WaveForm(const std::string &name, const std::string &showName,
-                 size_t id);
+           InstanceID id);
   void setIsOscillator(bool isOsc) { m_isOscillator = isOsc; }
   void setWaveId(size_t idx) { m_waveId = idx; }
   void init();

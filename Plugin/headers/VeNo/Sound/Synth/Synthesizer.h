@@ -35,8 +35,9 @@ private:
 
 private:
   friend MidiHandler;
-  size_t m_instanceId{0};
+  InstanceID m_instanceId{0};
   Core::ParameterHandler *m_parameterHandler{nullptr};
+  Core::ModulateParameter* m_masterVolume;
   Core::Config *m_config{nullptr};
   Scope<SynthVoice> m_voices[MAX_VOICES]{};
   ParameterEventHandler m_parameterEventHandler{};

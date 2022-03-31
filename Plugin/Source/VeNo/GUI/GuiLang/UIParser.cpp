@@ -158,13 +158,13 @@ void UIParser::importLine(GUIParseItem *previous, VString &line) {
   auto props = VUtils::StringUtils::split(line, "@import");
   if (props.size() != 2) {
     // TRIGGER WARNING ;)
-    WARN("FOUND INVALID IMPORT: \"%s\"", line.c_str());
+    WARN("FOUND INVALID IMPORT: \"{}\"", line.c_str());
     return;
   }
   auto importString = VUtils::StringUtils::trimCopy(props[1]);
   auto import = UIUtils::getImportParameters(this, importString);
   if (import.name == m_name) {
-    WARN("CANNOT IMPORT SAME FILE >> \"%s\"", line.c_str());
+    WARN("CANNOT IMPORT SAME FILE >> \"{}\"", line.c_str());
     return;
   }
   // yeah this logic is missing ;) we need to have a createParser thingy :D

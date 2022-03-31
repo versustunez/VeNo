@@ -6,7 +6,7 @@ namespace VeNo::GUI {
 Ref<BaseComponent> KnobComponentFactory::create(GUIParseItem &item,
                                                 const std::string &parameter,
                                                 const std::string &name,
-                                                size_t id,
+                                                InstanceID id,
                                                 Interpreter *interpreter) {
   auto comp = CreateRef<Knob>(parameter, name, id);
   if (item.has("label")) {

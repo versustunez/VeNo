@@ -1,9 +1,11 @@
 #include <VUtils/Math.h>
-#include <VeNo/Sound/DSP/Detune/VeNoX.h>
+#include <VeNo/Sound/DSP/Detune/DetuneAlgos.h>
 #include <cmath>
 
 namespace VeNo::Audio {
-void VeNoXDetune::create(DetuneState &detune) {
+void VeNoXDetune::create(DetuneState &detune, bool midiOnlyChanged) {
+  // VeNoX is not Midi based so we can use a Fast-Path and skip
+  if (midiOnlyChanged) return;
   // update Detune State ;)
   detune.lookup[0] = 1.0;
   double realDetune = getRealDetune(detune.lastDetune);

@@ -8,7 +8,7 @@ namespace VeNo::GUI {
 class TabbedComponent : public BaseComponent {
 public:
   TabbedComponent(const std::string &name, const std::string &showName,
-                  size_t id);
+                  InstanceID id);
 
   void addChild(const Ref<ComponentGroup> &group) override;
   void resized() override;
@@ -21,7 +21,7 @@ protected:
 class TabComponent : public BaseComponent {
 public:
   TabComponent(const std::string &name, const std::string &showName,
-                  size_t id);
+               InstanceID id);
 
   void addChild(const Ref<ComponentGroup> &group) override;
   juce::Colour color() { return m_color; }

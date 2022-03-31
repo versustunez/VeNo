@@ -5,7 +5,7 @@
 namespace VeNo::Core {
 ModulateParameter::ModulateParameter(std::string name, std::string showName,
                                      double min, double max, double value,
-                                     size_t id)
+                                     InstanceID id)
     : Parameter(std::move(name), std::move(showName), min, max, value, id) {
   for (double &xvalue : m_values)
     xvalue = value;

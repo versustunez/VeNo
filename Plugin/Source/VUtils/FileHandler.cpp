@@ -25,7 +25,7 @@ bool FileHandler::writeFile(const std::string &fileName,
     ofs << content;
     ofs.close();
   } catch (std::exception &e) {
-    ERR("Save Failed: %s", e.what());
+    ERR("Save Failed: {}", e.what());
     return false;
   }
   return true;

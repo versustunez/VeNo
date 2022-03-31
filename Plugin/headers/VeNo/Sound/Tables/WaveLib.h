@@ -22,9 +22,9 @@ public:
     return m_isDirty;
   } // say we need to fetch a new Group because something has changed :O
   void removeOutdated() { m_isDirty = false; }
-  void setInstanceId(size_t id) { m_instance = id; }
+  void setInstanceId(InstanceID id) { m_instance = id; }
 
-  size_t id() { return m_instance; }
+  InstanceID id() { return m_instance; }
 
   void regenerateAll();
 
@@ -33,7 +33,7 @@ protected:
   // so we can copy it on change to the OSC itself and will not crash on GUI
   // Change... and we don't have to use a Double Buffered Structure for this
   Vector<RefGroup> m_groups{};
-  size_t m_instance{0};
+  InstanceID m_instance{0};
   bool m_isDirty{false};
 };
 } // namespace VeNo::Audio

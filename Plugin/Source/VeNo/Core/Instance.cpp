@@ -7,7 +7,7 @@ Instance::~Instance() {
   mainInterpreter = nullptr;
   handler = nullptr;
 }
-Instance *Instance::get(size_t m_id) {
+Instance *Instance::get(InstanceID m_id) {
   // This should never be a problem tbh!
   return m_instances[m_id];
 }
@@ -18,7 +18,7 @@ Instance *Instance::create() {
   if (!m_instances.empty()) {
     for (size_t i = 0; i < m_instances.size(); i++) {
       if (m_instances[i] == nullptr) {
-        DBGN("Reuse Slot: %d", i);
+        DBGN("Reuse Slot: {}", i);
         instance->id = i;
         instance->init();
         m_instances[i] = instance;
@@ -29,13 +29,13 @@ Instance *Instance::create() {
   m_instances.push_back(instance);
   instance->id = m_instances.size() - 1;
   instance->init();
-  DBGN("New Spot: %d", instance->id);
+  DBGN("New Spot: {}", instance->id);
   return instance;
 }
 
-void Instance::remove(size_t m_id) {
+void Instance::remove(InstanceID m_id) {
   if (m_instances[m_id] != nullptr) {
-    DBGN("Instance: %d", m_id);
+    DBGN("Instance: {}", m_id);
     delete m_instances[m_id];
     m_instances[m_id] = nullptr;
   }
@@ -46,7 +46,7 @@ void Instance::remove(size_t m_id) {
       break;
     }
   }
-  DBGN("Clear Instances? %s", isEmpty ? "Yes" : "No");
+  DBGN("Clear Instances? {}", isEmpty ? "Yes" : "No");
   if (isEmpty)
     m_instances.clear();
 }

@@ -6,7 +6,7 @@
 namespace VeNo::Core {
 class ParameterHandler : public juce::AudioProcessorValueTreeState::Listener {
 public:
-  explicit ParameterHandler(size_t id);
+  explicit ParameterHandler(InstanceID id);
   ~ParameterHandler() override;
   juce::AudioProcessorValueTreeState::ParameterLayout setupProcessor();
   void parameterChanged(const juce::String &parameterID,
@@ -33,7 +33,7 @@ protected:
   void addParameter(const std::string &name, const std::string &showName,
                     double min, double max, double value, ParameterTypes type);
 
-  size_t m_id = 0;
+  InstanceID m_id = 0;
   std::vector<std::string> m_paramMaps;
   std::unordered_map<std::string, Parameter *> m_parameters;
   std::unordered_map<std::string, ModulateParameter *> m_modularParameters;

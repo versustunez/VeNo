@@ -8,14 +8,14 @@ class Instance;
 namespace VeNo::Windows {
 class WaveEditorWindow : public juce::DocumentWindow {
 public:
-  explicit WaveEditorWindow(size_t id);
+  explicit WaveEditorWindow(InstanceID id);
   ~WaveEditorWindow() override;
   void closeButtonPressed() override;
 
 protected:
   Core::Instance *instance;
-  size_t m_id = 0;
+  InstanceID m_id = 0;
   GUI::Interpreter interpreter{m_id};
-  static std::string createName(size_t id);
+  static std::string createName(InstanceID id);
 };
 } // namespace VeNo::Windows

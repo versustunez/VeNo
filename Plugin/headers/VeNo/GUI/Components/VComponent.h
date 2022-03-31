@@ -10,7 +10,7 @@ public:
     return findParentComponentOfClass<ClassType>();
   }
   template <class T>
-  static Ref<T> create(size_t id) {
+  static Ref<T> create(InstanceID id) {
     return CreateRef<T>("", "Unknown", id);
   }
 

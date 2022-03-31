@@ -7,7 +7,7 @@
 namespace VeNo::GUI {
 class NestedComponent : public BaseComponent {
 public:
-  NestedComponent(const std::string& name,const std::string& showName, size_t id);
+  NestedComponent(const std::string& name,const std::string& showName, InstanceID id);
   void addChild(const Ref<ComponentGroup> &param) override;
 
   void setWidthMode(bool isWidthMode) { m_isWidthMode = isWidthMode; }

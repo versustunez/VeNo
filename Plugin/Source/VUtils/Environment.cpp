@@ -13,9 +13,9 @@ Environment::Environment(const char *filename) : m_filename(filename) {
 Environment::Environment() { m_env[""] = ""; }
 
 void Environment::loadFile() {
-  DBGN("Load ENV-File: %s", m_filename.c_str());
+  DBGN("Load ENV-File: {}", m_filename.c_str());
   if (!FileHandler::fileExists(m_filename)) {
-    WARN("Cannot Load Env-File %s! File not found", m_filename.c_str());
+    WARN("Cannot Load Env-File {}! File not found", m_filename.c_str());
     return;
   }
   auto content = StringUtils::trimCopy(FileHandler::readFile(m_filename));
@@ -31,7 +31,7 @@ void Environment::loadFile() {
       m_env[StringUtils::trimCopy(split[0])] = "true";
     }
   }
-  DBGN("Found %d Elements for Environment File %s", m_env.size(),
+  DBGN("Found {} Elements for Environment File {}", m_env.size(),
        m_filename.c_str());
 }
 
@@ -89,14 +89,14 @@ bool Environment::saveFile() {
     stream << element.first << "=" << element.second << "\n";
   }
   if (!FileHandler::createDirectoryIfNotExist(m_filename)) {
-    ERR("Directory not exists or cannot create for: %s", m_filename.c_str());
+    ERR("Directory not exists or cannot create for: {}", m_filename.c_str());
     return false;
   }
   if (!FileHandler::writeFile(m_filename, stream.str())) {
-    WARN("Cannot Save Env-File %s! Write failed", m_filename.c_str());
+    WARN("Cannot Save Env-File {}! Write failed", m_filename.c_str());
     return false;
   }
-  DBGN("Saved file to: %s", m_filename.c_str());
+  DBGN("Saved file to: {}", m_filename.c_str());
   return true;
 }
 

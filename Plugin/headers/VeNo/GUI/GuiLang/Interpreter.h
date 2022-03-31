@@ -12,8 +12,8 @@ namespace VeNo::GUI {
 // Use the Generated Layout and Create some GUIs out of it! :D
 class Interpreter {
 public:
-  size_t m_id;
-  explicit Interpreter(size_t id);
+  InstanceID m_id;
+  explicit Interpreter(InstanceID id);
   ~Interpreter() = default;
   void parseMain(GUIParseItem *item);
   Ref<ComponentGroup> parseTree(GUIParseItem *item, ComponentGroup *inGroup);
@@ -26,7 +26,7 @@ protected:
   Ref<BaseComponent> createComponent(GUIParseItem *item);
   Ref<BaseComponent> createFromType(GUIParseItem *item,
                                     const std::string &parameter,
-                                    const std::string &name, size_t id);
+                                    const std::string &name, InstanceID id);
   void triggerAfterParsing(ComponentGroup *inGroup = nullptr);
   static void initMapping();
 };

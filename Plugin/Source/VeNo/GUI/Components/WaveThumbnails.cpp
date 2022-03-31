@@ -7,7 +7,7 @@
 
 namespace VeNo::GUI {
 WaveThumbnails::WaveThumbnails(const std::string &name,
-                               const std::string &showName, size_t id)
+                               const std::string &showName, InstanceID id)
     : BaseComponent(name, showName, id) {
   m_addButton = VComponent::create<Button>(m_id);
   m_addButton->setIcon(Icons::FontAwesome_Plus);
@@ -24,7 +24,10 @@ WaveThumbnails::WaveThumbnails(const std::string &name,
         }
       });
   m_components.push_back(m_addButton);
-  addAndMakeVisible(m_addButton.get());
+  auto *instance = Core::Instance::get(m_id);
+  if (instance->waveHolder.currentTable() < 4) {
+    addAndMakeVisible(m_addButton.get());
+  }
   setupFlex();
   updateSize();
 }
@@ -217,7 +220,7 @@ void WaveThumbnail::mouseDown(const juce::MouseEvent &event) {
 }
 void WaveThumbnail::resized() { generateWaveForm(); }
 WaveForm::WaveForm(const std::string &name, const std::string &showName,
-                   size_t id)
+                   InstanceID id)
     : BaseComponent(name, showName, id) {
   m_thumbnail = CreateRef<WaveThumbnail>(m_name, m_showName, m_id);
   addAndMakeVisible(*m_thumbnail);
@@ -249,7 +252,7 @@ void WaveForm::handle(Events::Event *) {
     auto string = "osc" + std::to_string(m_waveId + 1) + "__wave_position";
     auto val =
         Core::Instance::get(m_id)->treeState->getParameter(string)->getValue();
-    auto index = (size_t)std::floor(val * ((double)m_thumbnail->lib->size() - 1));
+    auto index = (size_t)std::round(val * ((double)m_thumbnail->lib->size() - 1));
     if (m_thumbnail->thumbId != index || m_thumbnail->lib->isOutdated()) {
       m_thumbnail->thumbId = index;
       m_thumbnail->generateWaveForm();

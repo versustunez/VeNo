@@ -66,6 +66,32 @@ position-x: automatic
                 width: 50%
                 [4](
                     @Tab#Env{it0} {
+                        #Flex {
+                            height: 90%
+                            flex: true
+                            justify-content: space-around
+                            align-items: center
+                            @Knob#Attack {
+                                bind: env{it0}__attack
+                                width: 80
+                                height: 100
+                            }
+                            @Knob#Decay {
+                                bind: env{it0}__decay
+                                width: 80
+                                height: 100
+                            }
+                            @Knob#Sustain {
+                                bind: env{it0}__sustain
+                                width: 80
+                                height: 100
+                            }
+                            @Knob#Release {
+                                bind: env{it0}__release
+                                width: 80
+                                height: 100
+                            }
+                        }
                     }
                 )
             }
@@ -90,11 +116,7 @@ position-x: automatic
             @import Footer
         }
     }
-}
-
-
-
-)"";
+})"";
 std::string Files::OSC = R""(#OSCGroup {
     position-y: automatic
     #CTRL {

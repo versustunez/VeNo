@@ -118,7 +118,7 @@ void UIUtils::setColor(GUIParseItem *item, VString &value) {
     auto &colorComponent = item->colorComponent;
     if (split.size() != 4 && split.size() != 3) {
       colorComponent.hasColor = false;
-      ERR("Wrong size: %d needed at least 3 and max 4", split.size());
+      ERR("Wrong size: {} needed at least 3 and max 4", split.size());
       return;
     }
     colorComponent.isPreColor = false;

@@ -10,10 +10,10 @@ namespace VeNo::Core {
 // Instance has a GetInstance method
 class Instance {
 public:
-  size_t id{};
-  static Instance *get(size_t m_id);
+  InstanceID id{};
+  static Instance *get(InstanceID m_id);
   static Instance *create();
-  static void remove(size_t m_id);
+  static void remove(InstanceID m_id);
   void init();
   Scope<ParameterHandler> handler{nullptr};
   juce::AudioProcessorValueTreeState *treeState = nullptr;

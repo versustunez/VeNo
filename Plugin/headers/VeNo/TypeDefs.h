@@ -49,4 +49,5 @@ typedef int32_t i32;
 typedef int64_t i64;
 
 typedef size_t s64;
+typedef size_t InstanceID;
 } // namespace VeNo

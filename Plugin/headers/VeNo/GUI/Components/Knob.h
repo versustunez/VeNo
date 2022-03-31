@@ -13,7 +13,7 @@ class LiveLabel;
 namespace VeNo::GUI {
 class Knob : public BaseComponent, public juce::Label::Listener {
 public:
-  Knob(std::string name, std::string showName, size_t id);
+  Knob(std::string name, std::string showName, InstanceID id);
   ~Knob() override;
   // Component
   void paint(juce::Graphics &g) override;

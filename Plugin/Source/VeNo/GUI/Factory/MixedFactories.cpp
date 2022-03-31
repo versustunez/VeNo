@@ -9,7 +9,7 @@
 namespace VeNo::GUI {
 Ref<BaseComponent> LogoFactory::create(GUIParseItem &item,
                                        const std::string &parameter,
-                                       const std::string &name, size_t id,
+                                       const std::string &name, InstanceID id,
                                        Interpreter *interpreter) {
   auto comp = CreateRef<Logo>(parameter, name, id);
   doBase(comp.get(), item, interpreter);
@@ -18,7 +18,7 @@ Ref<BaseComponent> LogoFactory::create(GUIParseItem &item,
 
 Ref<BaseComponent> WaveEditorFactory::create(GUIParseItem &item,
                                              const std::string &parameter,
-                                             const std::string &name, size_t id,
+                                             const std::string &name, InstanceID id,
                                              Interpreter *interpreter) {
   auto component = CreateRef<WaveEditor>(parameter, name, id);
   component->setColorComponent(item.colorComponent);
@@ -29,7 +29,7 @@ Ref<BaseComponent> WaveEditorFactory::create(GUIParseItem &item,
 Ref<BaseComponent> WaveThumbnailsFactory::create(GUIParseItem &item,
                                                  const std::string &parameter,
                                                  const std::string &name,
-                                                 size_t id, Interpreter *) {
+                                                 InstanceID id, Interpreter *) {
   auto scrollComponent = CreateRef<ScrollComponent>(parameter, name, id);
   scrollComponent->setSelectorId("WaveThumbnails");
   auto comp = CreateRef<WaveThumbnails>(parameter, name, id);
@@ -42,7 +42,7 @@ Ref<BaseComponent> WaveThumbnailsFactory::create(GUIParseItem &item,
 Ref<BaseComponent> ScrollComponentFactory::create(GUIParseItem &item,
                                                   const std::string &parameter,
                                                   const std::string &name,
-                                                  size_t id, Interpreter *) {
+                                                  InstanceID id, Interpreter *) {
 
   auto comp = CreateRef<ScrollComponent>(parameter, name, id);
   if (item.has("axis")) {
@@ -53,14 +53,14 @@ Ref<BaseComponent> ScrollComponentFactory::create(GUIParseItem &item,
 
 Ref<BaseComponent> TabbedFactory::create(GUIParseItem &,
                                          const std::string &parameter,
-                                         const std::string &name, size_t id,
+                                         const std::string &name, InstanceID id,
                                          Interpreter *) {
   return CreateRef<TabbedComponent>(parameter, name, id);
 }
 
 Ref<BaseComponent> TabFactory::create(GUIParseItem &item,
                                       const std::string &parameter,
-                                      const std::string &name, size_t id,
+                                      const std::string &name, InstanceID id,
                                       Interpreter *) {
   auto tab = CreateRef<TabComponent>(parameter, name, id);
   auto theme = Core::Config::get().theme().get();
@@ -70,26 +70,35 @@ Ref<BaseComponent> TabFactory::create(GUIParseItem &item,
   return tab;
 }
 
-Ref<BaseComponent> SelectFactory::create(GUIParseItem &,
+Ref<BaseComponent> SelectFactory::create(GUIParseItem &item,
                                          const std::string &parameter,
-                                         const std::string &name, size_t id,
+                                         const std::string &name, InstanceID id,
                                          Interpreter *) {
 
   auto comp = CreateRef<Select>(parameter, name, id);
-  // @TODO: ADD PRESET AND VALUE MODE ;)
+  if (item.has("values")) {
+    auto values = VUtils::StringUtils::split(item["values"], ",");
+    for (auto& value : values) {
+      comp->addItem(value);
+    }
+  } else if (item.has("preset")) {
+    auto& preset = item["preset"];
+    comp->setupPreset(preset);
+  }
+  comp->createAttachment();
   return comp;
 }
 
 Ref<BaseComponent> GroupFactory::create(GUIParseItem &,
                                         const std::string &parameter,
-                                        const std::string &name, size_t id,
+                                        const std::string &name, InstanceID id,
                                         Interpreter *) {
   return CreateRef<NestedComponent>(parameter, name, id);
 }
 
 Ref<BaseComponent> WaveFormFactory::create(GUIParseItem &item,
                                            const std::string &parameter,
-                                           const std::string &name, size_t id,
+                                           const std::string &name, InstanceID id,
                                            Interpreter *) {
   auto waveform = CreateRef<WaveForm>(parameter, name, id);
   if (item.has("osc") && item["osc"] == "true") {

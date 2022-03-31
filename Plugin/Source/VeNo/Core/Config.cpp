@@ -19,8 +19,8 @@ Config::Config() {
   createForPath(layoutPath);
   m_theme = CreateRef<Theme::Theme>(m_config);
   m_theme->init();
-  DBGN("Preset Dir: %s", presetPath.c_str());
-  DBGN("Layout Dir: %s", layoutPath.c_str());
+  DBGN("Preset Dir: {}", presetPath.c_str());
+  DBGN("Layout Dir: {}", layoutPath.c_str());
 }
 Config::~Config() {
   DBGN("Deleting");
@@ -32,18 +32,18 @@ Config::~Config() {
 void Config::initConfig() {
   Guard lockGuard(m_guard);
   m_config = Properties::create("editor-config", "VeNo");
-  DBGN("found @ %s", m_config->filename().c_str());
+  DBGN("found @ {}", m_config->filename().c_str());
   m_scale = m_config->asDouble("editor.scale", 1.0);
 }
 void Config::registerEditor(std::string &id,
                             juce::AudioProcessorEditor *editor) {
-  DBGN("ID: %s", id.c_str());
+  DBGN("ID: {}", id.c_str());
   initLayout();
   initTheme();
   m_editors[id] = editor;
 }
 void Config::removeEditor(std::string &id) {
-  DBGN("ID: %s", id.c_str());
+  DBGN("ID: {}", id.c_str());
   m_editors.erase(id);
   if (m_editors.empty()) {
     GUI::Fonts::destroyAll();
@@ -58,11 +58,11 @@ Config &Config::get() {
 }
 void Config::registerProcessor(std::string &id,
                                juce::AudioProcessor *processor) {
-  DBGN("ID: %s", id.c_str());
+  DBGN("ID: {}", id.c_str());
   m_processors[id] = processor;
 }
 void Config::removeProcessor(std::string &id) {
-  DBGN("ID: %s", id.c_str());
+  DBGN("ID: {}", id.c_str());
   m_processors.erase(id);
   // If all Processors are gone remove VeNo! this will also free-up memory from
   // WaveTables and other stuff! :P

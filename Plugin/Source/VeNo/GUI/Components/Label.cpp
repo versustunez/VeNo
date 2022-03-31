@@ -5,7 +5,7 @@
 #include <utility>
 
 namespace VeNo::GUI {
-Label::Label(std::string name, std::string showName, size_t id)
+Label::Label(std::string name, std::string showName, InstanceID id)
     : BaseComponent(std::move(name), std::move(showName), id) {
   m_label = std::make_unique<juce::Label>();
   m_label->setJustificationType(juce::Justification::centred);

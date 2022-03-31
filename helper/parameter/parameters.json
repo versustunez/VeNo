@@ -211,9 +211,9 @@
       "name": "{id}__detune_mode",
       "showName": "{sid} Detune Mode",
       "modulateAble": false,
-      "tooltip": "Detune Mode",
-      "value": 1,
-      "maxValue": 2,
+      "tooltip": "Detune Spread Mode",
+      "value": 2,
+      "maxValue": 4,
       "minValue": 1,
       "type": "Integer"
     },
@@ -242,7 +242,7 @@
       "showName": "{sid} Detune Stereo",
       "modulateAble": true,
       "tooltip": "Detune Stereo Spread",
-      "value": 50,
+      "value": 100,
       "maxValue": 200,
       "minValue": 0,
       "type": "Float"

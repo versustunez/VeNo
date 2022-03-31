@@ -9,7 +9,7 @@
 namespace VeNo::GUI {
 std::unordered_map<std::string, Ref<ComponentFactory>> Interpreter::factories =
     {};
-Interpreter::Interpreter(size_t id) : m_id(id) {}
+Interpreter::Interpreter(InstanceID id) : m_id(id) {}
 Ref<ComponentGroup> Interpreter::parseTree(GUIParseItem *item,
                                            ComponentGroup *inGroup) {
   if (item == nullptr)
@@ -88,7 +88,7 @@ void Interpreter::parseMain(GUIParseItem *item) {
 Ref<BaseComponent> Interpreter::createFromType(GUIParseItem *item,
                                                const std::string &parameter,
                                                const std::string &name,
-                                               size_t id) {
+                                               InstanceID id) {
   VENO_PROFILE_FUNCTION();
   if (factories.empty())
     initMapping();

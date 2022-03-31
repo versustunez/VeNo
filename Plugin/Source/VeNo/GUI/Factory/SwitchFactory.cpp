@@ -4,7 +4,7 @@
 namespace VeNo::GUI {
 Ref<BaseComponent> SwitchFactory::create(GUIParseItem &item,
                                          const std::string &parameter,
-                                         const std::string &name, size_t id,
+                                         const std::string &name, InstanceID id,
                                          Interpreter *interpreter) {
   auto comp = CreateRef<Switch>(parameter, name, id);
   if (item.has("on") && item.has("off")) {

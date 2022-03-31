@@ -4,7 +4,7 @@
 #include <VeNo/Window/WaveEditor.h>
 
 namespace VeNo::Windows {
-WaveEditorWindow::WaveEditorWindow(size_t id)
+WaveEditorWindow::WaveEditorWindow(InstanceID id)
     : juce::DocumentWindow(createName(id), juce::Colours::black,
                            juce::DocumentWindow::closeButton, true),
       m_id(id) {
@@ -43,7 +43,7 @@ void WaveEditorWindow::closeButtonPressed() {
   DBGN("Close WaveEditor");
   instance->state.waveEditorWindow = nullptr;
 }
-std::string WaveEditorWindow::createName(size_t id) {
+std::string WaveEditorWindow::createName(InstanceID id) {
   return "WaveEditor - VeNo [" + std::to_string(id + 1) + "]";
 }
 } // namespace VeNo::Windows
