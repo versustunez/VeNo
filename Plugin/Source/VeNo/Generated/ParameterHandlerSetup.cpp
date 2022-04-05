@@ -40,10 +40,17 @@ void ParameterHandler::setupParameter () {
     std::string lfoId = "lfo" + std::to_string (i) + "__";
     std::string LFOName = "LFO" + std::to_string (i);
     addParameter (lfoId + "active", LFOName + " Active", 0, 1, 0, Boolean);
-    addParameter (lfoId + "voices", LFOName + " Voices", 1, 9, 1, Integer);
     addParameterModulate (lfoId + "rate", LFOName + " Rate", 1, 40, 1, Float);
     addParameterModulate (lfoId + "phase", LFOName + " Phase offset", 0, 1, 0, Float);
-    addParameter (lfoId + "random_phase", LFOName + " Random Phase", 0, 1, 0, Boolean);
+    addParameter (lfoId + "wave_position", LFOName + " Waveform Position", 0, 1, 0, Float);
+  }
+
+  for (int i = 1; i < 3; i++) {
+    std::string rngId = "rng" + std::to_string (i) + "__";
+    std::string RandomName = "Random" + std::to_string (i);
+    addParameter (rngId + "active", RandomName + " Active", 0, 1, 0, Boolean);
+    addParameterModulate (rngId + "change_rate", RandomName + " Change Rate", 16, 4096, 256, Integer);
+    addParameterModulate (rngId + "mode", RandomName + " Mode", 1, 2, 1, Integer);
   }
 
   for (int i = 1; i < 5; i++) {

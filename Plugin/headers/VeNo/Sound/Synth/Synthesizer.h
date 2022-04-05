@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Matrix.h"
 #include "ParameterEventHandler.h"
 #include "SynthVoice.h"
 
@@ -26,6 +27,7 @@ public:
   void invalidateEnvelopes();
 
   EnvelopeData &envelope();
+  Matrix& matrix() { return m_matrix; }
 
 private:
   void renderVoices(juce::AudioBuffer<float> &, int startSample,
@@ -46,5 +48,6 @@ private:
   Ref<OscillatorData> m_oscillators[OSCILLATORS];
   Ref<EnvelopeData> m_envelope;
   juce::CriticalSection lock;
+  Matrix m_matrix;
 };
 } // namespace VeNo::Audio

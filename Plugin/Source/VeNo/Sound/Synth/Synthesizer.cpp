@@ -8,7 +8,9 @@
 #include <random>
 
 namespace VeNo::Audio {
-Synthesizer::Synthesizer(size_t instanceID) : m_instanceId(instanceID) {
+Synthesizer::Synthesizer(size_t instanceID)
+    : m_instanceId(instanceID),
+      m_matrix(instanceID) {
   VENO_PROFILE_FUNCTION();
   m_config = &Core::Config::get();
   auto *instance = Core::Instance::get(instanceID);
@@ -71,6 +73,7 @@ void Synthesizer::setSampleRate(double sampleRate) {
   assert(sampleRate > 0);
   m_envelope->sampleRate = sampleRate;
   m_envelope->needRecalculate = true;
+  m_matrix.handle().setSampleRate(sampleRate);
 }
 void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
                                int startSample, int numSamples) {
@@ -84,40 +87,44 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
     VENO_PROFILE_SCOPE("renderVoices[sample]");
     Channel outChannel{};
     // Update Matrix here
-    // matrix->update();
+    m_matrix.update();
     if (Envelope::prepare(*m_envelope)) {
       for (const auto &voice : m_voices)
         Envelope::needNextStep(voice->envelopeData, *m_envelope);
     }
     for (const auto &oscillator : m_oscillators) {
-      VENO_PROFILE_SCOPE("Update Oscillator");
       Oscillator::prepare(*oscillator);
     }
 
     for (auto &voice : m_voices) {
-      VENO_PROFILE_SCOPE("Render Voice");
       if (!voice->isActive || voice->velocity == 0 ||
           voice->envelopeData.state == EnvelopeState::IDLE)
         continue;
       double envelope = Envelope::process(voice->envelopeData, *m_envelope);
       if (envelope == 0) {
         // clear Voice
-        if (voice->isDirty)
-          SynthVoiceHelper::clear(*this, *voice.get());
+        SynthVoiceHelper::clear(*this, *voice.get());
         continue;
       }
-      if (voice->isDirty){
+      if (voice->isDirty) {
         for (int j = 0; j < OSCILLATORS; ++j) {
-          Oscillator::prepareVoice(*m_oscillators[j], voice->voiceData.oscillatorVoices[j]);
+          Oscillator::prepareVoice(*m_oscillators[j],
+                                   voice->voiceData.oscillatorVoices[j]);
         }
+        voice->isDirty = false;
       }
 
+      Channel voiceData{};
       for (int j = 0; j < OSCILLATORS; ++j) {
         auto &voiceD = voice->voiceData.oscillatorVoices[j];
-        Oscillator::process(*m_oscillators[j], voiceD, voice->currentNote);
-        outChannel.left += voiceD.output.left * envelope * 0.25;
-        outChannel.right += voiceD.output.right * envelope * 0.25;
+        if (Oscillator::process(*m_oscillators[j], voiceD,
+                                voice->currentNote)) {
+          voiceData.left += voiceD.output.left;
+          voiceData.right += voiceD.output.right;
+        }
       }
+      outChannel.left += voiceData.left * envelope * 0.25;
+      outChannel.right += voiceData.right * envelope * 0.25;
     }
 
     // Create Rendering  Buffer

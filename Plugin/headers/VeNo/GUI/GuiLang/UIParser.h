@@ -9,9 +9,11 @@ namespace VeNo::GUI {
 struct UIParserLoop {
   size_t beginningLine{0};
   int times{-1};
+  int offset{0};
   int done{0};
-  size_t stackSize{0};
+  size_t size{0};
   VString itVar{};
+  VString itVarOffset{};
 };
 class UIParser {
 public:

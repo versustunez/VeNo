@@ -1,8 +1,9 @@
 #pragma once
-#include <VeNo/TypeDefs.h>
 #include "Structs.h"
 #include "UIParser.h"
 
+#include <VeNo/TypeDefs.h>
+#include <optional>
 #include <regex>
 
 namespace VeNo::GUI {
@@ -11,10 +12,11 @@ public:
   enum class Direction { X = 0, Y };
   static int getValue(VString value, int parentValue);
   static int getOffsetFromParent(GUIParseItem *item, Direction direction);
-  static VString getParameterReplaced(UIParser *parser, VString& input);
-  static void setProperty(GUIParseItem *item, VString& name, VString& value);
-  static ImportItem getImportParameters(UIParser* parser, VString &import);
+  static VString getParameterReplaced(UIParser *parser, VString &input);
+  static void setProperty(GUIParseItem *item, VString &name, VString &value);
+  static ImportItem getImportParameters(UIParser *parser, VString &import);
   static void setColor(GUIParseItem *item, VString &value);
+
 protected:
   static std::regex s_regEx;
 };

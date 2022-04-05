@@ -11,7 +11,7 @@ void EventHandler::handle(std::string &name) {
     m_events[name]->handle();
 }
 EventHandler::EventHandler(InstanceID id) : m_id(id) {}
-EventHandler::~EventHandler() noexcept {
+EventHandler::~EventHandler() {
   for (auto *owningHandler : m_owningHandlers) {
     delete owningHandler;
   }
@@ -19,11 +19,11 @@ EventHandler::~EventHandler() noexcept {
 }
 // @TODO: Allow Multi Handle for Same Parameter
 void EventHandler::addHandler(const std::string &name, Handler *handler) {
-  DBGN("[{}], Registered EventHandler: {}", (void*)this, name.c_str());
+/*  DBGN("[{}], Registered EventHandler: {}", (void*)this, name.c_str());*/
   m_handler[name] = handler;
 }
 void EventHandler::removeHandler(const std::string &name) {
-  DBGN("Removed EventHandler: %s", name.c_str());
+  DBGN("Removed EventHandler: {}", name.c_str());
   m_handler.erase(name);
 }
 void EventHandler::triggerEvent(const std::string &name, Event *event) {

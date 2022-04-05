@@ -5,6 +5,7 @@
 #include <VeNo/PluginEditor.h>
 #include <VeNo/PluginProcessor.h>
 #include <string>
+#include <VeNo/TypeDefs.h>
 
 using micro = std::chrono::duration<double, std::micro>;
 using ms = std::chrono::duration<double, std::milli>;
@@ -25,7 +26,7 @@ public:
 
 protected:
   std::string m_id;
-  InstanceID m_instanceId;
+  VeNo::InstanceID m_instanceId;
   VeNo::Ref<VeNo::GUI::Interpreter> mainInterpreter{nullptr};
   juce::OpenGLContext m_openGLContext;
 };

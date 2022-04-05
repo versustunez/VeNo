@@ -1,3 +1,4 @@
+#include "VeNo/Utils/ProfileMacros.h"
 #include "VeNo/Utils/Timer.h"
 
 #include <VUtils/Curve.h>
@@ -47,7 +48,7 @@ void WavePoint::from_string(const std::string &string) {
     } else if (name == "curve") {
       curved << value.substr(1, value.size() - 1);
     } else {
-      ERR("%s is not a property of WavePoint", name.c_str());
+      ERR("{} is not a property of WavePoint", name);
     }
   }
 }
@@ -70,6 +71,7 @@ size_t findNextValidSpot(const float* items, int size, int idx, int direction) {
 
 WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
                                              size_t len) {
+  VENO_PROFILE_FUNCTION();
   auto *items = new float[len+1];
   for (size_t i = 0; i < len+1; ++i)
     items[i] = -1000; // invalid value!
@@ -151,20 +153,6 @@ int WaveGenerator::order_lookup(size_t len) {
   case 32: return 5;
   default: return 1;
   }
-}
-
-void WaveGenerator::downSample(Wave &dst, Wave &src) {
-  auto *items = new float[dst.len];
-  size_t to = 0;
-  for (size_t i = 0; i < src.len; i+=2, to++) {
-    items[to] = (float)VUtils::Math::lerp(src.items[i],src.items[i+1], 0.5);
-  }
-  auto fft = VeNo::Utils::FFT(order_lookup(dst.len));
-  fft.prepare(items, dst.len);
-  fft.forward();
-  fft.reverse();
-  delete[] items;
-  dst.items = fft.data();
 }
 
 

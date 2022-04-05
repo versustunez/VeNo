@@ -66,6 +66,7 @@ for (let item of root) {
 }
 createForType(config.json.osc, config.json.oscConfig);
 createForType(config.json.lfo, config.json.lfoConfig);
+createForType(config.json.rng, config.json.randomConfig);
 createForType(config.json.envelope, config.json.envelopeConfig);
 newLine();
 for (let item of config.json.distortion) {

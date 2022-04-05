@@ -1,9 +1,8 @@
-#include <VeNo/Core/Config.h>
-#include <VeNo/Utils/ProfileMacros.h>
-
 #include <VUtils/StringUtils.h>
+#include <VeNo/Core/Config.h>
 #include <VeNo/GUI/GuiLang/UIParser.h>
 #include <VeNo/GUI/GuiLang/UIUtils.h>
+#include <VeNo/Utils/ProfileMacros.h>
 #include <fstream>
 
 namespace VeNo::GUI {
@@ -23,7 +22,7 @@ void UIParser::loadFile(const VString &filePath) {
     m_isFile = true;
     fileToRead.close();
   } else {
-    fprintf(stderr, "Failed to read file: %s", filePath.c_str());
+    ERR("Failed to read file: {}", filePath);
   }
 }
 
@@ -47,14 +46,16 @@ void UIParser::parse() {
     }
     auto loop = getLoop(line, i);
     if (loop.times > -1) {
-      loop.stackSize = m_stack.size();
+      loop.size = m_stack.size();
       loop.itVar = "it" + std::to_string(m_loopStack.size());
+      loop.itVarOffset = "it" + std::to_string(m_loopStack.size()) + "_1";
       m_loopStack.push(loop);
-      m_parameters[loop.itVar] = std::to_string(loop.done+1);
+      m_parameters[loop.itVar] = std::to_string(loop.done + 1);
+      m_parameters[loop.itVarOffset] =
+          std::to_string(loop.done + 1 + loop.offset);
       continue;
     } else if (line.rfind(')') == 0) {
-      if (m_loopStack.empty() ||
-          m_loopStack.top().stackSize != m_stack.size()) {
+      if (m_loopStack.empty() || m_loopStack.top().size != m_stack.size()) {
         ERR("Closing Loop with broken Stack Size... you missing a closing }");
         if (m_shouldCrash) {
           m_erroredLine = i;
@@ -66,9 +67,13 @@ void UIParser::parse() {
       top.done++;
       if (top.times > top.done) {
         i = top.beginningLine;
-        m_parameters[top.itVar] = std::to_string(top.done+1);
+        m_parameters[top.itVar] = std::to_string(top.done + 1);
+        m_parameters[top.itVarOffset] =
+            std::to_string(top.done + 1 + loop.offset);
         continue;
       }
+      m_parameters.erase(top.itVar);
+      m_parameters.erase(top.itVarOffset);
       m_loopStack.pop();
     } else if (line.rfind("@import", 0) == 0) {
       importLine(item, line);
@@ -184,7 +189,11 @@ UIParserLoop UIParser::getLoop(VString &line, size_t lineNumber) {
   }
   // how often?
   auto timesString = line.substr(startPos + 1, endPos - 1);
-  loop.times = VUtils::StringUtils::toNumber(timesString, -1);
+  auto split = VUtils::StringUtils::split(timesString, ":", -1);
+  loop.times = VUtils::StringUtils::toNumber(split[0], -1);
+  if (split.size() > 1) {
+    loop.offset = VUtils::StringUtils::toNumber(split[1], 0);
+  }
   return loop;
 }
 

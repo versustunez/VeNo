@@ -95,7 +95,7 @@ Ref<BaseComponent> Interpreter::createFromType(GUIParseItem *item,
   if (factories.find(item->component->name) != factories.end())
     return factories[item->component->name]->create(*item, parameter, name, id,
                                                     this);
-  WARN(R"(Found unknown Component: "%s")", item->component->name.c_str());
+  WARN(R"(Found unknown Component: "{}")", item->component->name);
   return nullptr;
 }
 

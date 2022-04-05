@@ -25,13 +25,12 @@ ActionRegistry::ActionRegistry(size_t instanceId) : m_id(instanceId) {
 }
 void ActionRegistry::addEditorActions() {
   for (size_t i = 0; i < 6; ++i) {
-    std::string action = "open_wave_editor_" + std::to_string(i + 1);
-    addAction(action)->setCB([this](Events::Event *ev) {
+    std::string actionIdx = "open_wave_editor_" + std::to_string(i + 1);
+    addAction(actionIdx)->setCB([this](Events::Event *ev) {
       auto *instance = Core::Instance::get(m_id);
       auto &state = instance->state;
-      if (state.waveEditorWindow) {
+      if (state.waveEditorWindow)
         state.waveEditorWindow.reset(nullptr);
-      }
       auto &action = ev->as<Events::ButtonClickedEvent>()->button->action();
       auto idxString = VUtils::StringUtils::split(action, "_").back();
       auto index = (size_t)VUtils::StringUtils::toNumber(idxString, 1);

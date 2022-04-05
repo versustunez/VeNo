@@ -39,7 +39,6 @@ bool Oscillator::prepare(OscillatorData &osc) {
 }
 bool Oscillator::process(OscillatorData &osc, SingleVoiceData &voice,
                          int currentNote) {
-  VENO_PROFILE_FUNCTION();
   if (!osc.state.active->getBool())
     return false;
   // update voice data
@@ -54,7 +53,6 @@ bool Oscillator::finish(OscillatorData &, SingleVoiceData &) {
 }
 void Oscillator::updateFrequency(OscillatorData &osc, SingleVoiceData &voice,
                                  int currentNote) {
-  VENO_PROFILE_FUNCTION();
   auto &state = osc.state;
   auto wheelPos = state.pitchWheel->getValue();
   double pitchPos = wheelPos >= 0 ? state.pitchBendUp->getValue()
@@ -69,7 +67,6 @@ void Oscillator::updateFrequency(OscillatorData &osc, SingleVoiceData &voice,
 }
 
 void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice) {
-  VENO_PROFILE_FUNCTION();
   auto voiceCount = osc.state.voices->getInt();
   if (voiceCount == 0) {
     voice.output.left = 0;
@@ -111,7 +108,6 @@ void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice) {
 }
 float Oscillator::renderVoice(SingleVoiceData &voice, double inc,
                                 const Wave &table, int idx) {
-  VENO_PROFILE_FUNCTION();
   auto &d = voice.unisonVoices[idx];
   d.phaseInc = (float)inc * voice.detuneState.lookup[idx];
   d.phaseOffset += d.phaseInc;
@@ -130,7 +126,6 @@ float Oscillator::renderVoice(SingleVoiceData &voice, double inc,
 }
 
 void Oscillator::prepareVoice(OscillatorData &osc, SingleVoiceData voice) {
-  VENO_PROFILE_FUNCTION();
   auto &random = Utils::Random::get();
   if (osc.state.randomPhase->getBool()) {
     for (auto &unisonVoice : voice.unisonVoices) {

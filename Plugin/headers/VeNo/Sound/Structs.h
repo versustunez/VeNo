@@ -5,8 +5,8 @@
 
 namespace VeNo::Audio {
 struct Channel {
-  double left;
-  double right;
+  double left{0};
+  double right{0};
 };
 
 struct WaveHolder {

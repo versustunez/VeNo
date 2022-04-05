@@ -275,16 +275,6 @@
       "type": "Boolean"
     },
     {
-      "name": "{id}__voices",
-      "showName": "{sid} Voices",
-      "modulateAble": false,
-      "tooltip": "How Many Voices he should play at Once: anyone above 1 will create Unison/Detune Voices",
-      "value": 1,
-      "maxValue": 9,
-      "minValue": 1,
-      "type": "Integer"
-    },
-    {
       "name": "{id}__rate",
       "showName": "{sid} Rate",
       "modulateAble": true,
@@ -305,14 +295,14 @@
       "type": "Float"
     },
     {
-      "name": "{id}__random_phase",
-      "showName": "{sid} Random Phase",
+      "name": "{id}__wave_position",
+      "showName": "{sid} Waveform Position",
       "modulateAble": false,
-      "tooltip": "Generate a Random Phase at each new Note",
+      "tooltip": "Selected Waveform",
       "value": 0,
       "maxValue": 1,
       "minValue": 0,
-      "type": "Boolean"
+      "type": "Float"
     }
   ],
   "envelopeConfig": {
@@ -360,6 +350,43 @@
       "maxValue": 1500,
       "minValue": 0,
       "type": "Float"
+    }
+  ],
+  "randomConfig": {
+    "count": 2,
+    "id": "rng",
+    "sid": "Random"
+  },
+  "rng": [
+    {
+      "name": "{id}__active",
+      "showName": "{sid} Active",
+      "modulateAble": false,
+      "tooltip": "Active or Deactivate Random Module",
+      "value": 0,
+      "maxValue": 1,
+      "minValue": 0,
+      "type": "Boolean"
+    },
+    {
+      "name": "{id}__change_rate",
+      "showName": "{sid} Change Rate",
+      "modulateAble": true,
+      "tooltip": "Change Rate of Random Module",
+      "value": 256,
+      "maxValue": 4096,
+      "minValue": 16,
+      "type": "Integer"
+    },
+    {
+      "name": "{id}__mode",
+      "showName": "{sid} Mode",
+      "modulateAble": true,
+      "tooltip": "Random Mode (Noise, Simplex)",
+      "value": 1,
+      "maxValue": 2,
+      "minValue": 1,
+      "type": "Integer"
     }
   ],
   "distortion": [

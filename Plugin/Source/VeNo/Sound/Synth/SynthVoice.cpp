@@ -24,6 +24,7 @@ void SynthVoiceHelper::noteOff(Synthesizer &synth, SynthVoice &voice,
 void SynthVoiceHelper::clear(Synthesizer &synth, SynthVoice &voice) {
   voice.currentNote = -1;
   voice.currentChannel = -1;
+  voice.noteOnTime = 0;
   voice.isActive = false;
   voice.velocity = 0.0;
   voice.isDirty = false;

@@ -12,8 +12,10 @@ void MidiHandler::handleMidiMessage(juce::MidiMessage message,
   if (message.isAllNotesOff() || message.isAllSoundOff()) {
     auto *voices = synthesizer.voices();
     synthesizer.lastNoteOnCounter = 0;
-    for (int i = 0; i < MAX_VOICES; i++)
+    for (int i = 0; i < MAX_VOICES; i++) {
+      synthesizer.matrix().handle().triggerNoteOff(i);
       SynthVoiceHelper::noteOff(synthesizer, *voices[i], 1.0f);
+    }
   } else if (message.isPitchWheel()) {
     double realValue = (((double)message.getPitchWheelValue() / 16383) * 2) - 1;
     synthesizer.parameterHandler()
@@ -39,14 +41,15 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
   for (int i = 0; i < MAX_VOICES; i++) {
     auto &voice = voices[i];
     if (voice->currentChannel == midiChannel &&
-        voice->currentNote == midiNoteNumber)
+        voice->currentNote == midiNoteNumber) {
+      synthesizer.matrix().handle().triggerNoteOff(i);
       SynthVoiceHelper::noteOff(synthesizer, *voice, 1.0);
+    }
   }
   Core::ParameterHandler &handler = *synthesizer.parameterHandler();
   bool legato = handler["mono_legato"]->getBool();
   int index = 0;
   int voiceToSteal = -1;
-  int highestNote = -1;
   float velocity = message.getFloatVelocity();
 
   for (int i = 0; i < MAX_VOICES; i++) {
@@ -55,6 +58,7 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
       voice->noteOnTime = ++synthesizer.lastNoteOnCounter;
       SynthVoiceHelper::noteOn(synthesizer, *voice, midiChannel, midiNoteNumber,
                                velocity, legato);
+      synthesizer.matrix().handle().triggerNoteOn(i);
       synthesizer.hasActiveNote = true;
       voiceToSteal = -1;
       break;
@@ -66,18 +70,18 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
       synthesizer.hasActiveNote = true;
       break;
     }
-    if (voice->currentNote > highestNote &&
-        (voiceToSteal == -1 ||
-         voice->noteOnTime < voices[voiceToSteal]->noteOnTime))
+    if (voiceToSteal == -1 ||
+        voice->noteOnTime < voices[voiceToSteal]->noteOnTime)
       voiceToSteal = index;
     index++;
   }
   if (voiceToSteal != -1) {
     auto &voice = voices[voiceToSteal];
     if (!legato) {
-      SynthVoiceHelper::noteOff(synthesizer, *voice, 0.0f);
+      SynthVoiceHelper::noteOff(synthesizer, *voice, voice->velocity);
       voice->noteOnTime = ++synthesizer.lastNoteOnCounter;
     }
+    synthesizer.matrix().handle().triggerNoteOn(voiceToSteal);
     SynthVoiceHelper::noteOn(synthesizer, *voice, midiChannel, midiNoteNumber,
                              velocity, legato);
     synthesizer.hasActiveNote = true;
@@ -92,8 +96,10 @@ void MidiHandler::noteOff(juce::MidiMessage &message,
   for (int i = 0; i < MAX_VOICES; i++) {
     auto &voice = voices[i];
     if (voice->currentNote == midiNoteNumber &&
-        voice->currentChannel == midiChannel)
+        voice->currentChannel == midiChannel) {
+      synthesizer.matrix().handle().triggerNoteOff(i);
       SynthVoiceHelper::noteOff(synthesizer, *voice, voice->velocity);
+    }
     else if (voice->isActive)
       synthesizer.hasActiveNote = true;
   }

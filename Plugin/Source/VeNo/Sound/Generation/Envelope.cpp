@@ -11,8 +11,6 @@ void Envelope::setup(EnvelopeData &data, size_t instanceId,
   rawData.decay = handler->getParameter(envelope, "decay");
   rawData.sustain = handler->getParameter(envelope, "sustain");
   rawData.release = handler->getParameter(envelope, "release");
-  assert(rawData.release != nullptr && rawData.attack != nullptr &&
-         rawData.decay != nullptr && rawData.sustain != nullptr);
 }
 
 bool Envelope::prepare(EnvelopeData &data) {
