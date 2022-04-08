@@ -17,17 +17,18 @@ class Synthesizer {
 public:
   explicit Synthesizer(size_t instanceID);
   void processBlock(juce::AudioBuffer<float> &, juce::MidiBuffer &);
-  size_t instanceID() const { return m_instanceId; };
+  size_t instanceID() const { return m_instanceId; }
   Core::ParameterHandler *parameterHandler() const {
     return m_parameterHandler;
-  };
-  Scope<SynthVoice> *voices() { return m_voices; };
+  }
+  Scope<SynthVoice> *voices() { return m_voices; }
   void setSampleRate(double sampleRate);
 
   void invalidateEnvelopes();
 
   EnvelopeData &envelope();
   Matrix& matrix() { return m_matrix; }
+  OscillatorState& oscillatorState(int idx) { return m_oscillators[idx]->state; }
 
 private:
   void renderVoices(juce::AudioBuffer<float> &, int startSample,

@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 
-
 if ! [ -x "$(command -v node)" ]; then
   echo -e "NODE NOT INSTALLED";
   exit 1;
@@ -17,6 +16,6 @@ node ./generate.js
 
 cd ../../Plugin || exit
 clang-format -i Source/**/*.cpp | exit
-clang-format -i headers/**/*.h | exit
+clang-format -i Source/**/*.h | exit
 
 echo -e "END PRE-BUILD";

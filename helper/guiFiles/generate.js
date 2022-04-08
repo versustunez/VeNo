@@ -11,7 +11,7 @@ const fs = require('fs'),
     tplHeader = fs.readFileSync(__dirname + "/header.tpl", "utf8"),
     lastVersion = fs.readFileSync(__dirname + "/lastVersions.json", "utf8"),
     outDir = "./../../Plugin/Source/VeNo/Generated/GUIFiles.cpp",
-    outDirHeader = "./../../Plugin/headers/VeNo/GUI/GUIFiles.h"
+    outDirHeader = "./../../Plugin/Source/VeNo/GUI/GUIFiles.h"
 
 let mapping = {};
 try {

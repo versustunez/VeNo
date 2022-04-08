@@ -25,7 +25,7 @@ set_target_properties(${BaseTargetName} PROPERTIES CXX_STANDARD 17)
 add_subdirectory(Assets)
 add_subdirectory(Source/VeNo)
 add_subdirectory(Source/VUtils)
-add_subdirectory(Source/Vendors)
+add_subdirectory(Source/vendors)
 
 target_sources(${BaseTargetName} PRIVATE ${SRCS})
 
@@ -38,7 +38,8 @@ target_compile_definitions(
         JUCE_VST3_CAN_REPLACE_VST2=0
 )
 
-target_include_directories(${BaseTargetName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/headers/)
+target_include_directories(${BaseTargetName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Source/)
+target_include_directories(${BaseTargetName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Source/vendors)
 
 target_link_libraries(
         ${BaseTargetName} PRIVATE

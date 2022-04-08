@@ -201,7 +201,7 @@ void LookHandler::drawButtonText(juce::Graphics &graphics,
                       juce::Justification::centred, true);
   }
 }
-void LookHandler::drawTabbedButtonBarBackground(juce::TabbedButtonBar &bar,
+void LookHandler::drawTabbedButtonBarBackground(juce::TabbedButtonBar &,
                                                 juce::Graphics &graphics) {
   graphics.setColour(theme->getColor(Colors::bg));
   graphics.fillAll();
