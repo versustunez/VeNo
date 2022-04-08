@@ -51,7 +51,7 @@ class WaveForm : public BaseComponent, public Events::Handler {
 public:
   WaveForm(const std::string &name, const std::string &showName,
            InstanceID id);
-  void setIsOscillator(bool isOsc) { m_isOscillator = isOsc; }
+  void setBindTo(const VString& binding) { m_bindTo = binding; }
   void setWaveId(size_t idx) { m_waveId = idx; }
   void init();
   void resized() override;
@@ -59,8 +59,9 @@ public:
   void handle(Events::Event *event) override;
 
 protected:
-  bool m_isOscillator{false};
+  VString m_bindTo{};
   size_t m_waveId{0};
+  Core::Instance* m_instance;
   Ref<WaveThumbnail> m_thumbnail;
   bool m_isInit{false};
 };

@@ -50,7 +50,7 @@ double Math::map(double value, double startCoord1, double endCoord1,
 }
 
 double Math::centsToRatio(double cents) {
-  return std::pow (2.0, cents / (double) 1200);
+  return std::pow(2.0, cents / (double)1200);
 }
 
 double Math::normalize(double val, float min, float max) {

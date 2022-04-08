@@ -41,7 +41,6 @@ void ParameterHandler::setupParameter () {
     std::string LFOName = "LFO" + std::to_string (i);
     addParameter (lfoId + "active", LFOName + " Active", 0, 1, 0, Boolean);
     addParameterModulate (lfoId + "rate", LFOName + " Rate", 1, 40, 1, Float);
-    addParameterModulate (lfoId + "phase", LFOName + " Phase offset", 0, 1, 0, Float);
     addParameter (lfoId + "wave_position", LFOName + " Waveform Position", 0, 1, 0, Float);
   }
 

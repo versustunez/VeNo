@@ -11,6 +11,7 @@ VeNoEditor::VeNoEditor(VeNoProcessor &p, std::string id)
   auto &config = VeNo::Core::Config::get();
   config.registerEditor(m_id, this);
   auto *instance = VeNo::Core::Instance::get(m_instanceId);
+  m_instance = instance;
   mainInterpreter = instance->mainInterpreter;
   mainInterpreter->parseMain(config.guiInit.get("Main"));
   auto &pos = mainInterpreter->componentGroup->position();
@@ -23,7 +24,8 @@ VeNoEditor::VeNoEditor(VeNoProcessor &p, std::string id)
   auto *properties_ = config.properties();
   if (properties_->asBool("useOpenGL", true))
     setupGL(properties_->asBool("vsync", true));
-  instance->state.actionRegistry = VeNo::CreateScope<VeNo::GUI::ActionRegistry>(m_instanceId);
+  instance->state.actionRegistry =
+      VeNo::CreateScope<VeNo::GUI::ActionRegistry>(m_instanceId);
 }
 
 void VeNoEditor::paint(juce::Graphics &g) {
@@ -53,10 +55,14 @@ void VeNoEditor::setupGL(bool vsync) {
 void VeNoEditor::newOpenGLContextCreated() {}
 void VeNoEditor::renderOpenGL() {
   VENO_PROFILE_FUNCTION();
-  auto &knobs =
-      VeNo::Core::Instance::get(m_instanceId)->state.components.m_knobs;
-  for (auto &knob : knobs)
-    if (knob.second->isVisible())
-      knob.second->repaint();
+  m_ticks++;
+  if (m_ticks > 10) {
+    const juce::MessageManagerLock mmlck;
+    auto &knobs = m_instance->state.components.m_knobs;
+    for (auto &knob : knobs)
+      if (knob.second->isShowing())
+        knob.second->slider()->repaint();
+    m_ticks = 0;
+  }
 }
 void VeNoEditor::openGLContextClosing() {}

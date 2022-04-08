@@ -24,7 +24,7 @@ position-x: automatic
     h: 100%
     bg: primaryBG
     position-y: automatic
-    @import Sidebar
+    @import Bin::Sidebar
 }
 #Content {
     position-y: automatic
@@ -39,7 +39,7 @@ position-x: automatic
                 @Tab {
                     name: OSC{it0}
                     color: 0,0,0,0
-                    @import OSC;i={it0}
+                    @import Bin::OSC;i={it0}
                 }
             )
         }
@@ -113,7 +113,7 @@ position-x: automatic
             width: 100%
             bg: primaryBG
             position-x: automatic
-            @import Footer
+            @import Bin::Footer
         }
     }
 })"";

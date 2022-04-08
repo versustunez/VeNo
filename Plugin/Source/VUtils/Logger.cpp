@@ -6,11 +6,13 @@
 namespace VUtils {
 
 void Logger::create(const std::string &output, PrintType type) {
-  fmt::print("\033[1;{}m[{}] >> {}\033[0m\n", getColor(type), getType(type), output);
+  fmt::print("\033[1;{}m[{}] >> {}\033[0m\n", getColor(type), getType(type),
+             output);
 }
 void Logger::create(const std::string &output, const char *file,
                     const char *func, PrintType type) {
-  fmt::print("\033[1;{}m[{}][{}] >> {}\033[0m\n", getColor(type), getType(type), getPlace(file, func), output);
+  fmt::print("\033[1;{}m[{}][{}] >> {}\033[0m\n", getColor(type), getType(type),
+             getPlace(file, func), output);
 }
 
 int Logger::getColor(PrintType type) {

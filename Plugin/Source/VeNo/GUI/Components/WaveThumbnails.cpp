@@ -223,14 +223,13 @@ WaveForm::WaveForm(const std::string &name, const std::string &showName,
                    InstanceID id)
     : BaseComponent(name, showName, id) {
   m_thumbnail = CreateRef<WaveThumbnail>(m_name, m_showName, m_id);
+  m_instance = Core::Instance::get(m_id);
   addAndMakeVisible(*m_thumbnail);
 }
 
 void WaveForm::init() {
-  if (m_isOscillator) {
-    auto string = "osc" + std::to_string(m_waveId + 1) + "__wave_position";
-    m_handler->addHandler(string, this);
-  }
+  if (!m_bindTo.empty())
+    m_handler->addHandler(m_bindTo, this);
   std::string editor_closed = "wave-editor-closed_" + std::to_string(m_waveId);
   m_handler->addHandler(editor_closed, this);
   auto *instance = Core::Instance::get(m_id);
@@ -248,11 +247,13 @@ void WaveForm::resized() {
 }
 
 void WaveForm::handle(Events::Event *) {
-  if (m_isOscillator) {
-    auto string = "osc" + std::to_string(m_waveId + 1) + "__wave_position";
-    auto val =
-        Core::Instance::get(m_id)->treeState->getParameter(string)->getValue();
-    auto index = (size_t)std::round(val * ((double)m_thumbnail->lib->size() - 1));
+  if (!m_bindTo.empty()) {
+    auto *param = m_instance->treeState->getParameter(m_bindTo);
+    if (!param)
+      return;
+    float val = param->getValue();
+    auto libSize = (double)m_thumbnail->lib->size() - 1.0;
+    auto index = (size_t)std::round(val * libSize);
     if (m_thumbnail->thumbId != index || m_thumbnail->lib->isOutdated()) {
       m_thumbnail->thumbId = index;
       m_thumbnail->generateWaveForm();

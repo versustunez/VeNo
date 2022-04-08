@@ -101,9 +101,8 @@ Ref<BaseComponent> WaveFormFactory::create(GUIParseItem &item,
                                            const std::string &name, InstanceID id,
                                            Interpreter *) {
   auto waveform = CreateRef<WaveForm>(parameter, name, id);
-  if (item.has("osc") && item["osc"] == "true") {
-    waveform->setIsOscillator(true);
-  }
+  if (item.has("bind"))
+    waveform->setBindTo(item["bind"]);
   waveform->setWaveId((size_t)VUtils::StringUtils::toNumber(item["wave"], 1) -
                       1);
   waveform->init();

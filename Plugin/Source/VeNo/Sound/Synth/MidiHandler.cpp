@@ -70,8 +70,11 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
       synthesizer.hasActiveNote = true;
       break;
     }
+    // Steps:
+    // Select first if not selected any note
     if (voiceToSteal == -1 ||
-        voice->noteOnTime < voices[voiceToSteal]->noteOnTime)
+        (voice->envelopeData.state == EnvelopeState::RELEASE &&
+         voice->noteOnTime < voices[voiceToSteal]->noteOnTime))
       voiceToSteal = index;
     index++;
   }
@@ -99,8 +102,7 @@ void MidiHandler::noteOff(juce::MidiMessage &message,
         voice->currentChannel == midiChannel) {
       synthesizer.matrix().handle().triggerNoteOff(i);
       SynthVoiceHelper::noteOff(synthesizer, *voice, voice->velocity);
-    }
-    else if (voice->isActive)
+    } else if (voice->isActive)
       synthesizer.hasActiveNote = true;
   }
 }

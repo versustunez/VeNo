@@ -285,16 +285,6 @@
       "type": "Float"
     },
     {
-      "name": "{id}__phase",
-      "showName": "{sid} Phase offset",
-      "modulateAble": true,
-      "tooltip": "Shift the Phase of the Oscillator",
-      "value": 0,
-      "maxValue": 1,
-      "minValue": 0,
-      "type": "Float"
-    },
-    {
       "name": "{id}__wave_position",
       "showName": "{sid} Waveform Position",
       "modulateAble": false,
