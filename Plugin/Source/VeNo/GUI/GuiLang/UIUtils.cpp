@@ -52,6 +52,10 @@ VString UIUtils::getParameterReplaced(UIParser *parser, VString &input) {
     if (parameters.find(key) != parameters.end())
       replace = parameters[key];
     input.replace(input.find(match[0]), match[0].str().size(), replace);
+    // MACOS and Linux can handle this... but on windows without this its CRASHING
+    words_begin = std::sregex_iterator(input.begin(), input.end(), s_regEx);
+    if (words_begin == words_end)
+      break;
   }
   return input;
 }

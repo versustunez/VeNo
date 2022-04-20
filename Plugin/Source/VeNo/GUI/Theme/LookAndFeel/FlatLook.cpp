@@ -1,12 +1,11 @@
-#include "VeNo/GUI/Components/Button.h"
-
 #include <VUtils/Math.h>
 #include <VeNo/Core/Config.h>
+#include <VeNo/GUI/Components/Button.h>
 #include <VeNo/GUI/Components/Switch.h>
 #include <VeNo/GUI/Fonts/Fonts.h>
-#include <VeNo/GUI/GUIUtils.h>
 #include <VeNo/GUI/Theme/LookAndFeel/FlatLook.h>
 #include <VeNo/GUI/Theme/Theme.h>
+#include <VeNo/GUI/Utils.h>
 
 namespace VeNo::GUI {
 typedef VeNo::Theme::Colors Colors;
@@ -28,7 +27,7 @@ void FlatLook::drawButtonBackground(juce::Graphics &graphics,
     graphics.setColour(theme->getColor(Theme::Colors::accent));
   else
     graphics.setColour(theme->getColor(Theme::Colors::accentTwo));
-  auto* parentButton = Utils::instanceOf<Button>(button.getParentComponent());
+  auto *parentButton = Utils::instanceOf<Button>(button.getParentComponent());
   if (parentButton != nullptr && parentButton->isFilled()) {
     graphics.fillRect(buttonArea);
   } else {
@@ -83,8 +82,8 @@ void FlatLook::drawRotarySlider(juce::Graphics &g, int x, int y, int width,
 void FlatLook::drawTextEditorOutline(juce::Graphics &graphics, int width,
                                      int height, juce::TextEditor &) {
   graphics.setGradientFill(juce::ColourGradient::horizontal(
-      theme->getColor(Colors::accentTwo), 0,
-      theme->getColor(Colors::accent), (float)width));
+      theme->getColor(Colors::accentTwo), 0, theme->getColor(Colors::accent),
+      (float)width));
   float p = (float)width / 100.0f * 2.5f;
   graphics.drawLine(p, (float)height, (float)width - p, (float)height, 1.3f);
 }
@@ -156,8 +155,8 @@ void FlatLook::drawLabel(juce::Graphics &graphics, juce::Label &label) {
 }
 void FlatLook::drawValueBox(juce::Graphics &graphics, int x, int y, int width,
                             int height, juce::Slider &slider, Knob *knob) {
-  auto valueString =
-      VUtils::StringUtils::toString(slider.getMaximum(), knob->precision() + 2, true);
+  auto valueString = VUtils::StringUtils::toString(slider.getMaximum(),
+                                                   knob->precision() + 2, true);
   auto font = graphics.getCurrentFont();
   graphics.setColour(theme->getColor(Colors::accent));
   if (knob->isFullWidth()) {
@@ -167,8 +166,8 @@ void FlatLook::drawValueBox(juce::Graphics &graphics, int x, int y, int width,
     auto textWidth = std::clamp(font.getStringWidth(valueString), 0, width);
     auto rectX = x + ((width / 2) - (textWidth / 2));
 
-    graphics.drawRect(juce::Rectangle<int>(rectX, y, textWidth, height).toFloat(),
-                      1.0f);
+    graphics.drawRect(
+        juce::Rectangle<int>(rectX, y, textWidth, height).toFloat(), 1.0f);
   }
 
   graphics.setColour(theme->getColor(Colors::font));

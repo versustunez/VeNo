@@ -1,6 +1,5 @@
 #include <VeNo/Core/Config.h>
 #include <VeNo/Definitions.h>
-#include <VeNo/GUI/GUIUtils.h>
 #include <VeNo/PluginEditor.h>
 #include <VeNo/Utils/ProfileMacros.h>
 
@@ -49,20 +48,11 @@ void VeNoEditor::setupGL(bool vsync) {
   if (!vsync && !m_openGLContext.setSwapInterval(0))
     ERR("Cannot deactivate VSync");
   m_openGLContext.setContinuousRepainting(true);
+  m_openGLContext.setComponentPaintingEnabled(true);
   m_openGLContext.attachTo(*this);
   m_openGLContext.makeActive();
 }
 void VeNoEditor::newOpenGLContextCreated() {}
 void VeNoEditor::renderOpenGL() {
-  VENO_PROFILE_FUNCTION();
-  m_ticks++;
-  if (m_ticks > 10) {
-    const juce::MessageManagerLock mmlck;
-    auto &knobs = m_instance->state.components.m_knobs;
-    for (auto &knob : knobs)
-      if (knob.second->isShowing())
-        knob.second->slider()->repaint();
-    m_ticks = 0;
-  }
 }
 void VeNoEditor::openGLContextClosing() {}

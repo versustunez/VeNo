@@ -23,8 +23,9 @@ public:
       root = juce::XmlDocument::parse(m_file);
     } else {
       m_file.create();
-      root = CreateScope<juce::XmlElement>("properties");
     }
+    if (root == nullptr)
+      root = CreateScope<juce::XmlElement>("properties");
   }
 
   ~Properties() {
@@ -93,6 +94,8 @@ protected:
   juce::XmlElement *get(const std::string &property, T defaultValue) {
     // logic here ;)
     juce::XmlElement *current = root.get();
+    if (!current)
+      return nullptr;
     auto split = VUtils::StringUtils::split(property, ".");
     auto lastItem = split.back();
     split.pop_back();

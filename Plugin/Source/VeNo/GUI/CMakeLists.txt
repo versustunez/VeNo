@@ -8,5 +8,4 @@ add_sources(
         Fonts/Fonts.cpp
         ActionRegistry.cpp
         Flex.cpp
-        GUIUtils.cpp
 )

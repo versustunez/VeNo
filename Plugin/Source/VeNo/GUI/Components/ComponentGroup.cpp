@@ -1,6 +1,5 @@
 #include <VeNo/Core/Config.h>
 #include <VeNo/GUI/Components/ComponentGroup.h>
-#include <VeNo/GUI/GUIUtils.h>
 #include <utility>
 
 namespace VeNo::GUI {

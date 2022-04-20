@@ -4,6 +4,7 @@
 #include <mutex>
 #include <queue>
 #include <unordered_map>
+#include <string>
 
 namespace VeNo {
 template <typename T> using Scope = std::unique_ptr<T>;

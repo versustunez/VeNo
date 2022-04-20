@@ -1,7 +1,7 @@
 #include <VUtils/Logging.h>
 #include <VeNo/GUI/Components/BaseComponent.h>
 #include <VeNo/GUI/Fonts/Fonts.h>
-#include <VeNo/GUI/GUIUtils.h>
+#include <VeNo/Core/Instance.h>
 
 namespace VeNo::GUI {
 BaseComponent::BaseComponent(std::string name, std::string showName, InstanceID id)

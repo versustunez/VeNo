@@ -110,7 +110,9 @@ WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
   items[len] = items[0];
   size_t invalidSpots = 0;
   {
+#if DEBUG
     Timer timer;
+#endif
     for (size_t i = 0; i <= len; ++i) {
       if (items[i] == -1000) {
         invalidSpots++;
@@ -124,10 +126,12 @@ WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
         items[i] = (float)VUtils::Math::lerp(items[prev], items[next], 0.5);
       }
     }
+#if DEBUG
     if (invalidSpots > 0) {
       DBGN("Time needed: {}", timer.elapsedMillis());
       DBGN("Found {} Invalid Spots that are fixed", invalidSpots);
     }
+#endif
   }
   auto fft = VeNo::Utils::FFT(order_lookup(len));
   fft.prepare(items, len);

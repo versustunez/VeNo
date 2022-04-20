@@ -1,7 +1,6 @@
 #include "VeNo/Core/Instance.h"
 
 #include <VeNo/GUI/Components/Label.h>
-#include <VeNo/GUI/GUIUtils.h>
 #include <utility>
 
 namespace VeNo::GUI {

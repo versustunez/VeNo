@@ -1,9 +1,8 @@
-#include "VeNo/GUI/Components/Button.h"
-#include "VeNo/GUI/Fonts/Fonts.h"
-
 #include <VeNo/Core/Config.h>
-#include <VeNo/GUI/GUIUtils.h>
+#include <VeNo/GUI/Components/Button.h>
+#include <VeNo/GUI/Fonts/Fonts.h>
 #include <VeNo/GUI/Theme/LookAndFeel/LookHandler.h>
+#include <VeNo/GUI/Utils.h>
 #include <cassert>
 
 namespace VeNo::GUI {
