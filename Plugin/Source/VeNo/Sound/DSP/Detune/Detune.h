@@ -9,6 +9,6 @@ class Detune {
   enum DetuneModes { NONE, SUPER, VeNoX, UP_SHIFT, EXPERIMENTAL };
 
 public:
-  static void update(DetuneState &, OscillatorState &, int midi);
+  static void update(DetuneState &, OscillatorState &);
 };
 } // namespace VeNo::Audio

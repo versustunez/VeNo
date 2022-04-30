@@ -5,28 +5,24 @@
 
 namespace VeNo::Audio {
 
-void Detune::update(DetuneState &detune, OscillatorState &osc, int midi) {
+void Detune::update(DetuneState &detune, OscillatorState &osc) {
   int voices = osc.voices->getInt();
   int mode = osc.detuneMode->getInt();
-  double amount = osc.detuneDense->getValue();
+  auto amount = (float)osc.detuneDense->getValue();
   // we are in the right state! skip
   bool voicesChanged = voices != detune.lastVoices;
   bool amountChanged = amount != detune.lastDetune;
   bool modeChanged = mode != detune.lastMode;
-  bool midiChanged = detune.midiNote != midi;
-  bool detuneChanged = amountChanged || modeChanged || voicesChanged;
-  if (!midiChanged && !detuneChanged)
+  if (!amountChanged && !modeChanged && !voicesChanged)
     return;
-  bool midiOnly = midiChanged && !detuneChanged;
   detune.lastVoices = voices;
-  detune.lastDetune = (float)amount;
-  detune.midiNote = midi;
+  detune.lastDetune = amount;
   switch (mode) {
-  case DetuneModes::SUPER: SuperDetune::create(detune, midiOnly); break;
-  case DetuneModes::VeNoX: VeNoXDetune::create(detune, midiOnly); break;
-  case DetuneModes::UP_SHIFT: UPShiftDetune::create(detune, midiOnly); break;
+  case DetuneModes::SUPER: SuperDetune::create(detune); break;
+  case DetuneModes::VeNoX: VeNoXDetune::create(detune); break;
+  case DetuneModes::UP_SHIFT: UPShiftDetune::create(detune); break;
   case DetuneModes::EXPERIMENTAL:
-    ExperimentalDetune::create(detune, midiOnly);
+    ExperimentalDetune::create(detune);
     break;
   default: WARN("Unimplemented Detune Mode"); assert(true);
   }

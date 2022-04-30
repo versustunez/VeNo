@@ -50,5 +50,6 @@ private:
   Ref<EnvelopeData> m_envelope;
   juce::CriticalSection lock;
   Matrix m_matrix;
+  double m_sampleRate{44100};
 };
 } // namespace VeNo::Audio

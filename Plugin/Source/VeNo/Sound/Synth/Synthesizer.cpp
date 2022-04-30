@@ -71,6 +71,7 @@ void Synthesizer::processBlock(juce::AudioBuffer<float> &audioBuffer,
 void Synthesizer::setSampleRate(double sampleRate) {
   VENO_PROFILE_FUNCTION();
   assert(sampleRate > 0);
+  m_sampleRate = sampleRate;
   m_envelope->sampleRate = sampleRate;
   m_envelope->needRecalculate = true;
   m_matrix.handle().setSampleRate(sampleRate);
@@ -118,7 +119,7 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
       for (int j = 0; j < OSCILLATORS; ++j) {
         auto &voiceD = voice->voiceData.oscillatorVoices[j];
         if (Oscillator::process(*m_oscillators[j], voiceD,
-                                voice->currentNote)) {
+                                voice->currentNote, m_sampleRate)) {
           voiceData.left += voiceD.output.left;
           voiceData.right += voiceD.output.right;
         }

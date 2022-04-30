@@ -9,14 +9,14 @@ class Oscillator {
 public:
   static bool setup(OscillatorData &, size_t instanceId);
   static bool prepare(OscillatorData &);
-  static bool process(OscillatorData &, SingleVoiceData &, int currentNote);
+  static bool process(OscillatorData &, SingleVoiceData &, int currentNote, double sR);
   static bool finish(OscillatorData &, SingleVoiceData &);
   static void prepareVoice(OscillatorData &osc, SingleVoiceData voice);
-  static float renderVoice(SingleVoiceData &voice, double inc,
+  static float renderVoice(SingleVoiceData &voice, DetuneState& detune, double inc,
                            const Wave &table, int idx);
 protected:
   static void updateFrequency(OscillatorData&, SingleVoiceData&, int currentNote);
-  static void render(OscillatorData&, SingleVoiceData&);
+  static void render(OscillatorData&, SingleVoiceData&, double sR);
   Oscillator() = default;
 
 };

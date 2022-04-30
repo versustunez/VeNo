@@ -1,11 +1,8 @@
 #include <VUtils/Math.h>
 #include <VeNo/Sound/DSP/Detune/DetuneAlgos.h>
-#include <cmath>
 
 namespace VeNo::Audio {
-void UPShiftDetune::create(DetuneState &detune, bool midiOnlyChanged) {
-  if (midiOnlyChanged)
-    return;
+void UPShiftDetune::create(DetuneState &detune) {
   detune.lookup[0] = 1.0;
   double split = detune.lastDetune / (detune.lastVoices - 1.0);
   double cents = split;
@@ -15,9 +12,7 @@ void UPShiftDetune::create(DetuneState &detune, bool midiOnlyChanged) {
   }
 }
 
-void ExperimentalDetune::create(DetuneState &detune, bool midiOnlyChanged) {
-  if (midiOnlyChanged)
-    return;
+void ExperimentalDetune::create(DetuneState &detune) {
   detune.lookup[0] = 1.0;
   double split = detune.lastDetune / (detune.lastVoices - 1.0);
   double cents = split * 0.75;
