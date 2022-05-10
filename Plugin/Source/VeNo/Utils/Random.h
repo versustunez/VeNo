@@ -13,6 +13,7 @@ public:
 
   double generate();
   void setRange(double min, double max);
+
 protected:
   std::random_device m_rd{};
   std::mt19937 m_mt;

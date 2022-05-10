@@ -14,6 +14,7 @@ public:
 protected:
   Events::EventCB *addAction(const VString &action);
   void addEditorActions();
+
 protected:
   InstanceID m_id{0};
   Events::EventHandler *m_handler;

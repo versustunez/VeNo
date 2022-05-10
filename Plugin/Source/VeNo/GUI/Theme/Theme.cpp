@@ -16,7 +16,7 @@ void Theme::init() {
   getColourFromConfig(Colors::accentTwo);
   getColourFromConfig(Colors::font);
   getColourFromConfig(Colors::clip);
-  getColourFromConfig(Colors::LcdBg);
+  getColourFromConfig(Colors::lcdBg);
   getColourFromConfig(Colors::lcd);
   getColourFromConfig(Colors::logo);
   getColourFromConfig(Colors::logoAccent);
@@ -28,7 +28,7 @@ void Theme::init() {
   m_colorMapping["secondary"] = Colors::accentTwo;
   m_colorMapping["font"] = Colors::font;
   m_colorMapping["clip"] = Colors::clip;
-  m_colorMapping["lcdBG"] = Colors::LcdBg;
+  m_colorMapping["lcdBG"] = Colors::lcdBg;
   m_colorMapping["lcd"] = Colors::lcd;
   m_colorMapping["logo"] = Colors::logo;
   m_colorMapping["logoAccent"] = Colors::logoAccent;
@@ -64,7 +64,7 @@ std::string Theme::colorToString(Colors index) {
   case Colors::accentTwo: return "color.secondary";
   case Colors::clip: return "color.clip";
   case Colors::font: return "color.font";
-  case Colors::LcdBg: return "color.lcdBG";
+  case Colors::lcdBg: return "color.lcdBG";
   case Colors::lcd: return "color.lcd";
   case Colors::logo: return "color.logo";
   case Colors::logoAccent: return "color.logoPrimary";
@@ -82,7 +82,7 @@ juce::Colour Theme::getDefault(Colors index) {
   case Colors::clip: return {255, 23, 68};
   case Colors::font: return {255, 255, 255};
   case Colors::lcd: return {0, 129, 194};
-  case Colors::LcdBg: return {0, 0, 0};
+  case Colors::lcdBg: return {0, 0, 0};
   case Colors::logo: return {255, 255, 255};
   case Colors::logoAccent: return {31, 115, 255};
   case Colors::root: return {11, 11, 11};

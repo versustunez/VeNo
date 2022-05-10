@@ -6,8 +6,7 @@
 #include <VeNo/Sound/Generation/Oscillator.h>
 #include <VeNo/Utils/ProfileMacros.h>
 #include <VeNo/Utils/Random.h>
-namespace VeNo::Audio
-{
+namespace VeNo::Audio {
 bool Oscillator::setup(OscillatorData &osc, size_t instanceId) {
   // get all audio parameter references needed for the oscillator
   auto &state = osc.state;
@@ -69,13 +68,16 @@ void Oscillator::updateFrequency(OscillatorData &osc, SingleVoiceData &voice,
   double pitchBend = pitchPos * wheelPos;
   auto semitones = (*state.semitones)[-1];
   auto cents = (*state.cents)[-1] / 100.0;
-  double orgMid = std::clamp(currentNote + semitones + cents + pitchBend, 0.0, 127.0);
+  double orgMid =
+      std::clamp(currentNote + semitones + cents + pitchBend, 0.0, 127.0);
   int midi = (int)(orgMid);
   double diff = orgMid - midi;
-  voice.frequency = VUtils::Math::lerp(s_MidiLookup[midi], s_MidiLookup[midi+1], diff);
+  voice.frequency =
+      VUtils::Math::lerp(s_MidiLookup[midi], s_MidiLookup[midi + 1], diff);
 }
 
-void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice, double sR) {
+void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice,
+                        double sR) {
   auto voiceCount = osc.state.voices->getInt();
   if (voiceCount == 0) {
     voice.output.left = 0;
@@ -89,22 +91,23 @@ void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice, double sR) 
     ++currentTable;
   }
   auto &table = osc.group->items[currentTable];
-  auto output = renderVoice(voice, osc.detuneState, inc, table, 0); // first Voice because its special
+  auto output = renderVoice(voice, osc.detuneState, inc, table,
+                            0); // first Voice because its special
   voice.output.left = output;
   voice.output.right = output;
   if (voiceCount > 1) {
-    double dOut[2] = {0,0};
+    double dOut[2] = {0, 0};
     double detuneOut = 0;
     for (int i = 1; i < voiceCount; ++i) {
       output = renderVoice(voice, osc.detuneState, inc, table, i);
-      dOut[i&1] = output * 0.43333333;
-      detuneOut+=output;
+      dOut[i & 1] = output * 0.43333333;
+      detuneOut += output;
     }
     double amount = osc.state.detuneAmount->getValue();
     dOut[0] *= amount;
     dOut[1] *= amount;
     detuneOut *= osc.state.detuneAmount->getValue();
-    detuneOut /= (double) (voiceCount - 1);
+    detuneOut /= (double)(voiceCount - 1);
     voice.output.left += detuneOut + dOut[0];
     voice.output.right += detuneOut + dOut[1];
   }
@@ -113,8 +116,8 @@ void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice, double sR) 
   voice.output.left *= vol;
   voice.output.right *= vol;
 }
-float Oscillator::renderVoice(SingleVoiceData &voice, DetuneState& state, double inc,
-                                const Wave &table, int idx) {
+float Oscillator::renderVoice(SingleVoiceData &voice, DetuneState &state,
+                              double inc, const Wave &table, int idx) {
   auto &d = voice.unisonVoices[idx];
   d.phaseInc = (float)inc * state.lookup[idx];
   d.phaseOffset += d.phaseInc;

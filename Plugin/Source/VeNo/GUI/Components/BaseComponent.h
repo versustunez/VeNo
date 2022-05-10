@@ -31,7 +31,7 @@ public:
   void setText(const std::string &text);
   void triggerAfterParsing(Interpreter *);
 
-  virtual void addChild(const Ref<ComponentGroup>&){};
+  virtual void addChild(const Ref<ComponentGroup> &){};
 
   Position resize();
   void setLabelPosition(const std::string &pos);
@@ -45,7 +45,7 @@ public:
   // LOOK for direct children of this component
   template <class ClassType> ClassType *child() {
     auto &children = getChildren();
-    for (auto&childComponent : children) {
+    for (auto &childComponent : children) {
       auto component = dynamic_cast<ClassType *>(childComponent);
       if (component)
         return component;
@@ -64,5 +64,14 @@ protected:
   Events::EventHandler *m_handler{nullptr};
   Core::Parameter *m_parameter{nullptr};
   Scope<GUIEvents::ModulateMouseOpen> m_mousePicker{nullptr};
+
+protected:
+  template <class T> Ref<T> Make(std::string name, std::string showName) {
+    static_assert(std::is_base_of_v<BaseComponent, T>,
+                  "Is not Base of VComponent");
+    auto ref = CreateRef<T>(name, showName, m_id);
+    addAndMakeVisible(*ref);
+    return ref;
+  }
 };
 } // namespace VeNo::GUI

@@ -19,4 +19,4 @@ class LFO {
 private:
   LFO() = default;
 };
-}
+} // namespace VeNo::Audio

@@ -4,6 +4,6 @@
 namespace VeNo::Audio {
 class WaveTableCreator {
 public:
-  static void generate(Vector<WavePoint> &points, WaveTableGroup* group);
+  static void generate(Vector<WavePoint> &points, WaveTableGroup *group);
 };
 } // namespace VeNo::Audio

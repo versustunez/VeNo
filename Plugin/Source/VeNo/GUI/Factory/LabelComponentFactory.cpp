@@ -11,10 +11,10 @@ Ref<BaseComponent> LabelComponentFactory::create(GUIParseItem &item,
                                                  Interpreter *interpreter) {
   auto comp = CreateRef<Label>(parameter, name, id);
   comp->setText(item["text"]);
-  if(item.has("event")) {
+  if (item.has("event")) {
     comp->addListenEvent(item["event"]);
   }
-  if(item.has("text-align")) {
+  if (item.has("text-align")) {
     comp->setAlign(item["text-align"]);
   }
   doBase(comp.get(), item, interpreter);

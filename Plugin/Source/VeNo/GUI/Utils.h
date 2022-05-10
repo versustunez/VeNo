@@ -7,9 +7,9 @@ public:
   template <class T> static T *instanceOf(juce::Component *component) {
     return dynamic_cast<T *>(component);
   }
-  template <class Base,class T> static T *instanceOf(Base *instance) {
+  template <class Base, class T> static T *instanceOf(Base *instance) {
     return dynamic_cast<T *>(instance);
   }
 };
 
-}
+} // namespace VeNo::GUI

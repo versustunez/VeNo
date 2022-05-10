@@ -18,8 +18,8 @@ public:
   void addModulator(const Ref<Modulator> &modulator) {
     m_modulators.push_back(modulator);
   }
-  void remove(const VString& name, const VString& dst);
-  ModulatorHandle& handle() { return m_modulatorHandle; }
+  void remove(const VString &name, const VString &dst);
+  ModulatorHandle &handle() { return m_modulatorHandle; }
 
 protected:
   InstanceID m_id{0};

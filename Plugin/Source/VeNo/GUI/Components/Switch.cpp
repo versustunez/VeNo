@@ -1,7 +1,8 @@
 #include <VeNo/Core/Instance.h>
 #include <VeNo/GUI/Components/Switch.h>
 namespace VeNo::GUI {
-Switch::Switch(const std::string &name, const std::string &showName, InstanceID id)
+Switch::Switch(const std::string &name, const std::string &showName,
+               InstanceID id)
     : BaseComponent(name, showName, id) {
   auto *instance = Core::Instance::get(m_id);
   m_button = std::make_unique<juce::ToggleButton>();

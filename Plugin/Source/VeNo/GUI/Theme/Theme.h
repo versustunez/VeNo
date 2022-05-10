@@ -15,7 +15,7 @@ enum class Colors {
   accentTwo,
   font,
   clip,
-  LcdBg,
+  lcdBg,
   lcd,
   logo,
   logoAccent,

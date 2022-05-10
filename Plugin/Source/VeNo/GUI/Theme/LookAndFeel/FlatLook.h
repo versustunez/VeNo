@@ -40,7 +40,7 @@ public:
   void drawLabel(juce::Graphics &graphics, juce::Label &label) override;
 
   void drawValueBox(juce::Graphics &graphics, int x, int y, int width,
-                    int height, juce::Slider &slider, Knob* knob) override;
+                    int height, juce::Slider &slider, Knob *knob) override;
 
   void drawBubble(juce::Graphics &graphics, juce::BubbleComponent &component,
                   const juce::Point<float> &tip,

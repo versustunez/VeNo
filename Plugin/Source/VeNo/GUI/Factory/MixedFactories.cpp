@@ -1,4 +1,5 @@
 #include <VeNo/GUI/ComponentFactories.h>
+#include <VeNo/GUI/Components/LCD/LCD.h>
 #include <VeNo/GUI/Components/Logo.h>
 #include <VeNo/GUI/Components/ScrollComponent.h>
 #include <VeNo/GUI/Components/SelectComponent.h>
@@ -18,7 +19,8 @@ Ref<BaseComponent> LogoFactory::create(GUIParseItem &item,
 
 Ref<BaseComponent> WaveEditorFactory::create(GUIParseItem &item,
                                              const std::string &parameter,
-                                             const std::string &name, InstanceID id,
+                                             const std::string &name,
+                                             InstanceID id,
                                              Interpreter *interpreter) {
   auto component = CreateRef<WaveEditor>(parameter, name, id);
   component->setColorComponent(item.colorComponent);
@@ -42,7 +44,8 @@ Ref<BaseComponent> WaveThumbnailsFactory::create(GUIParseItem &item,
 Ref<BaseComponent> ScrollComponentFactory::create(GUIParseItem &item,
                                                   const std::string &parameter,
                                                   const std::string &name,
-                                                  InstanceID id, Interpreter *) {
+                                                  InstanceID id,
+                                                  Interpreter *) {
 
   auto comp = CreateRef<ScrollComponent>(parameter, name, id);
   if (item.has("axis")) {
@@ -78,11 +81,11 @@ Ref<BaseComponent> SelectFactory::create(GUIParseItem &item,
   auto comp = CreateRef<Select>(parameter, name, id);
   if (item.has("values")) {
     auto values = VUtils::StringUtils::split(item["values"], ",");
-    for (auto& value : values) {
+    for (auto &value : values) {
       comp->addItem(value);
     }
   } else if (item.has("preset")) {
-    auto& preset = item["preset"];
+    auto &preset = item["preset"];
     comp->setupPreset(preset);
   }
   comp->createAttachment();
@@ -98,8 +101,8 @@ Ref<BaseComponent> GroupFactory::create(GUIParseItem &,
 
 Ref<BaseComponent> WaveFormFactory::create(GUIParseItem &item,
                                            const std::string &parameter,
-                                           const std::string &name, InstanceID id,
-                                           Interpreter *) {
+                                           const std::string &name,
+                                           InstanceID id, Interpreter *) {
   auto waveform = CreateRef<WaveForm>(parameter, name, id);
   if (item.has("bind"))
     waveform->setBindTo(item["bind"]);
@@ -107,6 +110,13 @@ Ref<BaseComponent> WaveFormFactory::create(GUIParseItem &item,
                       1);
   waveform->init();
   return waveform;
+}
+
+Ref<BaseComponent> LCDFactory::create(GUIParseItem &,
+                                      const std::string &parameter,
+                                      const std::string &name, InstanceID id,
+                                      Interpreter *) {
+  return CreateRef<LCDComponent>(parameter, name, id);
 }
 
 } // namespace VeNo::GUI

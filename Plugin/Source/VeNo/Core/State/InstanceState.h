@@ -3,6 +3,7 @@
 #include "ComponentStates.h"
 
 #include <VeNo/GUI/ActionRegistry.h>
+#include <VeNo/GUI/Events/LCDListener.h>
 #include <VeNo/Window/WaveEditor.h>
 #include <cstdlib>
 namespace VeNo::State {
@@ -15,5 +16,6 @@ public:
   Scope<juce::Drawable> logo;
   Scope<Windows::WaveEditorWindow> waveEditorWindow{};
   Scope<GUI::ActionRegistry> actionRegistry;
+  Scope<GUI::LCDListener> lcdListener;
 };
 } // namespace VeNo::State

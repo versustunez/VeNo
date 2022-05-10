@@ -26,7 +26,7 @@ void Initializer::parseMain(std::string &name) {
   auto mainFB = "Bin::MainGUI";
   auto file = name == mainFB ? mainFB : getPreparedFilePath(name);
   m_guiParser.emplace("Main", CreateRef<UIParser>());
-  auto& main = m_guiParser["Main"];
+  auto &main = m_guiParser["Main"];
   if (VUtils::FileHandler::fileExists(file))
     main->loadFile(file);
   else

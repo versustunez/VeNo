@@ -8,10 +8,12 @@
 #include <utility>
 
 namespace VeNo::GUI {
-WaveEditor::WaveEditor(std::string name, const std::string &showName, InstanceID id)
+WaveEditor::WaveEditor(std::string name, const std::string &showName,
+                       InstanceID id)
     : BaseComponent(std::move(name), showName, id) {
   auto *instance = Core::Instance::get(id);
-  // we get the current WaveTableLib -> is set before and will be fetched here... this includes LFOs and DistModule
+  // we get the current WaveTableLib -> is set before and will be fetched
+  // here... this includes LFOs and DistModule
   m_lib = instance->waveHolder.current();
   m_handler->addHandler("wave-change", this);
   m_handler->createOrGet<Events::EventCB>("wave-update")
@@ -50,9 +52,7 @@ void WaveEditor::paint(juce::Graphics &g) {
   }
 }
 
-void WaveEditor::paintOverChildren(juce::Graphics &g) {
-  drawDots(g);
-}
+void WaveEditor::paintOverChildren(juce::Graphics &g) { drawDots(g); }
 
 void WaveEditor::resized() {
   m_currentThumbnail->setSize(getWidth(), getHeight());
@@ -135,7 +135,8 @@ void WaveEditor::mouseDown(const juce::MouseEvent &event) {
   float xPos = std::clamp((float)event.x / (float)getWidth(), 0.0f, 1.0f);
   auto &uiPoints = m_lib->getGroup(m_currentWave)->uiPoints;
   auto point = Utils::WavePoint::findNearest(uiPoints, xPos, yPos);
-  if (point.point != m_currentPoint.point || point.isCurvedPoint != m_currentPoint.isCurvedPoint) {
+  if (point.point != m_currentPoint.point ||
+      point.isCurvedPoint != m_currentPoint.isCurvedPoint) {
     m_currentPoint = point;
     repaint();
   }

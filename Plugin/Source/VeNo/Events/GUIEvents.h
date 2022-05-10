@@ -3,7 +3,6 @@
 #include "../GUI/Components/Button.h"
 #include "Event.h"
 
-
 namespace VeNo::Events {
 class ButtonClickedEvent : public NoHandleEvent {
 public:

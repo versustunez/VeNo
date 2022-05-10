@@ -15,5 +15,6 @@ void Interpreter::initMapping() {
   factories["Scrollable"] = CreateRef<ScrollComponentFactory>();
   factories["Group"] = CreateRef<GroupFactory>();
   factories["WaveForm"] = CreateRef<WaveFormFactory>();
+  factories["LCD"] = CreateRef<LCDFactory>();
 }
 } // namespace VeNo::GUI

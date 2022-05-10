@@ -25,7 +25,7 @@ public:
 
   void addChild(const Ref<ComponentGroup> &group) override;
   juce::Colour color() { return m_color; }
-  void setColor(juce::Colour color) { m_color = color;}
+  void setColor(juce::Colour color) { m_color = color; }
   void resized() override;
 
 protected:

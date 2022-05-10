@@ -53,6 +53,5 @@ void VeNoEditor::setupGL(bool vsync) {
   m_openGLContext.makeActive();
 }
 void VeNoEditor::newOpenGLContextCreated() {}
-void VeNoEditor::renderOpenGL() {
-}
+void VeNoEditor::renderOpenGL() {}
 void VeNoEditor::openGLContextClosing() {}

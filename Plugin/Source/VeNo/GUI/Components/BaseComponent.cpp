@@ -1,10 +1,11 @@
 #include <VUtils/Logging.h>
+#include <VeNo/Core/Instance.h>
 #include <VeNo/GUI/Components/BaseComponent.h>
 #include <VeNo/GUI/Fonts/Fonts.h>
-#include <VeNo/Core/Instance.h>
 
 namespace VeNo::GUI {
-BaseComponent::BaseComponent(std::string name, std::string showName, InstanceID id)
+BaseComponent::BaseComponent(std::string name, std::string showName,
+                             InstanceID id)
     : m_name(std::move(name)),
       m_showName(std::move(showName)),
       m_id(id) {

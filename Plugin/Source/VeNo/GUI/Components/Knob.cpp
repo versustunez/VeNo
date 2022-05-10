@@ -15,6 +15,7 @@ Knob::Knob(std::string name, std::string showName, InstanceID id)
   m_slider->setComponentID(std::to_string(id));
   m_slider->setScrollWheelEnabled(true);
   m_slider->setPopupDisplayEnabled(false, true, getParentComponent(), 500);
+
   createLabel(m_showName, false);
   m_label->setEditable(true);
   m_label->addListener(this);
@@ -23,6 +24,7 @@ Knob::Knob(std::string name, std::string showName, InstanceID id)
   // get instance and try to add Slider Attachments
   auto *instance = Core::Instance::get(m_id);
   if (instance && instance->treeState) {
+    m_slider->addListener(instance->state.lcdListener.get());
     auto state = instance->treeState;
     if (state->getParameter(m_name) != nullptr)
       m_attachment = CreateScope<SliderAttachment>(*state, m_name, *m_slider);

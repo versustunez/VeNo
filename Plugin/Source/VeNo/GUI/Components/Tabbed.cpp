@@ -15,8 +15,8 @@ TabbedComponent::TabbedComponent(const std::string &name,
 
 void TabbedComponent::addChild(const Ref<ComponentGroup> &group) {
   bool found = false;
-  for (auto & component : group->components) {
-    auto* tab = component->as<TabComponent>();
+  for (auto &component : group->components) {
+    auto *tab = component->as<TabComponent>();
     if (tab) {
       m_tab->addTab(tab->showName(), tab->color(), tab, false);
       found = true;
@@ -41,7 +41,7 @@ void TabComponent::addChild(const Ref<ComponentGroup> &group) {
   addAndMakeVisible(group.get());
 }
 void TabComponent::resized() {
-  for (auto& child : m_children) {
+  for (auto &child : m_children) {
     child->setSize(getWidth(), getHeight());
   }
 }

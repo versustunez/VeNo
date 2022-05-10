@@ -32,7 +32,7 @@ struct WavePoint {
 struct WaveUIPoints {
   Vector<WavePoint> points;
   std::string to_string();
-  void from_string(const std::string&);
+  void from_string(const std::string &);
   void addCurvedPoint(float x, float y, float val, Point point, bool isEdge);
   void addPoint(float x, float y, float val, bool isEdge);
   void updateNeighbours();

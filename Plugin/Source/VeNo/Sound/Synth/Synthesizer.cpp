@@ -118,8 +118,8 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
       Channel voiceData{};
       for (int j = 0; j < OSCILLATORS; ++j) {
         auto &voiceD = voice->voiceData.oscillatorVoices[j];
-        if (Oscillator::process(*m_oscillators[j], voiceD,
-                                voice->currentNote, m_sampleRate)) {
+        if (Oscillator::process(*m_oscillators[j], voiceD, voice->currentNote,
+                                m_sampleRate)) {
           voiceData.left += voiceD.output.left;
           voiceData.right += voiceD.output.right;
         }

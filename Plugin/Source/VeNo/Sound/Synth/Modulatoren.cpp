@@ -44,7 +44,6 @@ void EnvModulator::setSampleRate(double sampleRate) {
   m_data.needRecalculate = true;
 }
 
-
 void LFOModulator::init() {
   // Create Data ;)
   // WE will listen to changes on the EventHandler to minimize the update value
@@ -77,18 +76,18 @@ void ModulatorHandle::init(Matrix *matrix) {
   }
 }
 void ModulatorHandle::setSampleRate(double sampleRate) {
-  for (auto& envelope : m_envelopes) {
+  for (auto &envelope : m_envelopes) {
     envelope->setSampleRate(sampleRate);
   }
 }
 void ModulatorHandle::triggerNoteOn(int voice) {
-  for (auto& envelope : m_envelopes) {
+  for (auto &envelope : m_envelopes) {
     Envelope::noteOn(envelope->voiceData(voice), envelope->data());
   }
   // @TODO: Add support to trigger only LFO Voices that are on ;)
 }
 void ModulatorHandle::triggerNoteOff(int voice) {
-  for (auto& envelope : m_envelopes) {
+  for (auto &envelope : m_envelopes) {
     Envelope::noteOff(envelope->voiceData(voice), envelope->data());
   }
 }

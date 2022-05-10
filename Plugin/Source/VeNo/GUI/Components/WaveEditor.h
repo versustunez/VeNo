@@ -22,15 +22,16 @@ public:
   void handle(Events::Event *) override;
 
 protected:
-  void drawDots(juce::Graphics& graphics);
-  void triggerEnd(const juce::MouseEvent& event);
+  void drawDots(juce::Graphics &graphics);
+  void triggerEnd(const juce::MouseEvent &event);
+
 protected:
   void afterParsing(Interpreter *) override;
   GUIColorComponent m_color{};
   WaveThumbnails *m_thumbnails{nullptr};
   Label *m_xPointComponent{nullptr};
   Label *m_yPointComponent{nullptr};
-  Audio::WaveTableLib* m_lib{};
+  Audio::WaveTableLib *m_lib{};
   size_t m_currentWave{0};
   Ref<WaveThumbnail> m_currentThumbnail{};
   Utils::WavePoints m_currentPoint{nullptr};

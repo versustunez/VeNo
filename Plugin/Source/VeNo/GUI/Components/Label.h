@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
+
 #include <JuceHeader.h>
 
 namespace VeNo::GUI {
@@ -8,10 +9,10 @@ class Label : public BaseComponent {
 public:
   Label(std::string name, std::string showName, InstanceID id);
   void setText(std::string text);
-  void setAlign(const std::string& align);
+  void setAlign(const std::string &align);
   void resized() override;
 
-  void addListenEvent(const std::string& event);
+  void addListenEvent(const std::string &event);
 
 protected:
   std::string m_text;
@@ -19,13 +20,14 @@ protected:
   Scope<LabelEventListener> m_eventListener{nullptr};
 };
 
-class LabelEventListener: public Events::Handler {
+class LabelEventListener : public Events::Handler {
 public:
-  LabelEventListener(std::string  name, Label* label);
+  LabelEventListener(std::string name, Label *label);
   ~LabelEventListener() override;
   void handle(Events::Event *event) override;
+
 protected:
-  Label* m_label;
+  Label *m_label;
   std::string m_name;
 };
 } // namespace VeNo::GUI

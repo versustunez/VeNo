@@ -9,7 +9,7 @@ public:
   void setViewComponent(Ref<BaseComponent> component);
   void resized() override;
 
-  BaseComponent* component() { return m_component.get(); }
+  BaseComponent *component() { return m_component.get(); }
   void addChild(const Ref<ComponentGroup> &param) override;
   void setWidthMode(bool isWidthMode) { m_isWidthMode = isWidthMode; }
 

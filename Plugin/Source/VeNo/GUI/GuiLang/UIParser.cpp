@@ -51,7 +51,8 @@ void UIParser::parse() {
       loop.itVarOffset = loop.itVar + "_1";
       m_loopStack.push(loop);
       m_parameters[loop.itVar] = std::to_string(loop.done + 1);
-      m_parameters[loop.itVarOffset] = std::to_string(loop.done + 1 + loop.offset);
+      m_parameters[loop.itVarOffset] =
+          std::to_string(loop.done + 1 + loop.offset);
       continue;
     } else if (line.rfind(')') == 0) {
       if (m_loopStack.empty() || m_loopStack.top().size != m_stack.size()) {
@@ -67,7 +68,8 @@ void UIParser::parse() {
       if (top.times > top.done) {
         i = top.beginningLine;
         m_parameters[top.itVar] = std::to_string(top.done + 1);
-        m_parameters[top.itVarOffset] = std::to_string(top.done + 1 + top.offset);
+        m_parameters[top.itVarOffset] =
+            std::to_string(top.done + 1 + top.offset);
         continue;
       }
       m_parameters.erase(top.itVar);

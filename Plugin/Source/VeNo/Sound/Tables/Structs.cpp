@@ -56,7 +56,7 @@ void WavePoint::from_string(const std::string &string) {
 Wave::~Wave() { delete[] items; }
 WaveTableGroup::~WaveTableGroup() { delete[] items; }
 
-size_t findNextValidSpot(const float* items, int size, int idx, int direction) {
+size_t findNextValidSpot(const float *items, int size, int idx, int direction) {
   int startIdx = idx;
   do {
     idx = idx + direction;
@@ -65,15 +65,15 @@ size_t findNextValidSpot(const float* items, int size, int idx, int direction) {
     if (startIdx == idx) {
       break;
     }
-  } while(items[idx] != -1000);
+  } while (items[idx] != -1000);
   return (size_t)idx;
 }
 
 WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
                                              size_t len) {
   VENO_PROFILE_FUNCTION();
-  auto *items = new float[len+1];
-  for (size_t i = 0; i < len+1; ++i)
+  auto *items = new float[len + 1];
+  for (size_t i = 0; i < len + 1; ++i)
     items[i] = -1000; // invalid value!
 
   for (auto &point : inPoints) {
@@ -89,7 +89,8 @@ WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
     size_t diff = end - start;
     if (point.bezier) {
       size_t times = len * 2;
-      double midX = VUtils::Math::map(point.curved.x, point.data.x, next->data.x, 0, 1);
+      double midX =
+          VUtils::Math::map(point.curved.x, point.data.x, next->data.x, 0, 1);
       for (size_t ii = 0; ii < times; ++ii) {
         double factor = (double)ii / (double)times;
         auto curve = VUtils::Curve::bezierCurve({0, point.data.value},
@@ -102,7 +103,8 @@ WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
     } else {
       for (size_t ii = 0; ii < diff; ++ii) {
         double factor = (double)ii / (double)diff;
-        double value = VUtils::Math::lerp(point.data.value, next->data.value, factor);
+        double value =
+            VUtils::Math::lerp(point.data.value, next->data.value, factor);
         items[start + ii] = (float)VUtils::Math::clamp(value, -1, 1) * -1;
       }
     }
@@ -158,7 +160,6 @@ int WaveGenerator::order_lookup(size_t len) {
   default: return 1;
   }
 }
-
 
 std::string WaveUIPoints::to_string() {
   std::stringstream stream;

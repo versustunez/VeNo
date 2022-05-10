@@ -3,7 +3,8 @@
 #include <utility>
 
 namespace VeNo::GUI {
-Button::Button(const std::string &name, const std::string &showName, InstanceID id)
+Button::Button(const std::string &name, const std::string &showName,
+               InstanceID id)
     : BaseComponent(name, showName, id) {
   m_button = std::make_unique<juce::TextButton>();
   m_button->addListener(this);

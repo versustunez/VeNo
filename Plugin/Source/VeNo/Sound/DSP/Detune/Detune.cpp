@@ -21,9 +21,7 @@ void Detune::update(DetuneState &detune, OscillatorState &osc) {
   case DetuneModes::SUPER: SuperDetune::create(detune); break;
   case DetuneModes::VeNoX: VeNoXDetune::create(detune); break;
   case DetuneModes::UP_SHIFT: UPShiftDetune::create(detune); break;
-  case DetuneModes::EXPERIMENTAL:
-    ExperimentalDetune::create(detune);
-    break;
+  case DetuneModes::EXPERIMENTAL: ExperimentalDetune::create(detune); break;
   default: WARN("Unimplemented Detune Mode"); assert(true);
   }
 }

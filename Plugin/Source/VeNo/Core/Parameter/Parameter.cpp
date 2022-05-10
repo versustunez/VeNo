@@ -40,10 +40,10 @@ std::string &Parameter::getShowName() { return m_showName; }
 std::string &Parameter::getName() { return m_name; }
 
 void Parameter::parameterValueChanged(int, float newValue) {
-  auto val = std::clamp(newValue * (m_max - m_min) + m_min,
-                      m_min, m_max);
+  auto val = std::clamp(newValue * (m_max - m_min) + m_min, m_min, m_max);
   setValue(val);
-  Instance::get(m_id)->eventHandler.triggerEvent(m_name, new Events::ChangeEvent());
+  Instance::get(m_id)->eventHandler.triggerEvent(m_name,
+                                                 new Events::ChangeEvent());
 }
 // can be used for displays or something :D
 void Parameter::parameterGestureChanged(int, bool) {

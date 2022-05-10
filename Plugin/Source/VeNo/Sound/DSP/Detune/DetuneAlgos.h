@@ -10,15 +10,15 @@ public:
 };
 class VeNoXDetune {
 public:
-  static void create(DetuneState & detune);
+  static void create(DetuneState &detune);
   static double getRealDetune(float detune);
 };
 class UPShiftDetune {
 public:
-  static void create(DetuneState & detune);
+  static void create(DetuneState &detune);
 };
 class ExperimentalDetune {
 public:
-  static void create(DetuneState & detune);
+  static void create(DetuneState &detune);
 };
-}
+} // namespace VeNo::Audio

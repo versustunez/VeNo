@@ -3,6 +3,7 @@ add_subdirectory(Factory)
 add_subdirectory(GuiLang)
 add_subdirectory(Theme)
 add_sources(
+        Events/LCDListener.cpp
         Events/LiveLabel.cpp
         Events/ModulateMouseOpen.cpp
         Fonts/Fonts.cpp

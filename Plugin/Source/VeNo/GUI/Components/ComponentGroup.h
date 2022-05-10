@@ -29,7 +29,7 @@ public:
   Position &position();
   Scope<Flex> flex{nullptr};
 
-  GUIColorComponent& color() { return m_color; }
+  GUIColorComponent &color() { return m_color; }
 
 protected:
   GUIColorComponent m_color;

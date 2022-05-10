@@ -21,9 +21,20 @@ public:
 };
 
 class ChangeEvent : public NoHandleEvent {};
+class ParameterChangeEnd : public NoHandleEvent {};
 class TooltipEvent : public NoHandleEvent {
 public:
   std::string text;
+};
+class ParameterChange : public NoHandleEvent {
+public:
+  std::string name{};
+  double value{0.0};
+};
+class ValueChange : public NoHandleEvent {
+public:
+  explicit ValueChange(double val) : value(val){};
+  double value{0.0};
 };
 class RemoveEvent : public NoHandleEvent {};
 class AddEvent : public NoHandleEvent {};

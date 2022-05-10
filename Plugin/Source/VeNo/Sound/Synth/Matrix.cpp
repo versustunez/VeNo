@@ -2,8 +2,9 @@
 
 namespace VeNo::Audio {
 
-Matrix::Matrix(InstanceID instance_id) : m_id(instance_id),
-                                         m_modulatorHandle(instance_id) {
+Matrix::Matrix(InstanceID instance_id)
+    : m_id(instance_id),
+      m_modulatorHandle(instance_id) {
   m_modulatorHandle.init(this);
 }
 Matrix::~Matrix() {
@@ -26,12 +27,13 @@ void Matrix::update() {
   }
 
   // @TODO: Add Modulator -> Modulation
-  //for (auto &item : m_items) {}
+  // for (auto &item : m_items) {}
 }
 void Matrix::remove(const VString &name, const VString &dst) {
   std::string key = name + dst;
   auto it = m_indexLookup.find(key);
-  if (it == m_indexLookup.end()) return;
+  if (it == m_indexLookup.end())
+    return;
   m_deletedItems.push_back(it->second);
   m_indexLookup.erase(it);
 }

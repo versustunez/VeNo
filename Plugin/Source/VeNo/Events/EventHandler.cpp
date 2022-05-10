@@ -19,7 +19,7 @@ EventHandler::~EventHandler() {
 }
 // @TODO: Allow Multi Handle for Same Parameter
 void EventHandler::addHandler(const std::string &name, Handler *handler) {
-/*  DBGN("[{}], Registered EventHandler: {}", (void*)this, name.c_str());*/
+  /*  DBGN("[{}], Registered EventHandler: {}", (void*)this, name.c_str());*/
   m_handler[name] = handler;
 }
 void EventHandler::removeHandler(const std::string &name) {

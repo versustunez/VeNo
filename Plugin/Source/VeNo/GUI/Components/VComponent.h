@@ -9,8 +9,8 @@ public:
   template <class ClassType> ClassType *parent() {
     return findParentComponentOfClass<ClassType>();
   }
-  template <class T>
-  static Ref<T> create(InstanceID id) {
+
+  template <class T> static Ref<T> create(InstanceID id) {
     return CreateRef<T>("", "Unknown", id);
   }
 

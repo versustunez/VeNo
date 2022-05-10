@@ -56,7 +56,7 @@ public:
 
   double asDouble(const std::string &key, double fallback) {
     auto *el = getString<double>(key, fallback);
-    return el ? el->getDoubleValue() != 0 : fallback;
+    return el ? el->getDoubleValue() : fallback;
   }
 
   bool asBool(const std::string &key, bool fallback) {

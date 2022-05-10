@@ -73,8 +73,8 @@ Core::Parameter *ParameterHandler::getOscParameter(const std::string &name,
   std::string parameter = "osc" + std::to_string(id) + "__" + name;
   return getParameter(parameter);
 }
-Core::ModulateParameter *ParameterHandler::getOscModulateParameter(const std::string &name,
-                                                   int id) {
+Core::ModulateParameter *
+ParameterHandler::getOscModulateParameter(const std::string &name, int id) {
   std::string parameter = "osc" + std::to_string(id) + "__" + name;
   return getModulateParameter(parameter);
 }

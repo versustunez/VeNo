@@ -14,13 +14,15 @@ void Flex::setItems(Vector<Ref<BaseComponent>> &components,
   m_flexBox.items.clear();
   for (auto &component : components) {
     auto &pos = component->pos;
-    m_flexBox.items.add(
-        juce::FlexItem(*component).withMinWidth((float)pos.w).withMinHeight((float)pos.h));
+    m_flexBox.items.add(juce::FlexItem(*component)
+                            .withMinWidth((float)pos.w)
+                            .withMinHeight((float)pos.h));
   }
   for (auto &component : groups) {
     auto &pos = component->position();
-    m_flexBox.items.add(
-        juce::FlexItem(*component).withMinWidth((float)pos.w).withMinHeight((float)pos.h));
+    m_flexBox.items.add(juce::FlexItem(*component)
+                            .withMinWidth((float)pos.w)
+                            .withMinHeight((float)pos.h));
   }
 }
 void Flex::perform(juce::Rectangle<float> rectangle) {

@@ -24,7 +24,7 @@ public:
   GUIParseItem *rootItem() { return m_rootItem; }
   auto &parameters() { return m_parameters; }
   auto &name() { return m_name; }
-  void setName(const VString& name) { m_name = name;}
+  void setName(const VString &name) { m_name = name; }
 
 public:
   // validation allow to run the parser with error reporting

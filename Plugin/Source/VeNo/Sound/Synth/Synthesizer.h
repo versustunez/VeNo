@@ -27,8 +27,10 @@ public:
   void invalidateEnvelopes();
 
   EnvelopeData &envelope();
-  Matrix& matrix() { return m_matrix; }
-  OscillatorState& oscillatorState(int idx) { return m_oscillators[idx]->state; }
+  Matrix &matrix() { return m_matrix; }
+  OscillatorState &oscillatorState(int idx) {
+    return m_oscillators[idx]->state;
+  }
 
 private:
   void renderVoices(juce::AudioBuffer<float> &, int startSample,
@@ -40,7 +42,7 @@ private:
   friend MidiHandler;
   InstanceID m_instanceId{0};
   Core::ParameterHandler *m_parameterHandler{nullptr};
-  Core::ModulateParameter* m_masterVolume;
+  Core::ModulateParameter *m_masterVolume;
   Core::Config *m_config{nullptr};
   Scope<SynthVoice> m_voices[MAX_VOICES]{};
   ParameterEventHandler m_parameterEventHandler{};

@@ -12,4 +12,8 @@ add_sources(
         Tabbed.cpp
         WaveEditor.cpp
         WaveThumbnails.cpp
+
+        # LCD Component Space
+        LCD/LCD.cpp
+        LCD/LCDSubComponents.cpp
 )

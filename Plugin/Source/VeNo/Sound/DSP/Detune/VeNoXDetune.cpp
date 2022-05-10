@@ -22,6 +22,6 @@ void VeNoXDetune::create(DetuneState &detune) {
 }
 double VeNoXDetune::getRealDetune(float detune) {
   double d = detune / DETUNE_MAX_VALUE;
-  return std::atan (d * d * d * d) * detune;
+  return std::atan(d * d * d * d) * detune;
 }
 } // namespace VeNo::Audio

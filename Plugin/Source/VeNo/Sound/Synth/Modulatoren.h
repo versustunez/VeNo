@@ -1,7 +1,7 @@
 #pragma once
+#include <VeNo/Events/Event.h>
 #include <VeNo/Sound/Generation/EnvelopeStructs.h>
 #include <VeNo/Sound/Generation/LFO.h>
-#include <VeNo/Events/Event.h>
 #include <VeNo/TypeDefs.h>
 
 namespace VeNo::Audio {
@@ -12,7 +12,7 @@ public:
   virtual ~Modulator() = default;
   virtual void update() = 0;
   virtual double value(int index) = 0;
-  virtual VString& name() = 0;
+  virtual VString &name() = 0;
 
 protected:
   InstanceID m_id{0};
@@ -26,10 +26,10 @@ public:
   double value(int index) override;
   void handle(Events::Event *event) override;
   void setSampleRate(double sampleRate);
-  EnvelopeData& data() { return m_data; }
-  EnvelopeVoiceData& voiceData(int voice) { return m_voiceData[voice]; }
+  EnvelopeData &data() { return m_data; }
+  EnvelopeVoiceData &voiceData(int voice) { return m_voiceData[voice]; }
 
-  VString& name() override { return m_name; };
+  VString &name() override { return m_name; };
 
 protected:
   VString m_name{};
@@ -44,7 +44,8 @@ public:
   void init();
   void update() override;
   double value(int index) override;
-  VString& name() override { return m_name; }
+  VString &name() override { return m_name; }
+
 protected:
   VString m_name{"LFO"};
 };
@@ -55,7 +56,7 @@ public:
   void update() override;
   double value(int index) override;
 
-  VString& name() override { return m_name; }
+  VString &name() override { return m_name; }
 
 protected:
   VString m_name{"LFO"};
@@ -65,10 +66,11 @@ protected:
 class ModulatorHandle {
 public:
   explicit ModulatorHandle(InstanceID id) : m_id(id) {}
-  void init(Matrix* matrix);
+  void init(Matrix *matrix);
   void setSampleRate(double sampleRate);
   void triggerNoteOn(int voice);
   void triggerNoteOff(int voice);
+
 protected:
   Vector<Ref<LFOModulator>> m_LFOs;
   Vector<Ref<RandomModulator>> m_randomGenerators;

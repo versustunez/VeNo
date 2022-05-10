@@ -6,5 +6,7 @@ void EventCB::handle(Event *event) {
     m_cb(event);
   }
 }
-void EventCB::setCB(std::function<void(Event *)> lambda) { m_cb = std::move(lambda); }
+void EventCB::setCB(std::function<void(Event *)> lambda) {
+  m_cb = std::move(lambda);
+}
 } // namespace VeNo::Events
