@@ -16,4 +16,8 @@ add_sources(
         # LCD Component Space
         LCD/LCD.cpp
         LCD/LCDSubComponents.cpp
+
+        # Config Component Space
+        Config/ConfigComponent.cpp
+        Config/ColorChangeComponent.cpp
 )

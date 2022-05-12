@@ -13,6 +13,8 @@ public:
   void addChild(const Ref<ComponentGroup> &param) override;
   void setWidthMode(bool isWidthMode) { m_isWidthMode = isWidthMode; }
 
+  void enableVerticalScrollbar();
+
 protected:
   bool m_isWidthMode{true};
   Ref<BaseComponent> m_component;

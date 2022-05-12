@@ -1,6 +1,7 @@
 #include <VUtils/Logging.h>
 #include <VeNo/Core/Config.h>
 #include <VeNo/GUI/Fonts/Fonts.h>
+#include <VeNo/PluginEditor.h>
 
 namespace VeNo::Core {
 Mutex Config::createGuard{};
@@ -36,7 +37,7 @@ void Config::initConfig() {
   m_scale = m_config->asDouble("editor.scale", 1.0);
 }
 void Config::registerEditor(std::string &id,
-                            juce::AudioProcessorEditor *editor) {
+                            VeNoEditor *editor) {
   DBGN("ID: {}", id.c_str());
   initLayout();
   initTheme();
@@ -95,8 +96,21 @@ void Config::initTheme() {
   look = CreateScope<GUI::LookHandler>();
 }
 void Config::setScale(double scale) {
-  juce::Desktop::getInstance().setGlobalScaleFactor(float(scale));
   m_scale = scale;
   m_config->setValue("editor.scale", m_scale);
+  for(auto& [idx,editor] : m_editors) {
+    editor->setScaleFactor((float)scale);
+    auto &pos = editor->mainInterpreter->componentGroup->position();
+    int width = pos.w > 0 ? pos.w : WINDOW_WIDTH;
+    int height = pos.h > 0 ? pos.h : WINDOW_HEIGHT;
+    editor->setSize(width, height);
+    editor->repaint();
+  }
+
+}
+void Config::repaintEditors() {
+  for(auto& [idx,editor] : m_editors) {
+    editor->repaint();
+  }
 }
 } // namespace VeNo::Core

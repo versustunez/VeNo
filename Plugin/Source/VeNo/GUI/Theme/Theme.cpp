@@ -34,15 +34,19 @@ void Theme::init() {
   m_colorMapping["logoAccent"] = Colors::logoAccent;
   m_colorMapping["rootBG"] = Colors::root;
 }
+
 juce::Colour Theme::getColor(Colors index) {
   if (m_colours[index] != nullptr)
     return *m_colours[index];
   return {255, 255, 255};
 }
+
 void Theme::setColor(Colors index, juce::Colour *colour) {
   delete m_colours[index];
   m_colours[index] = colour;
+  m_configFile->setValue<juce::String>(colorToString(index), colour->toDisplayString(true));
 }
+
 void Theme::getColourFromConfig(Colors index) {
   std::string key = colorToString(index);
   delete m_colours[index];
@@ -50,12 +54,33 @@ void Theme::getColourFromConfig(Colors index) {
   m_colours[index] = new juce::Colour(juce::Colour::fromString(
       m_configFile->asString(key, color.toString().toStdString())));
 }
+
 Colors Theme::getColorIndex(const std::string &color) {
   if (m_colorMapping.find(color) != m_colorMapping.end()) {
     return m_colorMapping[color];
   }
   return Colors::unknown;
 }
+
+std::string Theme::colorName(Colors index) {
+  switch (index) {
+  case Colors::bg: return "Primary Background";
+  case Colors::bgTwo: return "Secondary Background";
+  case Colors::accent: return "Primary Accent";
+  case Colors::accentTwo: return "Secondary Accent";
+  case Colors::clip: return "Clip Color";
+  case Colors::font: return "Font Color";
+  case Colors::lcdBg: return "LCD Background";
+  case Colors::lcd: return "LCD Color";
+  case Colors::logo: return "Logo Color";
+  case Colors::logoAccent: return "Logo Accent";
+  case Colors::root: return "Root Background";
+  case Colors::unknown:
+  case Colors::end:
+  default: return "Unknown";
+  };
+}
+
 std::string Theme::colorToString(Colors index) {
   switch (index) {
   case Colors::bg: return "color.primaryBG";
@@ -70,9 +95,11 @@ std::string Theme::colorToString(Colors index) {
   case Colors::logoAccent: return "color.logoPrimary";
   case Colors::root: return "color.rootBG";
   case Colors::unknown:
-  default: return "";
+  case Colors::end:
+  default: return "color.unknown";
   }
 }
+
 juce::Colour Theme::getDefault(Colors index) {
   switch (index) {
   case Colors::bg: return {27, 27, 33};
@@ -87,6 +114,7 @@ juce::Colour Theme::getDefault(Colors index) {
   case Colors::logoAccent: return {31, 115, 255};
   case Colors::root: return {11, 11, 11};
   case Colors::unknown:
+  case Colors::end:
   default: return {255, 255, 255};
   }
 }

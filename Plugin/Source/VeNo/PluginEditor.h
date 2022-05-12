@@ -24,10 +24,11 @@ public:
   void renderOpenGL() override;
   void openGLContextClosing() override;
 
+  VeNo::Ref<VeNo::GUI::Interpreter> mainInterpreter{nullptr};
+
 protected:
   std::string m_id;
   VeNo::InstanceID m_instanceId;
-  VeNo::Ref<VeNo::GUI::Interpreter> mainInterpreter{nullptr};
   juce::OpenGLContext m_openGLContext;
   VeNo::Core::Instance *m_instance;
   int m_ticks{0};

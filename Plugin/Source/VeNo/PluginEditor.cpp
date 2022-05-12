@@ -17,7 +17,7 @@ VeNoEditor::VeNoEditor(VeNoProcessor &p, std::string id)
   int width = pos.w > 0 ? pos.w : WINDOW_WIDTH;
   int height = pos.h > 0 ? pos.h : WINDOW_HEIGHT;
   setResizable(false, false);
-  juce::Desktop::getInstance().setGlobalScaleFactor((float)config.m_scale);
+  AudioProcessorEditor::setScaleFactor((float)config.m_scale);
   setSize(width, height);
   addAndMakeVisible(mainInterpreter->componentGroup.get());
   auto *properties_ = config.properties();
@@ -47,7 +47,7 @@ void VeNoEditor::setupGL(bool vsync) {
   m_openGLContext.setRenderer(this);
   if (!vsync && !m_openGLContext.setSwapInterval(0))
     ERR("Cannot deactivate VSync");
-  m_openGLContext.setContinuousRepainting(true);
+  m_openGLContext.setContinuousRepainting(false);
   m_openGLContext.setComponentPaintingEnabled(true);
   m_openGLContext.attachTo(*this);
   m_openGLContext.makeActive();

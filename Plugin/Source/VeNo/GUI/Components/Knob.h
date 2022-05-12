@@ -30,6 +30,15 @@ public:
 
   static juce::Slider::SliderStyle getSliderStyle();
 
+  void setMinMax(double min, double max, double interval = 0) {
+    m_slider->setRange(min, max, interval);
+  }
+  void setValue(double value) { m_slider->setValue(value); }
+  void setDefaultValue(double defaultValue) {
+    m_slider->setDoubleClickReturnValue(true, defaultValue);
+  }
+  double getValue() { return m_slider->getValue(); };
+
   void setTooltip(bool tooltip);
   void enableFullWidth() { m_isFullWidth = true; }
   void setIsValueBox(bool valueBox) {

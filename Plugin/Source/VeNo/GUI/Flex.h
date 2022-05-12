@@ -21,6 +21,8 @@ public:
   float minWidth = 50.0f;
   float minHeight = 50.0f;
 
+  FlexBox* raw() { return &m_flexBox; }
+
 protected:
   FlexBox m_flexBox;
 };

@@ -34,6 +34,7 @@ public:
 
   static bool hasNullByte(int size, const char *string);
   static void toLower(std::string &str);
+  static void toUpper(std::string &str);
   static std::string toString(double value, int precision, bool fixed = false);
 };
 } // namespace VUtils

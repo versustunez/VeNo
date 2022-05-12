@@ -9,10 +9,11 @@
 #include <VeNo/TypeDefs.h>
 #include <unordered_map>
 
+class VeNoEditor;
 namespace VeNo::Core {
 struct Config {
   static Config &get();
-  void registerEditor(std::string &id, juce::AudioProcessorEditor *editor);
+  void registerEditor(std::string &id, VeNoEditor *editor);
   void removeEditor(std::string &id);
   void registerProcessor(std::string &id, juce::AudioProcessor *processor);
   void removeProcessor(std::string &id);
@@ -27,6 +28,8 @@ struct Config {
   Scope<VeNo::GUI::LookHandler> look{nullptr};
   void setScale(double scale);
 
+  void repaintEditors();
+
 protected:
   Config();
   ~Config();
@@ -35,7 +38,7 @@ protected:
   Mutex m_guard;
   static Mutex createGuard;
   Ref<Properties> m_config;
-  std::unordered_map<std::string, juce::AudioProcessorEditor *> m_editors;
+  std::unordered_map<std::string, VeNoEditor *> m_editors;
   std::unordered_map<std::string, juce::AudioProcessor *> m_processors;
   bool m_isLayoutInit = false;
   bool m_isThemeInit = false;

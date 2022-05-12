@@ -88,10 +88,11 @@ WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
     auto start = size_t((point.data.x) * (double)len);
     size_t diff = end - start;
     if (point.bezier) {
-      size_t times = len * 2;
+      size_t times = diff * 2;
       double midX =
           VUtils::Math::map(point.curved.x, point.data.x, next->data.x, 0, 1);
       for (size_t ii = 0; ii < times; ++ii) {
+        // @FIXME: THIS IS BROKEN! this will sometimes create a lot of evil shit
         double factor = (double)ii / (double)times;
         auto curve = VUtils::Curve::bezierCurve({0, point.data.value},
                                                 {midX, point.curved.value},

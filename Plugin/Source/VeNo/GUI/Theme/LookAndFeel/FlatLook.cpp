@@ -116,7 +116,6 @@ void FlatLook::drawToggleButton(juce::Graphics &graphics,
 void FlatLook::drawTabButton(juce::TabBarButton &button,
                              juce::Graphics &graphics, bool, bool) {
   const juce::Rectangle<int> activeArea(button.getActiveArea());
-  activeArea.withHeight(activeArea.getHeight() - 1);
   graphics.setColour(theme->getColor(Colors::bg));
   graphics.fillRect(activeArea);
 

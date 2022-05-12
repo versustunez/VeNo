@@ -6,6 +6,7 @@
 #include <VeNo/GUI/Components/Tabbed.h>
 #include <VeNo/GUI/Components/WaveEditor.h>
 #include <VeNo/GUI/Components/WaveThumbnails.h>
+#include <VeNo/GUI/Components/Config/ConfigComponent.h>
 
 namespace VeNo::GUI {
 Ref<BaseComponent> LogoFactory::create(GUIParseItem &item,
@@ -117,6 +118,21 @@ Ref<BaseComponent> LCDFactory::create(GUIParseItem &,
                                       const std::string &name, InstanceID id,
                                       Interpreter *) {
   return CreateRef<LCDComponent>(parameter, name, id);
+}
+
+Ref<BaseComponent> ConfigFactory::create(GUIParseItem & item,
+                                      const std::string &parameter,
+                                      const std::string &name, InstanceID id,
+                                      Interpreter *) {
+
+  auto scrollComponent = CreateRef<ScrollComponent>(parameter, name, id);
+  scrollComponent->setSelectorId("ConfigFactory");
+  auto comp = CreateRef<ConfigComponent>(parameter, name, id);
+  comp->setSize(item.pos.w, item.pos.h);
+  comp->calculateSize(item.pos.w);
+  scrollComponent->setViewComponent(comp);
+  scrollComponent->enableVerticalScrollbar();
+  return scrollComponent;
 }
 
 } // namespace VeNo::GUI

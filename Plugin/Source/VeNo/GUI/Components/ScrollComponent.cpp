@@ -7,7 +7,7 @@ ScrollComponent::ScrollComponent(const std::string &name,
                                  const std::string &showName, InstanceID id)
     : BaseComponent(name, showName, id) {
   m_viewport = CreateRef<juce::Viewport>();
-  m_viewport->setScrollOnDragEnabled(true);
+  m_viewport->setScrollOnDragMode(juce::Viewport::ScrollOnDragMode::nonHover);
   m_viewport->setScrollBarsShown(false, false, true, false);
   addAndMakeVisible(m_viewport.get());
 }
@@ -34,5 +34,8 @@ void ScrollComponent::addChild(const Ref<ComponentGroup> &param) {
     setViewComponent(m_nestedComponent);
   }
   m_nestedComponent->addChild(param);
+}
+void ScrollComponent::enableVerticalScrollbar() {
+  m_viewport->setScrollBarsShown(true, false, true, false);
 }
 } // namespace VeNo::GUI

@@ -19,7 +19,8 @@ enum class Colors {
   lcd,
   logo,
   logoAccent,
-  root
+  root,
+  end
 };
 
 class Theme {
@@ -32,6 +33,7 @@ public:
   static juce::Colour getDefault(Colors index);
 
   Colors getColorIndex(const std::string &color);
+  static std::string colorName(Colors index);
 
 protected:
   void getColourFromConfig(Colors index);

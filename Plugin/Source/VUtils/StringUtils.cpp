@@ -92,6 +92,7 @@ std::string StringUtils::urlEncode(const std::string &value) {
 
   return escaped.str();
 }
+
 std::string StringUtils::join(const std::vector<std::string> &vector,
                               const std::string &delimiter) {
   std::stringstream string;
@@ -102,6 +103,7 @@ std::string StringUtils::join(const std::vector<std::string> &vector,
   }
   return string.str();
 }
+
 bool StringUtils::hasNullByte(int size, const char *string) {
   for (int i = 0; i < size; ++i) {
     if (string[i] == '\0')
@@ -109,8 +111,13 @@ bool StringUtils::hasNullByte(int size, const char *string) {
   }
   return false;
 }
+
 void StringUtils::toLower(std::string &str) {
   std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+}
+
+void StringUtils::toUpper(std::string &str) {
+  std::transform(str.begin(), str.end(), str.begin(), ::toupper);
 }
 
 int StringUtils::toNumber(std::string &string, int def) {

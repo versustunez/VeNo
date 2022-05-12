@@ -16,5 +16,6 @@ void Interpreter::initMapping() {
   factories["Group"] = CreateRef<GroupFactory>();
   factories["WaveForm"] = CreateRef<WaveFormFactory>();
   factories["LCD"] = CreateRef<LCDFactory>();
+  factories["Config"] = CreateRef<ConfigFactory>();
 }
 } // namespace VeNo::GUI

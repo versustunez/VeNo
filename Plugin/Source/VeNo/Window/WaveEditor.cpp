@@ -19,14 +19,12 @@ WaveEditorWindow::WaveEditorWindow(InstanceID id)
   int w = pos.w > 0 ? pos.w : WAVEEDITOR_WIDTH;
   int h = pos.h > 0 ? pos.h : WAVEEDITOR_HEIGHT;
   // Add New Component and Prepare
-  auto *editor =
-      instance->mainInterpreter->componentGroup->parent<VeNoEditor>();
-  setContentNonOwned(interpreter.componentGroup.get(), false);
-  auto editorPos = editor->getPosition();
-  setBounds(editorPos.x, editorPos.y, w, h);
+  centreWithSize(w, h);
+  setContentNonOwned(interpreter.componentGroup.get(), true);
+  interpreter.componentGroup->setBounds(0,0, w, h);
   setAlwaysOnTop(false);
   setResizable(false, false);
-  setUsingNativeTitleBar(true);
+  setUsingNativeTitleBar(false);
   juce::DocumentWindow::setVisible(true);
   toFront(true);
   DBGN("Create WaveEditor");
