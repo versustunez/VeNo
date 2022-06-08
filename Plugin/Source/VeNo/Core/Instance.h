@@ -14,6 +14,7 @@ public:
   static Instance *get(InstanceID m_id);
   static Instance *create();
   static void remove(InstanceID m_id);
+  static State::InstanceState* getState(InstanceID id);
   void init();
   Scope<ParameterHandler> handler{nullptr};
   juce::AudioProcessorValueTreeState *treeState = nullptr;

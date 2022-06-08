@@ -38,24 +38,21 @@ bool WavePoint::updatePoint(Audio::WaveUIPoints &, float x, float y,
   auto *point = currentPoint.point;
   if (!point)
     return false;
+  if (shitDown)
+    y = std::roundf(y / SNAP_SIZE) * SNAP_SIZE;
+
   if (currentPoint.isCurvedPoint) {
-    point->curved.x = x;
     point->curved.y = y;
     point->curved.value = ((y * 2) - 1) * -1;
     return true;
   }
-  if (shitDown)
-    point->data.y = std::roundf(y / SNAP_SIZE) * SNAP_SIZE;
-  else
-    point->data.y = y;
+  point->data.y = y;
   point->data.value = ((point->data.y * 2) - 1) * -1;
 
   if (!point->isEdge) {
-    // We have to look if we can move
-    float nx = x;
     if (ctrlDown)
-      nx = std::roundf(x / SNAP_SIZE) * SNAP_SIZE;
-
+      x = std::roundf(x / SNAP_SIZE) * SNAP_SIZE;
+    // We have to look if we can move
     float leftX = 0;
     float rightX = 1;
     if (point->previous)
@@ -66,8 +63,8 @@ bool WavePoint::updatePoint(Audio::WaveUIPoints &, float x, float y,
     // offset them! :P
     leftX += 0.01;
     rightX -= 0.01;
-    if (nx > leftX && nx < rightX)
-      point->data.x = nx;
+    if (x > leftX && x < rightX)
+      point->data.x = x;
   }
   return true;
 }

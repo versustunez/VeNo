@@ -47,6 +47,19 @@ void Theme::setColor(Colors index, juce::Colour *colour) {
   m_configFile->setValue<juce::String>(colorToString(index), colour->toDisplayString(true));
 }
 
+juce::Colour Theme::getContrastColor(const juce::Colour& colour) {
+  size_t r = colour.getRed();
+  size_t g = colour.getGreen();
+  size_t b = colour.getBlue();
+  double val = 0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b);
+  constexpr double lightThreshold = 127.5 * 127.5;
+  if (val > lightThreshold) {
+    return {0,0,0};
+  }
+  return {255,255,255};
+}
+
+
 void Theme::getColourFromConfig(Colors index) {
   std::string key = colorToString(index);
   delete m_colours[index];

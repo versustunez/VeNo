@@ -250,7 +250,7 @@
     {
       "name": "{id}__wave_position",
       "showName": "{sid} Waveform Position",
-      "modulateAble": false,
+      "modulateAble": true,
       "tooltip": "Selected Waveform",
       "value": 0,
       "maxValue": 1,

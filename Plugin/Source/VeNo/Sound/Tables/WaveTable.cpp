@@ -11,26 +11,20 @@ void WaveTableCreator::generate(Vector<WavePoint> &inPoints,
   if (config.sampleRate < 0) {
     return;
   }
-  int maxHarms = (int)std::lround(config.sampleRate / (3.0 * 20));
-  auto len = (size_t)VUtils::Math::nextPowerOfTwo(maxHarms) * 2;
-  size_t times = 1;
-  size_t last = len;
-  while (last > 64) {
-    last >>= 1u;
-    times++;
-  }
-  group->len = times;
-  group->items = new Wave[times];
-  double topFreq = 2.0 / 3.0 / (double(len));
-  size_t l = len;
-  for (size_t i = 0; i < times; ++i) {
-    auto &item = group->items[i];
-    item.freq = topFreq;
-    item.len = l;
-    auto out = WaveGenerator::createArray(inPoints, l);
-    item.items = out.data;
-    topFreq *= 2;
-    l /= 2;
-  }
+  size_t len = 2048;
+  group->len = 1;
+  group->items = new Wave[1];
+  auto &item = group->items[0];
+  item.len = len;
+  auto out = WaveGenerator::createArray(inPoints, len);
+  item.items = out.data;
+}
+
+float *WaveTableCreator::downSampleTable(Wave& from) {
+  size_t len = from.len / 2;
+  auto* output = new float[len];
+  for (size_t i = 0, idx = 0; i < from.len; idx++, i+=2)
+    output[idx] = from.items[i];
+  return output;
 }
 } // namespace VeNo::Audio

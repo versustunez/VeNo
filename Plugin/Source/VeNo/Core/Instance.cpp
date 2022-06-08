@@ -50,6 +50,12 @@ void Instance::remove(InstanceID m_id) {
   if (isEmpty)
     m_instances.clear();
 }
+
+State::InstanceState *Instance::getState(VeNo::InstanceID id) {
+  return &m_instances[id]->state;
+}
+
+
 void Instance::init() {
   handler = CreateScope<ParameterHandler>(id);
   mainInterpreter = CreateRef<GUI::Interpreter>(id);

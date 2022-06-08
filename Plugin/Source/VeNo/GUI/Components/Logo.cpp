@@ -19,8 +19,12 @@ void Logo::resized() {
   juce::RectanglePlacement placement = juce::RectanglePlacement::centred;
   juce::Rectangle<float> react{(float)pos.x, (float)pos.y, (float)pos.w,
                                (float)pos.h};
-  auto transform = placement.getTransformToFit(
-      m_instance->state.logo->getDrawableBounds(), react);
+  auto bounds = m_instance->state.logo->getDrawableBounds();
+  if (react.getWidth() == 0 || react.getHeight() == 0 ||
+      bounds.getWidth() == 0 || bounds.getHeight() == 0) {
+    return;
+  }
+  auto transform = placement.getTransformToFit(bounds, react);
   m_instance->state.logo->setTransform(transform);
 }
 

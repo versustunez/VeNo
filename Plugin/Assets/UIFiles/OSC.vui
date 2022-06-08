@@ -15,31 +15,20 @@
             x: 10
             y: 5
         }
-        @Button {
-            mode: push
-            text: Copy
-            w: 70
-            h: 20
-            x: 40
-            y: 5
-            action: cpyOsc
-        }
-        @Button {
-            mode: push
-            text: Paste
-            w: 70
-            h: 20
-            x: 120
-            y: 5
-            action: pstOsc
-        }
     }
 
     #WaveForm {
-        header: true
-        background: primary
         width: 100%
         height: 160
+        @WaveForm {
+            bind: osc{i}__wave_position
+            x: 2%
+            y: 5%
+            width: 96%
+            height: 90%
+            wave: {i}
+            osc: true
+        }
     }
 
     #WaveFormControls {
@@ -57,7 +46,7 @@
                 text: Phase
                 width: 40
             }
-            @Knob {
+            @Knob#Phase {
                 bind: osc{i}__phase
                 tooltip: true
                 label: no
@@ -70,6 +59,7 @@
             text: Editor
             width: 80
             height: 30
+            action: open_wave_editor_{i}
         }
 
         @Switch#Random {
@@ -85,7 +75,7 @@
                 text: Wave
                 width: 40
             }
-            @Knob {
+            @Knob#Wave {
                 bind: osc{i}__wave_position
                 tooltip: true
                 label: no
@@ -134,7 +124,7 @@
                     text: Semi
                     width: 40
                 }
-                @ValueBox {
+                @ValueBox#Semitones {
                     bind: osc{i}__semitones
                     full-width: true
                     tooltip: false
@@ -150,7 +140,7 @@
                     text: Fine
                     width: 40
                 }
-                @ValueBox {
+                @ValueBox#Fine {
                     bind: osc{i}__cents
                     full-width: true
                     tooltip: false
@@ -166,7 +156,7 @@
                     text: Wide
                     width: 40
                 }
-                @ValueBox {
+                @ValueBox#Wide {
                     bind: osc{i}__stereo
                     full-width: true
                     tooltip: false
@@ -214,6 +204,7 @@
             }
             @Knob#Detune Dense {
                 bind: osc{i}__detune_dense
+                label-value: semi
                 width: 80
                 height: 80
             }

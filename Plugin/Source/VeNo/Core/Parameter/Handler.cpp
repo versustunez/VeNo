@@ -41,7 +41,9 @@ void ParameterHandler::addParameter(const std::string &name,
   auto *parameter = new Parameter(name, showName, min, max, value, m_id);
   m_parameters[name] = parameter;
   m_params.push_back(parameter->createParameter(type));
-  m_params.back()->addListener(parameter);
+  auto *back = m_params.back().get();
+  back->addListener(parameter);
+  parameter->calculatePrecision(back->getNormalisableRange().interval);
 }
 juce::AudioProcessorValueTreeState::ParameterLayout
 ParameterHandler::setupProcessor() {
