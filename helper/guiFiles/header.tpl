@@ -2,9 +2,17 @@
 #pragma once
 
 #include <string>
+#include <UIFiles.h>
+
+#define UI_FILES_COUNT $d$
 namespace VeNo::GUI {
+
+struct preDefinedBinary {
+  std::string name;
+  const char* data;
+};
+
 struct Files {
-  static std::string EMPTY;
-$s$
+  static preDefinedBinary preDefinedBinaries[UI_FILES_COUNT];
 };
 } // namespace VeNo::GUI

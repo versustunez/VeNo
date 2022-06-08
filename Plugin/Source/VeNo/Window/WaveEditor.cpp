@@ -20,8 +20,8 @@ WaveEditorWindow::WaveEditorWindow(InstanceID id)
   int h = pos.h > 0 ? pos.h : WAVEEDITOR_HEIGHT;
   // Add New Component and Prepare
   centreWithSize(w, h);
-  setContentNonOwned(interpreter.componentGroup.get(), true);
   interpreter.componentGroup->setBounds(0,0, w, h);
+  setContentNonOwned(interpreter.componentGroup.get(), true);
   setAlwaysOnTop(false);
   setResizable(false, false);
   setUsingNativeTitleBar(false);
@@ -31,14 +31,14 @@ WaveEditorWindow::WaveEditorWindow(InstanceID id)
 }
 WaveEditorWindow::~WaveEditorWindow() {
   DBGN("Delete WaveEditor");
-  std::string editor_closed =
-      "wave-editor-closed_" +
-      std::to_string(instance->waveHolder.currentTable());
-  instance->eventHandler.triggerEvent(editor_closed, new Events::RemoveEvent());
   instance->state.waveEditorWindow = nullptr;
 }
 void WaveEditorWindow::closeButtonPressed() {
   DBGN("Close WaveEditor");
+  std::string editor_closed =
+      "wave-editor-closed_" +
+      std::to_string(instance->waveHolder.currentTable());
+  instance->eventHandler.triggerEvent(editor_closed, new Events::RemoveEvent());
   instance->state.waveEditorWindow = nullptr;
 }
 std::string WaveEditorWindow::createName(InstanceID id) {

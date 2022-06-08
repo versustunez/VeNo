@@ -37,6 +37,7 @@ struct WaveUIPoints {
   void addPoint(float x, float y, float val, bool isEdge);
   void updateNeighbours();
   void updateCurved();
+  void updateXCurvedOnAdd();
 };
 
 struct Wave {
@@ -64,6 +65,6 @@ struct WaveGeneratorData {
 
 struct WaveGenerator {
   static WaveGeneratorData createArray(Vector<WavePoint> &inPoints, size_t len);
-  static int order_lookup(size_t len);
+  static double powerScale(double value, double power);
 };
 } // namespace VeNo::Audio

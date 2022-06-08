@@ -44,6 +44,7 @@ target_include_directories(${BaseTargetName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/
 target_link_libraries(
         ${BaseTargetName} PRIVATE
         assets
+        uifiles
         juce::juce_audio_utils
         juce::juce_dsp
         juce::juce_opengl

@@ -16,7 +16,7 @@ position-x: automatic
     h: 100%
     bg: primaryBG
     position-y: automatic
-    @import Bin::Sidebar
+    @import Sidebar
 }
 #Content {
     position-y: automatic
@@ -28,10 +28,9 @@ position-x: automatic
         @Tabbed {
             w: 50%
             [4](
-                @Tab {
-                    name: OSC{it0}
+                @Tab#OSC {it0} {
                     color: 0,0,0,0
-                    @import Bin::OSC;i={it0}
+                    @import OSC;i={it0}
                 }
             )
         }
@@ -45,6 +44,8 @@ position-x: automatic
             }
             @Tab {
                 name: Config
+                @Config {
+                }
             }
         }
     }
@@ -57,7 +58,7 @@ position-x: automatic
             @Tabbed {
                 width: 50%
                 [4](
-                    @Tab#Env{it0} {
+                    @Tab#Env {it0} {
                         #Flex {
                             height: 90%
                             flex: true
@@ -67,21 +68,25 @@ position-x: automatic
                                 bind: env{it0}__attack
                                 width: 80
                                 height: 100
+                                label-value: semi
                             }
                             @Knob#Decay {
                                 bind: env{it0}__decay
                                 width: 80
                                 height: 100
+                                label-value: semi
                             }
                             @Knob#Sustain {
                                 bind: env{it0}__sustain
                                 width: 80
                                 height: 100
+                                label-value: semi
                             }
                             @Knob#Release {
                                 bind: env{it0}__release
                                 width: 80
                                 height: 100
+                                label-value: semi
                             }
                         }
                     }
@@ -89,12 +94,14 @@ position-x: automatic
             }
             @Tabbed {
                 width: 50%
-                [2](
-                    @Tab#LFO{it0} {
+                [2:4](
+                    @Tab#LFO {it0} {
+                        position-y: automatic
+                        @import LFO;idx={it0_1};i={it0}
                     }
                 )
                 [2](
-                    @Tab#Random{it0} {
+                    @Tab#Random {it0} {
                     }
                 )
             }
@@ -105,7 +112,7 @@ position-x: automatic
             width: 100%
             bg: primaryBG
             position-x: automatic
-            @import Bin::Footer
+            @import Footer
         }
     }
 }

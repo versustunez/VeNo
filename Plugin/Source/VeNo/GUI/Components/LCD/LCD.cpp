@@ -4,7 +4,7 @@
 
 namespace VeNo::GUI {
 LCDComponent::LCDComponent(const std::string &name, const std::string &showName,
-                           unsigned long id)
+                           InstanceID id)
     : BaseComponent(name, showName, id) {
 
   m_header = Make<LCDHeader>(name, showName);

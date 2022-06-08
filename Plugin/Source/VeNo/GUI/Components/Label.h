@@ -13,6 +13,7 @@ public:
   void resized() override;
 
   void addListenEvent(const std::string &event);
+  juce::Label* label() { return m_label.get(); }
 
 protected:
   std::string m_text;

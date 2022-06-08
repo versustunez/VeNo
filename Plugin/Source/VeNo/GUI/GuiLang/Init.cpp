@@ -13,34 +13,41 @@ Ref<UIParser> &Initializer::createParser(std::string &name) {
     auto &parser = m_guiParser[name];
     parser->setName(name);
     auto file = getPreparedFilePath(name);
-    if (file.rfind("Bin::", 0) != 0)
+    if (file.rfind("Bin::", 0) != 0) {
       parser->loadFile(file);
-    else
+    } else
       parser->setContent(getBinaryContent(file));
   }
   return m_guiParser[name];
 }
+
 Initializer::~Initializer() { m_guiParser.clear(); }
+
 void Initializer::parseMain(std::string &name) {
   VENO_PROFILE_FUNCTION();
-  auto mainFB = "Bin::MainGUI";
-  auto file = name == mainFB ? mainFB : getPreparedFilePath(name);
+  auto mainFB = "Bin::MainGui";
+  auto file = getPreparedFilePath(name);
+  DBGN("Using {} as MainGui File", file);
   m_guiParser.emplace("Main", CreateRef<UIParser>());
   auto &main = m_guiParser["Main"];
-  if (VUtils::FileHandler::fileExists(file))
+  if (file.rfind("Bin::") != 0 && VUtils::FileHandler::fileExists(file))
     main->loadFile(file);
   else
-    main->setContent(Files::MainGui);
+    main->setContent(getBinaryContent(file));
   main->setName(mainFB);
   main->parse();
 }
+
 std::string Initializer::getPreparedFilePath(const std::string &name) {
   if (name.find("Bin::", 0) == 0)
     return name;
-  if (name.find(".gui") != std::string::npos)
-    return name;
   auto &layoutPath = VeNo::Core::Config::get().layoutPath;
-  return layoutPath + name + ".gui";
+  auto out = layoutPath + name + ".vui";
+  if (VUtils::FileHandler::fileExists(out)) {
+    return out;
+  } else {
+    return "Bin::" + name;
+  }
 }
 
 std::string Initializer::getBinaryContent(const std::string &name) {
@@ -48,11 +55,12 @@ std::string Initializer::getBinaryContent(const std::string &name) {
   auto binaryName = name;
   if (pos == 0)
     binaryName = binaryName.substr(5, binaryName.length());
-  for (auto &preDefinedBinary : preDefinedBinaries) {
+
+  for (auto &preDefinedBinary : Files::preDefinedBinaries) {
     if (binaryName == preDefinedBinary.name)
-      return *preDefinedBinary.data;
+      return preDefinedBinary.data;
   }
-  WARN("UNKNOWN BINARY RETURN EMPTY!");
+  WARN("UNKNOWN BINARY \"{}\" > RETURN EMPTY!", binaryName);
   return "";
 }
 GUIParseItem *Initializer::get(const std::string &name) {

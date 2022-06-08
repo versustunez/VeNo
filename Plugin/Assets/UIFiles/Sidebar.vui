@@ -3,10 +3,8 @@
     width: 100%
 }
 
-#LCD {
-    -- @TODO: Implement LCD Component -> it will listen to the bg :>
+@LCD {
     h: 160
-    bg: lcdBG
 }
 
 #Preset {
@@ -20,7 +18,7 @@
     h: 130
     flex: true
     justify-content: space-around
-    bg: 0,0,0,70
+    background: secondaryBG
 
     [4](
         #OSC{it0} {

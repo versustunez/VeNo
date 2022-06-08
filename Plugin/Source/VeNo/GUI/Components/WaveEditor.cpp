@@ -100,11 +100,12 @@ void WaveEditor::drawDots(juce::Graphics &graphics) {
 
   if (m_currentPoint.point) {
     auto *point = m_currentPoint.point;
-    graphics.setColour(theme->getColor(Theme::Colors::accentTwo));
+    auto color = theme->getColor(Theme::Colors::accent);
+    graphics.setColour(color.brighter());
     if (point->bezier && point->next)
       graphics.drawEllipse(point->curved.x * width - halfDot,
                            point->curved.y * height - halfDot, dotSize, dotSize,
-                           1.0f);
+                           1.5f);
     graphics.fillEllipse(point->data.x * width - halfDot,
                          point->data.y * height - halfDot, dotSize, dotSize);
   }
@@ -122,8 +123,13 @@ void WaveEditor::mouseDrag(const juce::MouseEvent &event) {
                                     event.mods.isShiftDown(),
                                     event.mods.isCtrlDown())) {
     if (m_xPointComponent && m_yPointComponent) {
-      m_xPointComponent->setText(std::to_string(m_currentPoint.point->data.x));
-      m_yPointComponent->setText(std::to_string(m_currentPoint.point->data.y));
+      if (m_currentPoint.isCurvedPoint) {
+        m_xPointComponent->setText(std::to_string(m_currentPoint.point->curved.x));
+        m_yPointComponent->setText(std::to_string(m_currentPoint.point->curved.y));
+      } else {
+        m_xPointComponent->setText(std::to_string(m_currentPoint.point->data.x));
+        m_yPointComponent->setText(std::to_string(m_currentPoint.point->data.y));
+      }
     }
     m_changed = true;
     repaint();
@@ -135,9 +141,9 @@ void WaveEditor::mouseDown(const juce::MouseEvent &event) {
   float xPos = std::clamp((float)event.x / (float)getWidth(), 0.0f, 1.0f);
   auto &uiPoints = m_lib->getGroup(m_currentWave)->uiPoints;
   auto point = Utils::WavePoint::findNearest(uiPoints, xPos, yPos);
+  m_currentPoint = point;
   if (point.point != m_currentPoint.point ||
       point.isCurvedPoint != m_currentPoint.isCurvedPoint) {
-    m_currentPoint = point;
     repaint();
   }
 }

@@ -1,20 +1,14 @@
-const files = [
-    'MainGui',
-    'OSC',
-    'WaveEditor',
-    'Footer',
-    'Sidebar'
-];
 const fs = require('fs'),
     crypto = require('crypto'),
-    tpl = fs.readFileSync(__dirname + "/template.tpl", "utf8"),
     tplHeader = fs.readFileSync(__dirname + "/header.tpl", "utf8"),
-    lastVersion = fs.readFileSync(__dirname + "/lastVersions.json", "utf8"),
-    outDir = "./../../Plugin/Source/VeNo/Generated/GUIFiles.cpp",
-    outDirHeader = "./../../Plugin/Source/VeNo/GUI/GUIFiles.h"
+    tplContent = fs.readFileSync(__dirname + "/content.tpl", "utf8"),
+    outFileTpl = "./../../Plugin/Source/VeNo/GUI/GUIFiles.",
+    assetDir = `${__dirname}/../../Plugin/Assets/UIFiles`;
 
+const files = fs.readdirSync(assetDir);
 let mapping = {};
 try {
+    const lastVersion = fs.readFileSync(__dirname + "/lastVersions.json", "utf8")
     mapping = JSON.parse(lastVersion);
 } catch (e) {
 
@@ -36,24 +30,19 @@ let hashChanged = false;
 
 let out = "";
 for (const file of files) {
-    const content = fs.readFileSync(`${__dirname}/files/${file}.gui`, "utf8");
+    const name = file.replace(".vui", "");
+    const content = fs.readFileSync(`${assetDir}/${file}`, "utf8");
     const hash = getHash(content);
-    if (!mapping[file] || mapping[file] !== hash) {
+    if (!mapping[name] || mapping[name] !== hash) {
         hashChanged = true;
-        mapping[file] = hash;
+        mapping[name] = hash;
     }
-    out += getContent(file, content) + "\n";
-}
-
-if (mapping['__content'] !== files.join(",")) {
-    mapping['__content'] = files.join(",");
-    const newHeaderContent = files.map((value) => {
-        return `  static std::string ${value};`;
-    }).join("\n");
-    fs.writeFileSync(outDirHeader, tplHeader.replace("$s$", newHeaderContent));
+    out += `      {"${name}", VeNo::UI::${name}_vui},\n`;
 }
 
 if (hashChanged) {
-    fs.writeFileSync(outDir, tpl.replace("$s$", out));
+    out.length -= 3;
+    fs.writeFileSync(outFileTpl + "h", tplHeader.replace("$d$", files.length.toString(10)));
+    fs.writeFileSync(outFileTpl + "cpp", tplContent.replace("$s$", out));
 }
 fs.writeFileSync(__dirname + "/lastVersions.json", JSON.stringify(mapping, null, 4));

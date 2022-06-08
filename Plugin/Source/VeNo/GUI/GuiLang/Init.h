@@ -5,10 +5,6 @@
 #include "UIParser.h"
 
 namespace VeNo::GUI {
-struct preDefinedBinary {
-  std::string name;
-  std::string *data;
-};
 struct Initializer {
   Initializer() = default;
   ~Initializer();
@@ -26,9 +22,6 @@ public:
 
 protected:
   std::unordered_map<std::string, Ref<VeNo::GUI::UIParser>> m_guiParser;
-  preDefinedBinary preDefinedBinaries[4] = {{"OSC", &Files::OSC},
-                                            {"Footer", &Files::Footer},
-                                            {"Sidebar", &Files::Sidebar},
-                                            {"WaveEditor", &Files::WaveEditor}};
+
 };
 } // namespace VeNo::GUI

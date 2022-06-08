@@ -177,7 +177,7 @@ void WaveThumbnail::generateWaveForm() {
     float y = float((data[i] + 1) / 2) * (float)getHeight();
     if (lastY == -1)
       lastY = y;
-    path.addLineSegment({x, lastY, x + xInc, y}, 0.05f);
+    path.addLineSegment({x, lastY, x + xInc, y}, 0.01f);
     x += xInc;
     lastY = y;
   }
