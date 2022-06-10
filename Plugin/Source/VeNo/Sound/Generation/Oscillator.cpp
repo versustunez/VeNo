@@ -86,10 +86,10 @@ void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice,
   }
   double inc = voice.frequency / sR;
   size_t currentTable = 0;
-  while ((currentTable < (osc.group->len - 1) &&
+/*  while ((currentTable < (osc.group->len - 1) &&
           (inc >= osc.group->items[currentTable].freq))) {
     ++currentTable;
-  }
+  }*/
   auto &table = osc.group->items[currentTable];
   auto output = renderVoice(voice, osc.detuneState, inc, table,
                             0); // first Voice because its special
@@ -131,8 +131,7 @@ float Oscillator::renderVoice(SingleVoiceData &voice, DetuneState &state,
   double sum2 = table.items[temp];
 
   double fraction = val - (double)value;
-  double finalSum = sum + fraction * (sum2 - sum);
-  return finalSum;
+  return (float)VUtils::Math::lerp(sum, sum2, fraction);
 }
 
 void Oscillator::prepareVoice(OscillatorData &osc, SingleVoiceData voice) {

@@ -65,5 +65,6 @@ struct WaveGeneratorData {
 
 struct WaveGenerator {
   static WaveGeneratorData createArray(Vector<WavePoint> &inPoints, size_t len);
+  static double powerScale(double value, double power);
 };
 } // namespace VeNo::Audio

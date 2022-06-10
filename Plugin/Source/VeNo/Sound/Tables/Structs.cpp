@@ -1,13 +1,13 @@
 #include "VeNo/Core/Config.h"
 #include "VeNo/Utils/ProfileMacros.h"
 #include "VeNo/Utils/Timer.h"
+#include "VeNo/Utils/Math.h"
 
 #include <VUtils/Curve.h>
 #include <VUtils/Logging.h>
 #include <VUtils/Math.h>
 #include <VUtils/StringUtils.h>
 #include <VeNo/Sound/Tables/Structs.h>
-#include <cmath>
 #include <limits>
 #include <sstream>
 
@@ -82,22 +82,20 @@ WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
         double factor = (double)ii / (double)times;
         auto curve = VUtils::Curve::bezierCurve({0, point.data.value},
                                                 {midX, point.curved.value},
-                                                {1, next->data.value}, factor);
-        //@FIXME: Implement the real stuff again... its really broken and not working at all
+                                                {1, next->data.value}, powerScale(factor, 0.0));
         items[start+ii] = (float)VUtils::Math::clamp(curve.y, -1, 1) * -1;
       }
     } else {
       for (size_t ii = 0; ii < diff; ++ii) {
         double factor = (double)ii / (double)diff;
-        double value =
-            VUtils::Math::lerp(point.data.value, next->data.value, factor);
+        double value = VUtils::Math::lerp(point.data.value, next->data.value, powerScale(factor, 0.0));
         items[start + ii] = (float)VUtils::Math::clamp(value, -1, 1) * -1;
       }
     }
   }
   double state = 0;
   double const cutoff_frequency = 1.0;
-  const double gain = cutoff_frequency / (2.0 * M_PI * Core::Config::get().sampleRate);
+  const double gain = cutoff_frequency / (2.0 * V_PI * Core::Config::get().sampleRate);
   for(size_t i = 0; i < len; ++i) {
     double retval = items[i] - state;
     state += gain * retval;
@@ -105,6 +103,17 @@ WaveGeneratorData WaveGenerator::createArray(Vector<WavePoint> &inPoints,
   }
   items[len] = items[0];
   return {items, len};
+}
+
+double WaveGenerator::powerScale(double value, double power) {
+  static constexpr double kMinPower = 0.01f;
+
+  if (fabs(power) < kMinPower)
+    return value;
+
+  double numerator = exp(power * value) - 1.0f;
+  double denominator = exp(power) - 1.0f;
+  return numerator / denominator;
 }
 
 std::string WaveUIPoints::to_string() {
