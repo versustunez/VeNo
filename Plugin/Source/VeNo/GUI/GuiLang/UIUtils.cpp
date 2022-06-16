@@ -4,12 +4,11 @@
 #include <VeNo/GUI/GuiLang/UIUtils.h>
 #include <VeNo/Utils/ProfileMacros.h>
 #include <cmath>
+#include <string>
+#include <sstream>
 
 namespace VeNo::GUI {
 
-std::regex UIUtils::s_regEx =
-    std::regex("\\{(.*?)\\}",
-               std::regex_constants::ECMAScript | std::regex_constants::icase);
 int UIUtils::getValue(VString value, int parentValue) {
   VENO_PROFILE_FUNCTION();
   if (value.empty())
@@ -43,22 +42,23 @@ VString UIUtils::getParameterReplaced(UIParser *parser, VString &input) {
     return input;
   }
   auto &parameters = parser->parameters();
-  auto words_begin = std::sregex_iterator(input.begin(), input.end(), s_regEx);
-  auto words_end = std::sregex_iterator();
-  for (std::sregex_iterator i = words_begin; i != words_end; ++i) {
-    const std::smatch &match = *i;
-    std::string replace;
-    std::string key = match[1].str();
-    if (parameters.find(key) != parameters.end())
-      replace = parameters[key];
-    input.replace(input.find(match[0]), match[0].str().size(), replace);
-    // MACOS and Linux can handle this... but on windows without this its
-    // CRASHING
-    words_begin = std::sregex_iterator(input.begin(), input.end(), s_regEx);
-    if (words_begin == words_end)
-      break;
+  size_t first = 0;
+  size_t last = 0;
+  std::stringstream stream;
+  for (size_t iterator = 0; iterator < input.length(); ++iterator) {
+    if (input[iterator] == '{') {
+      first = iterator;
+      stream << input.substr(last, iterator - last);
+    }
+    if (input[iterator] == '}') {
+      auto string = input.substr(first + 1, (iterator - first) - 1);
+      if (parameters.find(string) != parameters.end())
+        stream << parameters[string];
+      last = iterator + 1;
+    }
   }
-  return input;
+  stream << input.substr(last, std::string::npos);
+  return stream.str();
 }
 void UIUtils::setProperty(GUIParseItem *item, VString &name, VString &value) {
   VENO_PROFILE_FUNCTION();

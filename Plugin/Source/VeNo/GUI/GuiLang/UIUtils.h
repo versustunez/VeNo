@@ -16,8 +16,5 @@ public:
   static void setProperty(GUIParseItem *item, VString &name, VString &value);
   static ImportItem getImportParameters(UIParser *parser, VString &import);
   static void setColor(GUIParseItem *item, VString &value);
-
-protected:
-  static std::regex s_regEx;
 };
 } // namespace VeNo::GUI
