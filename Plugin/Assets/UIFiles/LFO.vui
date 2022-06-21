@@ -22,9 +22,8 @@
         height: 115
         background: 21,21,21,40
         @WaveForm {
-            bind: lfo{i}__wave_position
-            wave: {idx}
-            osc: true
+            bind: lfo{i}__wave
+            index: {idx}
         }
     }
     #CTRLGroupTwo {
@@ -45,17 +44,9 @@
         height: 115
         position-y: automatic
 
-        @Button {
-            filled: true
-            text: Editor
-            width: 100%
-            height: 30
-            action: open_wave_editor_{idx}
-        }
-
         @Knob#Position {
             y-offset: 10
-            bind: lfo{i}__wave_position
+            bind: lfo{i}__wave
             width: 100%
             height: 75
         }

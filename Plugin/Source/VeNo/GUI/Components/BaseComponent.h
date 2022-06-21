@@ -28,6 +28,7 @@ public:
   Position pos{};
 
   void createLabel(const std::string &text, bool visible);
+  void removeLabel();
   void setText(const std::string &text);
   void triggerAfterParsing(Interpreter *);
 

@@ -4,7 +4,7 @@
 #include <string>
 #include <UIFiles.h>
 
-#define UI_FILES_COUNT 6
+#define UI_FILES_COUNT 5
 namespace VeNo::GUI {
 
 struct preDefinedBinary {

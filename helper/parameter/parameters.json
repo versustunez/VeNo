@@ -248,14 +248,14 @@
       "type": "Float"
     },
     {
-      "name": "{id}__wave_position",
-      "showName": "{sid} Waveform Position",
-      "modulateAble": true,
+      "name": "{id}__wave",
+      "showName": "{sid} Waveform",
+      "modulateAble": false,
       "tooltip": "Selected Waveform",
-      "value": 0,
-      "maxValue": 1,
-      "minValue": 0,
-      "type": "Float"
+      "value": 1,
+      "maxValue": 4,
+      "minValue": 1,
+      "type": "Integer"
     }
   ],
   "lfoConfig": {
@@ -285,14 +285,14 @@
       "type": "Float"
     },
     {
-      "name": "{id}__wave_position",
-      "showName": "{sid} Waveform Position",
+      "name": "{id}__wave",
+      "showName": "{sid} Waveform",
       "modulateAble": false,
       "tooltip": "Selected Waveform",
-      "value": 0,
-      "maxValue": 1,
-      "minValue": 0,
-      "type": "Float"
+      "value": 1,
+      "maxValue": 4,
+      "minValue": 1,
+      "type": "Integer"
     }
   ],
   "envelopeConfig": {

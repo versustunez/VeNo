@@ -100,7 +100,7 @@ ImportItem UIUtils::getImportParameters(UIParser *parser, VString &import) {
   VENO_PROFILE_FUNCTION();
   import = getParameterReplaced(parser, import);
   auto split = VUtils::StringUtils::split(import, ";");
-  ImportItem importItem{split[0]};
+  ImportItem importItem{split[0], {}};
   for (size_t i = 1; i < split.size(); ++i) {
     auto param = VUtils::StringUtils::split(split[i], "=", 1);
     if (param.size() > 1)

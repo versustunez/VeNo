@@ -1,11 +1,12 @@
 #pragma once
 
+#include "../PresetManager.h"
 #include "ComponentStates.h"
 
 #include <VeNo/GUI/ActionRegistry.h>
 #include <VeNo/GUI/Events/LCDListener.h>
-#include <VeNo/Window/WaveEditor.h>
 #include <cstdlib>
+
 namespace VeNo::State {
 class InstanceState {
 public:
@@ -14,8 +15,8 @@ public:
   ComponentStates components;
   InstanceID m_id;
   Scope<juce::Drawable> logo;
-  Scope<Windows::WaveEditorWindow> waveEditorWindow{};
   Scope<GUI::ActionRegistry> actionRegistry;
   Scope<GUI::LCDListener> lcdListener;
+  Scope<Core::PresetManager> PresetManager;
 };
 } // namespace VeNo::State

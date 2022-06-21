@@ -6,12 +6,12 @@ add_sources(
         Label.cpp
         Logo.cpp
         NestedComponent.cpp
+        Preset.cpp
         ScrollComponent.cpp
         SelectComponent.cpp
         Switch.cpp
         Tabbed.cpp
-        WaveEditor.cpp
-        WaveThumbnails.cpp
+        WaveForm.cpp
 
         # LCD Component Space
         LCD/LCD.cpp

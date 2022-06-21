@@ -22,16 +22,16 @@ struct OscillatorState {
   ModParameter *phase;
   Parameter *randomPhase;
   ModParameter *stereo;
-  Parameter *wavePosition;
+  Parameter *wave;
   Parameter *pitchWheel;
   Parameter *pitchBendUp;
   Parameter *pitchBendDown;
-  WaveTableLib *lib;
+  WaveLib *lib;
 };
 
 struct OscillatorData {
   int id{0};
-  Ref<WaveTableGroup> group{};
+  WaveTable* group{};
   OscillatorState state{};
   DetuneState detuneState;
 };

@@ -10,7 +10,6 @@ namespace VeNo::Core {
 // Instance has a GetInstance method
 class Instance {
 public:
-  InstanceID id{};
   static Instance *get(InstanceID m_id);
   static Instance *create();
   static void remove(InstanceID m_id);
@@ -22,8 +21,10 @@ public:
   Ref<GUI::Interpreter> mainInterpreter{nullptr};
   Ref<Audio::Synthesizer> synthesizer{nullptr};
   Events::EventHandler eventHandler{id};
-  Audio::WaveHolder waveHolder{id};
 
+public:
+  InstanceID id{};
+  double bpm{120};
 protected:
   Instance() = default;
   ~Instance();

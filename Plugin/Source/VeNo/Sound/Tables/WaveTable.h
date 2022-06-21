@@ -1,10 +1,26 @@
 #pragma once
-#include <VeNo/Sound/Tables/Structs.h>
+
+#include <VeNo/TypeDefs.h>
 
 namespace VeNo::Audio {
-class WaveTableCreator {
-public:
-  static void generate(Vector<WavePoint> &points, WaveTableGroup *group);
-  static float *downSampleTable(Wave& from);
+
+struct RawTable {
+  float* Data{nullptr};
+  bool IsNonImpulse{false};
+  size_t Length{0};
+  ~RawTable();
 };
-} // namespace VeNo::Audio
+
+struct Wave {
+  float* Data{nullptr};
+  double TopFreq{0.0};
+  size_t Length{0};
+  ~Wave();
+};
+
+struct WaveTable {
+  Wave* Waves;
+  size_t Length;
+  ~WaveTable();
+};
+}

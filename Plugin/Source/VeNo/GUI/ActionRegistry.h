@@ -13,7 +13,7 @@ public:
 
 protected:
   Events::EventCB *addAction(const VString &action);
-  void addEditorActions();
+  void addWaveFormCreatedEvents();
 
 protected:
   InstanceID m_id{0};

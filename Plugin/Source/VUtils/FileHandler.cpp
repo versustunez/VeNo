@@ -8,6 +8,9 @@ std::string FileHandler::m_currentDir;
 bool FileHandler::fileExists(const std::string &fileName) {
   return juce::File(fileName).existsAsFile();
 }
+bool FileHandler::createFile(const std::string &fileName) {
+  return juce::File(fileName).create();
+}
 
 std::string FileHandler::readFile(const std::string &fileName) {
   auto file = juce::File(fileName);
@@ -18,7 +21,7 @@ std::string FileHandler::readFile(const std::string &fileName) {
 
 bool FileHandler::writeFile(const std::string &fileName,
                             const std::string &content) {
-  if (!fileExists(fileName))
+  if (!fileExists(fileName) && !createFile(fileName))
     return false;
   try {
     std::ofstream ofs(fileName);

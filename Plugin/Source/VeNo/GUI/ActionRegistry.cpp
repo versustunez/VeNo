@@ -21,24 +21,31 @@ Events::EventCB *ActionRegistry::addAction(const VString &action) {
 
 ActionRegistry::ActionRegistry(size_t instanceId) : m_id(instanceId) {
   m_handler = &Core::Instance::get(m_id)->eventHandler;
-  addEditorActions();
+  addWaveFormCreatedEvents();
 }
-void ActionRegistry::addEditorActions() {
-  for (size_t i = 0; i < 6; ++i) {
-    std::string actionIdx = "open_wave_editor_" + std::to_string(i + 1);
-    addAction(actionIdx)->setCB([this](Events::Event *ev) {
-      auto *instance = Core::Instance::get(m_id);
-      auto &state = instance->state;
-      if (state.waveEditorWindow)
-        state.waveEditorWindow.reset(nullptr);
-      auto &action = ev->as<Events::ButtonClickedEvent>()->button->action();
-      auto idxString = VUtils::StringUtils::split(action, "_").back();
-      auto index = (size_t)VUtils::StringUtils::toNumber(idxString, 1);
-      instance->waveHolder.setCurrentTable(index - 1);
-      state.waveEditorWindow =
-          VeNo::CreateScope<VeNo::Windows::WaveEditorWindow>(m_id);
+
+void ActionRegistry::addWaveFormCreatedEvents() {
+  for (int i = 0; i < OSCILLATORS; ++i) {
+    std::string actionIdx = fmt::format("osc{}__wave",i+1);
+    addAction(actionIdx)->setCB([&, i](Events::Event*){
+      std::string localTrigger = "waveform_" + std::to_string(i + 1);
+      m_handler->triggerEvent(localTrigger, new Events::ChangeEvent);
     });
   }
+  for (int i = 0; i < LFOS; ++i) {
+    std::string actionIdx = fmt::format("lfo{}__wave",i+1);
+    int localX = i+OSCILLATORS;
+    addAction(actionIdx)->setCB([&, localX](Events::Event*){
+      std::string localTrigger = "waveform_" + std::to_string(localX + 1);
+      m_handler->triggerEvent(localTrigger, new Events::ChangeEvent);
+    });
+  }
+  addAction("audioLibCreated")->setCB([&](Events::Event *) {
+    for (int i = 0; i < OSCILLATORS + LFOS; ++i) {
+      std::string actionIdx = "waveform_" + std::to_string(i + 1);
+      m_handler->triggerEvent(actionIdx, new Events::ChangeEvent);
+    }
+  });
 }
 
 } // namespace VeNo::GUI

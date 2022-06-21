@@ -4,7 +4,6 @@ add_subdirectory(Generated)
 add_subdirectory(GUI)
 add_subdirectory(Sound)
 add_subdirectory(Utils)
-add_subdirectory(Window)
 add_sources(
         PluginEditor.cpp
         PluginProcessor.cpp

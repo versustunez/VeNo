@@ -7,8 +7,4 @@
 #define OSCILLATORS 4
 #define LFOS 2
 #define ENVELOPES 2
-#define WAVETABLES 40
-#define WAVETABLE_SLOTS 40
-
-#define WAVEEDITOR_WIDTH 560
-#define WAVEEDITOR_HEIGHT 350
+#define MAX_TABLES 4

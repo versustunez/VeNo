@@ -1,12 +1,13 @@
+#include "VeNo/GUI/Components/Preset.h"
+#include "VeNo/GUI/Components/WaveForm.h"
+
 #include <VeNo/GUI/ComponentFactories.h>
+#include <VeNo/GUI/Components/Config/ConfigComponent.h>
 #include <VeNo/GUI/Components/LCD/LCD.h>
 #include <VeNo/GUI/Components/Logo.h>
 #include <VeNo/GUI/Components/ScrollComponent.h>
 #include <VeNo/GUI/Components/SelectComponent.h>
 #include <VeNo/GUI/Components/Tabbed.h>
-#include <VeNo/GUI/Components/WaveEditor.h>
-#include <VeNo/GUI/Components/WaveThumbnails.h>
-#include <VeNo/GUI/Components/Config/ConfigComponent.h>
 
 namespace VeNo::GUI {
 Ref<BaseComponent> LogoFactory::create(GUIParseItem &item,
@@ -16,30 +17,6 @@ Ref<BaseComponent> LogoFactory::create(GUIParseItem &item,
   auto comp = CreateRef<Logo>(parameter, name, id);
   doBase(comp.get(), item, interpreter);
   return comp;
-}
-
-Ref<BaseComponent> WaveEditorFactory::create(GUIParseItem &item,
-                                             const std::string &parameter,
-                                             const std::string &name,
-                                             InstanceID id,
-                                             Interpreter *interpreter) {
-  auto component = CreateRef<WaveEditor>(parameter, name, id);
-  component->setColorComponent(item.colorComponent);
-  doBase(component.get(), item, interpreter);
-  return component;
-}
-
-Ref<BaseComponent> WaveThumbnailsFactory::create(GUIParseItem &item,
-                                                 const std::string &parameter,
-                                                 const std::string &name,
-                                                 InstanceID id, Interpreter *) {
-  auto scrollComponent = CreateRef<ScrollComponent>(parameter, name, id);
-  scrollComponent->setSelectorId("WaveThumbnails");
-  auto comp = CreateRef<WaveThumbnails>(parameter, name, id);
-  comp->setSize(item.pos.w, item.pos.h);
-  comp->createThumbnails();
-  scrollComponent->setViewComponent(comp);
-  return scrollComponent;
 }
 
 Ref<BaseComponent> ScrollComponentFactory::create(GUIParseItem &item,
@@ -80,6 +57,9 @@ Ref<BaseComponent> SelectFactory::create(GUIParseItem &item,
                                          Interpreter *) {
 
   auto comp = CreateRef<Select>(parameter, name, id);
+  if (item.has("label") && item["label"] == "no") {
+    comp->removeLabel();
+  }
   if (item.has("values")) {
     auto values = VUtils::StringUtils::split(item["values"], ",");
     for (auto &value : values) {
@@ -104,12 +84,9 @@ Ref<BaseComponent> WaveFormFactory::create(GUIParseItem &item,
                                            const std::string &parameter,
                                            const std::string &name,
                                            InstanceID id, Interpreter *) {
-  auto waveform = CreateRef<WaveForm>(parameter, name, id);
-  if (item.has("bind"))
-    waveform->setBindTo(item["bind"]);
-  waveform->setWaveId((size_t)VUtils::StringUtils::toNumber(item["wave"], 1) -
-                      1);
-  waveform->init();
+  auto waveform = CreateRef<WaveFormComponent>(parameter, name, id);
+  if (item.has("index"))
+    waveform->init(VUtils::StringUtils::toNumber(item["index"], 0));
   return waveform;
 }
 
@@ -133,6 +110,15 @@ Ref<BaseComponent> ConfigFactory::create(GUIParseItem & item,
   scrollComponent->setViewComponent(comp);
   scrollComponent->enableVerticalScrollbar();
   return scrollComponent;
+}
+
+Ref<BaseComponent> PresetFactory::create(GUIParseItem &,
+                                         const std::string &parameter,
+                                         const std::string &name, InstanceID id,
+                                         Interpreter *) {
+  auto presetComponent = CreateScope<PresetComponent>(parameter, name, id);
+  presetComponent->init();
+  return presetComponent;
 }
 
 } // namespace VeNo::GUI

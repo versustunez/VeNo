@@ -12,7 +12,6 @@ set(
         UIFiles/MainGui.vui
         UIFiles/OSC.vui
         UIFiles/Sidebar.vui
-        UIFiles/WaveEditor.vui
 )
 juce_add_binary_data(assets HEADER_NAME Assets.h SOURCES ${FILES})
 juce_add_binary_data(uifiles HEADER_NAME UIFiles.h NAMESPACE VeNo::UI SOURCES ${UIFILES})

@@ -6,4 +6,5 @@ add_sources(
         State/InstanceState.cpp
         Config.cpp
         Instance.cpp
+        PresetManager.cpp
 )

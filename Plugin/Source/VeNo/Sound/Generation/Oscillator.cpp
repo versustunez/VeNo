@@ -12,7 +12,7 @@ bool Oscillator::setup(OscillatorData &osc, size_t instanceId) {
   auto &state = osc.state;
   auto *instance = Core::Instance::get(instanceId);
   auto *handler = instance->handler.get();
-  state.lib = instance->waveHolder.generators[osc.id - 1].get();
+  state.lib = &WaveLib::Get();
   state.active = handler->getOscParameter("active", osc.id);
   state.voices = handler->getOscParameter("voices", osc.id);
   state.semitones = handler->getOscModulateParameter("semitones", osc.id);
@@ -26,7 +26,7 @@ bool Oscillator::setup(OscillatorData &osc, size_t instanceId) {
   state.phase = handler->getOscModulateParameter("phase", osc.id);
   state.randomPhase = handler->getOscParameter("random_phase", osc.id);
   state.stereo = handler->getOscModulateParameter("stereo", osc.id);
-  state.wavePosition = handler->getOscParameter("wave_position", osc.id);
+  state.wave = handler->getOscParameter("wave", osc.id);
   state.pitchWheel = handler->getParameter("pitch__wheel");
   state.pitchBendUp = handler->getParameter("pitchbend__up");
   state.pitchBendDown = handler->getParameter("pitchbend__down");
@@ -35,7 +35,7 @@ bool Oscillator::setup(OscillatorData &osc, size_t instanceId) {
 }
 
 bool Oscillator::prepare(OscillatorData &osc) {
-  osc.group = osc.state.lib->getGroup(osc.state.wavePosition->getValue());
+  osc.group = osc.state.lib->GetWaveTable(osc.state.wave->getInt()-1);
   Detune::update(osc.detuneState, osc.state);
   return false;
 }
@@ -86,11 +86,11 @@ void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice,
   }
   double inc = voice.frequency / sR;
   size_t currentTable = 0;
-/*  while ((currentTable < (osc.group->len - 1) &&
-          (inc >= osc.group->items[currentTable].freq))) {
+  while ((currentTable < (osc.group->Length - 1) &&
+          (inc >= osc.group->Waves[currentTable].TopFreq))) {
     ++currentTable;
-  }*/
-  auto &table = osc.group->items[currentTable];
+  }
+  auto &table = osc.group->Waves[currentTable];
   auto output = renderVoice(voice, osc.detuneState, inc, table,
                             0); // first Voice because its special
   voice.output.left = output;
@@ -124,19 +124,19 @@ float Oscillator::renderVoice(SingleVoiceData &voice, DetuneState &state,
   d.phaseOffset -= float(d.phaseOffset >= 1.0);
 
   // LETS GO ;)
-  double val = d.phaseOffset * (double)table.len;
+  double val = d.phaseOffset * (double)table.Length;
   int value = (int)val;
   int temp = (int)val + 1;
-  double sum = table.items[value];
-  double sum2 = table.items[temp];
+  double sum = table.Data[value];
+  double sum2 = table.Data[temp];
 
   double fraction = val - (double)value;
   return (float)VUtils::Math::lerp(sum, sum2, fraction);
 }
 
 void Oscillator::prepareVoice(OscillatorData &osc, SingleVoiceData voice) {
-  auto &random = Utils::Random::get();
   if (osc.state.randomPhase->getBool()) {
+    auto &random = Utils::Random::get();
     for (auto &unisonVoice : voice.unisonVoices) {
       unisonVoice.phaseOffset = (float)random.generate();
     }

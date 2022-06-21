@@ -38,14 +38,19 @@ void BaseComponent::createLabel(const std::string &text, bool visible) {
     addAndMakeVisible(*m_label);
 }
 
+void BaseComponent::removeLabel() {
+  removeChildComponent(m_label.get());
+  m_label.reset(nullptr);
+}
+
 void BaseComponent::setText(const std::string &text) {
   if (m_label != nullptr)
     m_label->setText(text, juce::NotificationType::dontSendNotification);
 }
 Position BaseComponent::resize() {
-  const auto &font = m_label->getFont();
-  m_label->setFont(font.withHeight(16.0f));
   if (m_label != nullptr) {
+    const auto &font = m_label->getFont();
+    m_label->setFont(font.withHeight(16.0f));
     int height = 18;
     int labelHeight = 16;
     int secHeight = getHeight() - height;
@@ -109,4 +114,5 @@ void BaseComponent::mouseExit(const juce::MouseEvent &) {
     return;
   m_handler->triggerEvent("tooltip", new Events::TooltipEvent{});
 }
+
 } // namespace VeNo::GUI

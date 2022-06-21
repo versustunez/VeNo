@@ -1,1 +1,3 @@
-add_sources()
+add_sources(
+        NameGen/NameGen.cpp
+)

@@ -7,7 +7,6 @@ preDefinedBinary Files::preDefinedBinaries[UI_FILES_COUNT] = {
       {"MainGui", VeNo::UI::MainGui_vui},
       {"OSC", VeNo::UI::OSC_vui},
       {"Sidebar", VeNo::UI::Sidebar_vui},
-      {"WaveEditor", VeNo::UI::WaveEditor_vui},
 
 };
 }

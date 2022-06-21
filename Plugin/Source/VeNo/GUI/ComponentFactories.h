@@ -33,13 +33,6 @@ public:
   bool isValueBox{false};
 };
 
-class WaveEditorFactory : public ComponentFactory {
-public:
-  Ref<BaseComponent> create(GUIParseItem &item, const std::string &parameter,
-                            const std::string &name, InstanceID id,
-                            Interpreter *interpreter) override;
-};
-
 class SwitchFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &item, const std::string &parameter,
@@ -59,13 +52,6 @@ public:
   Ref<BaseComponent> create(GUIParseItem &item, const std::string &parameter,
                             const std::string &name, InstanceID id,
                             Interpreter *interpreter) override;
-};
-
-class WaveThumbnailsFactory : public ComponentFactory {
-public:
-  Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
-                            const std::string &name, InstanceID id,
-                            Interpreter *) override;
 };
 
 class ScrollComponentFactory : public ComponentFactory {
@@ -118,6 +104,13 @@ public:
 };
 
 class ConfigFactory : public ComponentFactory {
+public:
+  Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
+                            const std::string &name, InstanceID id,
+                            Interpreter *) override;
+};
+
+class PresetFactory : public ComponentFactory {
 public:
   Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
                             const std::string &name, InstanceID id,

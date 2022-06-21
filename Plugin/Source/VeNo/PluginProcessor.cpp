@@ -20,8 +20,10 @@ void VeNoProcessor::processBlock(juce::AudioBuffer<float> &buffer,
   VENO_PROFILE_FUNCTION();
   auto *head = getPlayHead();
   if (head) {
-    juce::AudioPlayHead::CurrentPositionInfo currentPositionInfo;
-    getPlayHead()->getCurrentPosition(currentPositionInfo);
+    auto position = head->getPosition();
+    if (position.hasValue() && position->getBpm().hasValue()) {
+      instance->bpm = *position->getBpm();
+    }
   }
   buffer.clear();
   if (instance->synthesizer)
@@ -33,13 +35,17 @@ juce::AudioProcessorEditor *VeNoProcessor::createEditor() {
 }
 
 // @TODO: Important needed
-void VeNoProcessor::getStateInformation(juce::MemoryBlock &) {
+void VeNoProcessor::getStateInformation(juce::MemoryBlock &destData) {
   VENO_PROFILE_FUNCTION();
+  copyXmlToBinary (*instance->state.PresetManager->GetCurrentData (), destData);
 }
 
 // @TODO: IMPORTANT needed;)
-void VeNoProcessor::setStateInformation(const void *, int) {
+void VeNoProcessor::setStateInformation(const void * data, int sizeInBytes) {
   VENO_PROFILE_FUNCTION();
+  VeNo::Scope<juce::XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
+  if (xmlState != nullptr)
+    instance->state.PresetManager->SetCurrentData(xmlState);
 }
 
 VeNoProcessor::~VeNoProcessor() {
@@ -53,14 +59,12 @@ void VeNoProcessor::prepareToPlay(double sampleRate, int /*blockSize*/) {
   if (config.sampleRate != sampleRate) {
     config.sampleRate = sampleRate;
   }
+  VeNo::Audio::WaveLib::Get().CreateAll();
   if (!instance->synthesizer)
     instance->synthesizer =
         VeNo::CreateRef<VeNo::Audio::Synthesizer>(instance->id);
   instance->synthesizer->setSampleRate(sampleRate);
-  // YES SAMPLE RATE CHANGED REGENERATE ALL OF THEM ;)
-  for (auto &generator : instance->waveHolder.generators) {
-    generator->regenerateAll();
-  }
+  instance->eventHandler.triggerEvent("audioLibCreated", new VeNo::Events::AddEvent);
 }
 
 juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter() {

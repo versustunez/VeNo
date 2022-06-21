@@ -33,7 +33,7 @@ void ParameterHandler::setupParameter () {
     addParameterModulate (oscId + "phase", OSCName + " Phase offset", 0, 1, 0, Float);
     addParameter (oscId + "random_phase", OSCName + " Random Phase", 0, 1, 0, Boolean);
     addParameterModulate (oscId + "stereo", OSCName + " Detune Stereo", 0, 200, 100, Float);
-    addParameterModulate (oscId + "wave_position", OSCName + " Waveform Position", 0, 1, 0, Float);
+    addParameter (oscId + "wave", OSCName + " Waveform", 1, 4, 1, Integer);
   }
 
   for (int i = 1; i < 3; i++) {
@@ -41,7 +41,7 @@ void ParameterHandler::setupParameter () {
     std::string LFOName = "LFO" + std::to_string (i);
     addParameter (lfoId + "active", LFOName + " Active", 0, 1, 0, Boolean);
     addParameterModulate (lfoId + "rate", LFOName + " Rate", 1, 40, 1, Float);
-    addParameter (lfoId + "wave_position", LFOName + " Waveform Position", 0, 1, 0, Float);
+    addParameter (lfoId + "wave", LFOName + " Waveform", 1, 4, 1, Integer);
   }
 
   for (int i = 1; i < 3; i++) {

@@ -1,61 +1,36 @@
-#include <VeNo/Sound/Tables/WaveLib.h>
-#include <VeNo/Sound/Tables/WaveTable.h>
-#include <VeNo/Utils/ProfileMacros.h>
-#include <cassert>
-#include <cmath>
+#include "WaveLib.h"
+
+#include "TableCreator.h"
+#include "VeNo/Core/Config.h"
 
 namespace VeNo::Audio {
-RefGroup WaveTableLib::createGroup(bool add) {
-  VENO_PROFILE_FUNCTION();
-  RefGroup group = CreateRef<WaveTableGroup>();
-  auto &points = group->uiPoints;
-  points.addCurvedPoint(0, 1, -1, {}, true);
-  points.addPoint(1, 0, 1, true);
-  points.updateNeighbours();
-  points.updateCurved();
-  if (add) {
-    addGroup(group);
-  }
-  Audio::WaveTableCreator::generate(group->uiPoints.points, group.get());
-  return group;
+Mutex WaveLib::createGuard{};
+WaveLib &WaveLib::Get() {
+  Guard lockGuard(createGuard);
+  static WaveLib instance;
+  return instance;
 }
+WaveLib::~WaveLib() { Clear(); }
 
-void WaveTableLib::addGroup(const RefGroup &group) {
-  m_groups.push_back(group);
-  group->index = m_groups.size() - 1;
-  m_isDirty = true;
-}
-
-void WaveTableLib::replaceGroup(size_t index, const RefGroup &group) {
-  assert(m_groups.size() > index);
-  m_groups[index] = group;
-  m_isDirty = true;
-}
-
-void WaveTableLib::remove(long index) {
-  m_groups.erase(m_groups.begin() + index);
-  m_isDirty = true;
-}
-
-RefGroup &WaveTableLib::getGroup(double wavePosition) {
-  double max = (double)m_groups.size() - 1;
-  auto index = (size_t)std::round(wavePosition * max);
-  return m_groups[index];
-}
-
-void WaveTableLib::regenerateAll() {
-  VENO_PROFILE_FUNCTION();
-  for (size_t i = 0; i < m_groups.size(); ++i) {
-    auto &oldGroup = m_groups[i];
-    auto group = CreateRef<Audio::WaveTableGroup>();
-    group->uiPoints = oldGroup->uiPoints;
-    group->uiPoints.updateNeighbours();
-    Audio::WaveTableCreator::generate(group->uiPoints.points, group.get());
-    replaceGroup(i, group);
+void WaveLib::Clear() {
+  for (auto *wave : m_WaveTables) {
+    delete wave;
   }
 }
-void WaveTableLib::resetGroup(size_t index) {
-  auto group = createGroup(false);
-  replaceGroup(index, group);
+void WaveLib::CreateAll() {
+  auto& config = Core::Config::get();
+  if (config.sampleRate != m_SampleRate) {
+    m_SampleRate = config.sampleRate;
+    Clear();
+    // Create WaveTables ;)
+    TableCreator::CreateAll();
+  }
 }
-} // namespace VeNo::Audio
+WaveTable *WaveLib::GetWaveTable(int index) {
+  return m_WaveTables[index];
+}
+void WaveLib::SetWaveTable(int index, WaveTable *table) {
+  delete m_WaveTables[index];
+  m_WaveTables[index] = table;
+}
+} // namespace VeNo::Sound

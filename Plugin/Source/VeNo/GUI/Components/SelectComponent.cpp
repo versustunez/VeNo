@@ -36,9 +36,18 @@ void setupDetunePreset(Select &comboBox) {
   comboBox.addItem("Experimental"); // Moves crazy?! xD
 }
 
+void setupWavePreset(Select &comboBox) {
+  comboBox.addItem("Saw");
+  comboBox.addItem("Sine");
+  comboBox.addItem("Square");
+  comboBox.addItem("Triangle");
+}
+
 void Select::setupPreset(const VString &preset) {
   if (preset == "detune") {
     setupDetunePreset(*this);
+  } else if (preset == "waves") {
+    setupWavePreset(*this);
   } else {
     // UNKNOWN
   }

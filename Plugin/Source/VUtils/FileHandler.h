@@ -7,6 +7,7 @@ class FileHandler {
 public:
   static std::string m_currentDir;
   static bool fileExists(const std::string &fileName);
+  static bool createFile(const std::string &fileName);
   static bool isDirectory(const std::string &fileName);
   static std::string readFile(const std::string &fileName);
   static bool writeFile(const std::string &fileName,

@@ -84,7 +84,7 @@ void Config::initLayout() {
   if (m_isLayoutInit)
     return;
   m_isLayoutInit = true;
-  std::string file = m_config->asString("gui.main", "Bin::MainGUI");
+  std::string file = m_config->asString("gui.main", "Bin::MainGui");
   guiInit.parseMain(file);
 }
 Ref<Theme::Theme> Config::theme() { return m_theme; }
