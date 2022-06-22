@@ -28,6 +28,7 @@ public:
   ~LCDInfo() override;
   void paint(juce::Graphics &g) override;
   void drawVU(juce::Graphics &g);
+  void drawVULabels(juce::Graphics& g, int y, const std::string& label);
   void drawChange(juce::Graphics &g);
   void drawLogo(juce::Graphics &g);
   void handle(Events::Event *event) override;

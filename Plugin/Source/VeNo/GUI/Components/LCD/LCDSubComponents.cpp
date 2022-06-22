@@ -51,8 +51,36 @@ void LCDInfo::paint(juce::Graphics &g) {
 }
 
 void LCDInfo::drawVU(juce::Graphics &g) {
+
+  auto getScale = [&](double dB) {
+    double fDef = (dB + 30) / 30;
+    return int (fDef * 0.95 * getHeight ());
+  };
   g.fillPath(m_DrawPath);
+  g.setFont(9.0);
+  g.setFont(Fonts::getLCD()->getTypefacePtr());
+  drawVULabels (g, getScale (0), "-0-");
+  drawVULabels (g, getScale (-3), "-3-");
+  drawVULabels (g, getScale (-6), "-6-");
+  drawVULabels (g, getScale (-9), "-9-");
+  drawVULabels (g, getScale (-12), "-12-");
+  drawVULabels (g, getScale (-18), "-18-");
+  drawVULabels (g, getScale (-27), "-27-");
 }
+
+void LCDInfo::drawVULabels(juce::Graphics& g, int y, const std::string& label) {
+  auto font = g.getCurrentFont ();
+  int currentY = getHeight () - y;
+  int thisWidth = getWidth ();
+
+  int iMidHeight = (int) (font.getHeight () * 0.5f);
+
+  g.drawText (label,
+             2, currentY - iMidHeight, thisWidth - 3, (int) font.getHeight (),
+             juce::Justification::centred,
+             false);
+}
+
 
 void LCDInfo::drawChange(juce::Graphics &g) {
   g.setFont(Fonts::getLCD()->getTypefacePtr());
