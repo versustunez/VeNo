@@ -19,6 +19,7 @@ struct Math {
                     double startCoord2, double endCoord2);
   static int nextPowerOfTwo(double value);
   static double centsToRatio(double cents);
+  static double gainToDb(double value);
   static double normalize(double val, float min, float max);
 };
 } // namespace VUtils

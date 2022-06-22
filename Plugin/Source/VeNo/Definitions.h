@@ -1,3 +1,5 @@
+#define VeNo_SCREEN_TEXT "VeNo v1.0"
+
 #define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 700
 #define MAX_UNISON_VOICES 9

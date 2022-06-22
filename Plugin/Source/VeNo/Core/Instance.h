@@ -5,6 +5,7 @@
 #include <VeNo/Core/State/InstanceState.h>
 #include <VeNo/GUI/GuiLang/Interpreter.h>
 #include <VeNo/Sound/Synth/Synthesizer.h>
+#include <VeNo/Sound/Buffer.h>
 
 namespace VeNo::Core {
 // Instance has a GetInstance method
@@ -20,6 +21,7 @@ public:
   State::InstanceState state{id};
   Ref<GUI::Interpreter> mainInterpreter{nullptr};
   Ref<Audio::Synthesizer> synthesizer{nullptr};
+  Ref<Audio::Buffer> buffer{nullptr};
   Events::EventHandler eventHandler{id};
 
 public:

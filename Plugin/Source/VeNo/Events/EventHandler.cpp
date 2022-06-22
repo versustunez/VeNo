@@ -27,8 +27,8 @@ void EventHandler::removeHandler(const std::string &name) {
   m_handler.erase(name);
 }
 void EventHandler::triggerEvent(const std::string &name, Event *event) {
-  m_queue.push(QueuedEvent{event, name});
   cancelPendingUpdate();
+  m_queue.push(QueuedEvent{event, name});
   triggerAsyncUpdate();
 }
 void EventHandler::handleAsyncUpdate() {

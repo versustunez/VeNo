@@ -21,6 +21,7 @@ public:
 };
 
 class ChangeEvent : public NoHandleEvent {};
+class TriggerEvent : public NoHandleEvent {};
 class ParameterChangeEnd : public NoHandleEvent {};
 class TooltipEvent : public NoHandleEvent {
 public:

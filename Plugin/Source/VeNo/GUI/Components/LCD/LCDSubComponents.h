@@ -7,7 +7,7 @@
 
 namespace VeNo::GUI {
 
-enum class LCDInfoState { VU = 0, WAVE, STEREO, ONCHANGE, NOTHING };
+enum class LCDInfoState { VU = 0, WAVE, STEREO, LOGO_ONLY };
 
 class LCDHeader : public BaseComponent {
 public:
@@ -28,18 +28,20 @@ public:
   ~LCDInfo() override;
   void paint(juce::Graphics &g) override;
   void drawVU(juce::Graphics &g);
-  void drawWave(juce::Graphics &g);
-  void drawStereo(juce::Graphics &g);
   void drawChange(juce::Graphics &g);
-
+  void drawLogo(juce::Graphics &g);
   void handle(Events::Event *event) override;
-
   void handleAsyncUpdate() override;
+  void mouseDown(const juce::MouseEvent &event) override;
+
+protected:
+  void updateData();
 
 protected:
   Theme::Theme *m_theme{nullptr};
   ChangedParameter m_changedParameter{};
-  LCDInfoState m_state{LCDInfoState::ONCHANGE};
+  LCDInfoState m_state{LCDInfoState::LOGO_ONLY};
+  juce::Path m_DrawPath;
 };
 
 class LCDToolbar : public BaseComponent {

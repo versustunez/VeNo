@@ -26,8 +26,10 @@ void VeNoProcessor::processBlock(juce::AudioBuffer<float> &buffer,
     }
   }
   buffer.clear();
-  if (instance->synthesizer)
+  if (instance->synthesizer) {
     instance->synthesizer->processBlock(buffer, midiMessages);
+    instance->buffer->addSamples(buffer);
+  }
 }
 
 juce::AudioProcessorEditor *VeNoProcessor::createEditor() {
@@ -53,7 +55,7 @@ VeNoProcessor::~VeNoProcessor() {
   VeNo::Core::Instance::remove(instance->id);
   VENO_PROFILE_END_SESSION();
 }
-void VeNoProcessor::prepareToPlay(double sampleRate, int /*blockSize*/) {
+void VeNoProcessor::prepareToPlay(double sampleRate, int _blockSize) {
   VENO_PROFILE_FUNCTION();
   auto &config = VeNo::Core::Config::get();
   if (config.sampleRate != sampleRate) {
@@ -64,6 +66,7 @@ void VeNoProcessor::prepareToPlay(double sampleRate, int /*blockSize*/) {
     instance->synthesizer =
         VeNo::CreateRef<VeNo::Audio::Synthesizer>(instance->id);
   instance->synthesizer->setSampleRate(sampleRate);
+  instance->buffer->reset(_blockSize);
   instance->eventHandler.triggerEvent("audioLibCreated", new VeNo::Events::AddEvent);
 }
 

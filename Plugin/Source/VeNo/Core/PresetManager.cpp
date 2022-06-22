@@ -6,8 +6,8 @@
 namespace VeNo::Core {
 PresetManager::PresetManager(InstanceID id) : m_ID(id) {
   NameGen::Generator generator("s~Vi");
-  m_PresetName = generator.toString();
-  m_CurrentPreset = m_PresetName + ".vnp";
+  m_PresetName = "Init";
+  m_CurrentPreset = generator.toString() + ".vnp";
 }
 
 void PresetManager::Reset() {}
@@ -16,8 +16,9 @@ void PresetManager::Save() {
   if (m_CurrentPreset.empty())
     m_CurrentPreset = m_PresetName + ".vnp";
   std::string file = presetPath + m_CurrentPreset;
-  if (!VUtils::FileHandler::writeFile(
-          file, GetCurrentData()->toString().toStdString())) {
+  auto textFormat = juce::XmlElement::TextFormat().singleLine();
+  auto data = GetCurrentData()->toString(textFormat).toStdString();
+  if (!VUtils::FileHandler::writeFile(file, data)) {
     ERR("Cannot Save File: {}", file);
   }
 }
@@ -66,6 +67,7 @@ void PresetManager::SetCurrentData(const Scope<juce::XmlElement> &data) {
   auto fileName = data->getStringAttribute("file-name").toStdString();
   if (!fileName.empty())
     m_CurrentPreset = fileName;
-  instance->eventHandler.triggerEvent("preset_changed", new Events::ChangeEvent);
+  instance->eventHandler.triggerEvent("preset_changed",
+                                      new Events::ChangeEvent);
 }
 } // namespace VeNo::Core

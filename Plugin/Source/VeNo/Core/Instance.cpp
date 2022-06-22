@@ -55,10 +55,10 @@ State::InstanceState *Instance::getState(VeNo::InstanceID id) {
   return &m_instances[id]->state;
 }
 
-
 void Instance::init() {
   handler = CreateScope<ParameterHandler>(id);
   mainInterpreter = CreateRef<GUI::Interpreter>(id);
+  buffer = CreateRef<Audio::Buffer>(id);
   state.m_id = id;
 }
 
