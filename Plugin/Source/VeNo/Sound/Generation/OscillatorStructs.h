@@ -3,6 +3,7 @@
 
 #include <VeNo/Core/Parameter/Parameter.h>
 #include <VeNo/Sound/DSP/Detune/DetuneStruct.h>
+#include <VeNo/Sound/DSP/Widener.h>
 #include <cstdint>
 
 namespace VeNo::Audio {
@@ -34,6 +35,7 @@ struct OscillatorData {
   WaveTable* group{};
   OscillatorState state{};
   DetuneState detuneState;
+  WidenerState widenerState;
 };
 
 // holds a state to phase offset and start

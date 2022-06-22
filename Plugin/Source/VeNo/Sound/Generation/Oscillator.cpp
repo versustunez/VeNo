@@ -37,6 +37,7 @@ bool Oscillator::setup(OscillatorData &osc, size_t instanceId) {
 bool Oscillator::prepare(OscillatorData &osc) {
   osc.group = osc.state.lib->GetWaveTable(osc.state.wave->getInt()-1);
   Detune::update(osc.detuneState, osc.state);
+  Widener::Update(osc);
   return false;
 }
 bool Oscillator::process(OscillatorData &osc, SingleVoiceData &voice,
@@ -111,7 +112,8 @@ void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice,
     voice.output.left += detuneOut + dOut[0];
     voice.output.right += detuneOut + dOut[1];
   }
-
+  Widener::Apply(osc, voice.output);
+  Widener::ApplyPanning(osc, voice.output);
   double vol = osc.state.level->getVoice(voice.id);
   voice.output.left *= vol;
   voice.output.right *= vol;
