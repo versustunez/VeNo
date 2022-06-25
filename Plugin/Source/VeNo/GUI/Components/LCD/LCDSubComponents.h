@@ -7,7 +7,7 @@
 
 namespace VeNo::GUI {
 
-enum class LCDInfoState { VU = 0, WAVE, STEREO, LOGO_ONLY };
+enum class LCDInfoState { VU = 0, WAVE, STEREO, STEREO_TWO, LOGO_ONLY };
 
 class LCDHeader : public BaseComponent {
 public:
@@ -43,6 +43,7 @@ protected:
   ChangedParameter m_changedParameter{};
   LCDInfoState m_state{LCDInfoState::LOGO_ONLY};
   juce::Path m_DrawPath;
+  void drawStereoTwo(juce::Graphics &graphics);
 };
 
 class LCDToolbar : public BaseComponent {
