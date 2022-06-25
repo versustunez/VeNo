@@ -61,6 +61,7 @@ void TableCreator::FillTables(RawTable& rawTable, WaveTable* waveTable) {
 void TableCreator::CreateTableRaw(RawTable& rawTable, WaveTable *waveTable) {
   auto& config = Core::Config::get();
   waveTable->Waves = new Wave[1];
+  waveTable->Length = 1;
   auto& wave = waveTable->Waves[0];
   wave.TopFreq = config.sampleRate / 2.0;
   wave.Length = rawTable.Length;

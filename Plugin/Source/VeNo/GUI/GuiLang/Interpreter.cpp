@@ -76,6 +76,8 @@ Ref<BaseComponent> Interpreter::createComponent(GUIParseItem *item) {
 }
 void Interpreter::parseMain(GUIParseItem *item) {
   VENO_PROFILE_FUNCTION();
+  if (componentGroup != nullptr)
+    componentGroup.reset();
   auto parsed = parseTree(item, nullptr);
   if (parsed != nullptr)
     componentGroup = parsed;

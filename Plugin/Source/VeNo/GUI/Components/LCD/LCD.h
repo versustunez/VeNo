@@ -12,6 +12,8 @@ public:
   void resized() override;
   void paint(juce::Graphics &g) override;
 
+  void init();
+
 protected:
   Ref<LCDHeader> m_header{};
   Ref<LCDInfo> m_info{};

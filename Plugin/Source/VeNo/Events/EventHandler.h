@@ -55,7 +55,8 @@ protected:
   Map<std::string, Handler *> m_handler;
   Vector<Handler *> m_owningHandlers;
   Queue<QueuedEvent> m_queue;
-  juce::CriticalSection lock;
+  juce::CriticalSection m_queueLock;
+  juce::CriticalSection m_handlerLock;
 
   NO_COPY(EventHandler);
 };

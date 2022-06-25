@@ -36,13 +36,11 @@ juce::AudioProcessorEditor *VeNoProcessor::createEditor() {
   return new VeNoEditor(*this, m_id);
 }
 
-// @TODO: Important needed
 void VeNoProcessor::getStateInformation(juce::MemoryBlock &destData) {
   VENO_PROFILE_FUNCTION();
   copyXmlToBinary (*instance->state.PresetManager->GetCurrentData (), destData);
 }
 
-// @TODO: IMPORTANT needed;)
 void VeNoProcessor::setStateInformation(const void * data, int sizeInBytes) {
   VENO_PROFILE_FUNCTION();
   VeNo::Scope<juce::XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
@@ -55,6 +53,7 @@ VeNoProcessor::~VeNoProcessor() {
   VeNo::Core::Instance::remove(instance->id);
   VENO_PROFILE_END_SESSION();
 }
+
 void VeNoProcessor::prepareToPlay(double sampleRate, int _blockSize) {
   VENO_PROFILE_FUNCTION();
   auto &config = VeNo::Core::Config::get();
