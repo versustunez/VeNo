@@ -12,6 +12,7 @@ public:
   virtual ~Modulator() = default;
   virtual void update() = 0;
   virtual double value(int index) = 0;
+  virtual bool isVoiceModulator() { return false; }
   virtual VString &name() = 0;
 
 protected:
@@ -28,6 +29,7 @@ public:
   void setSampleRate(double sampleRate);
   EnvelopeData &data() { return m_data; }
   EnvelopeVoiceData &voiceData(int voice) { return m_voiceData[voice]; }
+  bool isVoiceModulator() override;
 
   VString &name() override { return m_name; };
 
@@ -49,6 +51,7 @@ public:
 protected:
   VString m_name{"LFO"};
 };
+
 class LFOModulator : public Modulator {
 public:
   explicit LFOModulator(InstanceID id) : Modulator(id) { init(); };
@@ -57,10 +60,24 @@ public:
   double value(int index) override;
 
   VString &name() override { return m_name; }
+  bool isVoiceModulator() override;
 
 protected:
   VString m_name{"LFO"};
   LFOData m_data;
+};
+
+class ModKnobsModulator : public Modulator {
+public:
+  explicit ModKnobsModulator(InstanceID id, int index)
+      : Modulator(id), m_index(index) {
+    init();
+  };
+  void init();
+  void update() override;
+  double value(int index) override;
+protected:
+  int m_index{1};
 };
 
 class ModulatorHandle {

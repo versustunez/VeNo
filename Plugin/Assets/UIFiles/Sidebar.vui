@@ -7,15 +7,14 @@
     h: 160
 }
 
-#Preset {
-    -- @TODO: Implement Preset Component
+@Preset {
     header: true
-    h: 50
+    h: 30
     bg: secondaryBG
 }
 
 #Mixer {
-    h: 130
+    h: 150
     flex: true
     justify-content: space-around
     background: secondaryBG
@@ -26,6 +25,7 @@
             header: true
             position-y: automatic
             @Switch {
+                y-offset: 10
                 h: 30
                 x: 5%
                 w: 90%
@@ -35,6 +35,7 @@
             }
             @Knob#Volume {
                 h: 70
+                y-offset: 20
                 bind: osc{it0}__level
                 label: bottom
                 label-value: semi

@@ -98,11 +98,10 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
     }
 
     for (auto &voice : m_voices) {
-      if (!voice->isActive || voice->velocity == 0 ||
-          voice->envelopeData.state == EnvelopeState::IDLE)
+      if (!voice->isActive || voice->velocity == 0)
         continue;
       double envelope = Envelope::process(voice->envelopeData, *m_envelope);
-      if (envelope == 0) {
+      if (envelope == 0 || voice->envelopeData.state == EnvelopeState::IDLE) {
         // clear Voice
         SynthVoiceHelper::clear(*this, *voice.get());
         continue;

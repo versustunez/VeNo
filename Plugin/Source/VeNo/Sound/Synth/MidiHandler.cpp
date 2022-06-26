@@ -40,7 +40,7 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
   auto *voices = synthesizer.voices();
   for (int i = 0; i < MAX_VOICES; i++) {
     auto &voice = voices[i];
-    if (voice->currentChannel == midiChannel &&
+    if (voice->isActive && voice->currentChannel == midiChannel &&
         voice->currentNote == midiNoteNumber) {
       synthesizer.matrix().handle().triggerNoteOff(i);
       SynthVoiceHelper::noteOff(synthesizer, *voice, 1.0);
@@ -60,8 +60,7 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
                                velocity, legato);
       synthesizer.matrix().handle().triggerNoteOn(i);
       synthesizer.hasActiveNote = true;
-      voiceToSteal = -1;
-      break;
+      return;
     }
 
     if (legato) {
@@ -83,8 +82,8 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
     if (!legato) {
       SynthVoiceHelper::noteOff(synthesizer, *voice, voice->velocity);
       voice->noteOnTime = ++synthesizer.lastNoteOnCounter;
+      synthesizer.matrix().handle().triggerNoteOn(voiceToSteal);
     }
-    synthesizer.matrix().handle().triggerNoteOn(voiceToSteal);
     SynthVoiceHelper::noteOn(synthesizer, *voice, midiChannel, midiNoteNumber,
                              velocity, legato);
     synthesizer.hasActiveNote = true;
@@ -98,10 +97,13 @@ void MidiHandler::noteOff(juce::MidiMessage &message,
   auto midiNoteNumber = message.getNoteNumber();
   for (int i = 0; i < MAX_VOICES; i++) {
     auto &voice = voices[i];
-    if (voice->currentNote == midiNoteNumber &&
+    if (voice->isActive && voice->currentNote == midiNoteNumber &&
         voice->currentChannel == midiChannel) {
       synthesizer.matrix().handle().triggerNoteOff(i);
       SynthVoiceHelper::noteOff(synthesizer, *voice, voice->velocity);
+      if (voice->envelopeData.state != EnvelopeState::IDLE) {
+        synthesizer.hasActiveNote = true;
+      }
     } else if (voice->isActive)
       synthesizer.hasActiveNote = true;
   }

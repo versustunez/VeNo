@@ -31,5 +31,4 @@ protected:
   VeNo::InstanceID m_instanceId;
   juce::OpenGLContext m_openGLContext;
   VeNo::Core::Instance *m_instance;
-  int m_ticks{0};
 };

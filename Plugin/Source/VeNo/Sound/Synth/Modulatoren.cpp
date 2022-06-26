@@ -43,6 +43,7 @@ void EnvModulator::setSampleRate(double sampleRate) {
   m_data.sampleRate = sampleRate;
   m_data.needRecalculate = true;
 }
+bool EnvModulator::isVoiceModulator() { return true; }
 
 void LFOModulator::init() {
   // Create Data ;)
@@ -55,6 +56,7 @@ void LFOModulator::init() {
 }
 void LFOModulator::update() {}
 double LFOModulator::value(int index) { return 0.0; }
+bool LFOModulator::isVoiceModulator() { return true; }
 
 void RandomModulator::init() {
   // Create Data ;)
@@ -62,6 +64,18 @@ void RandomModulator::init() {
 }
 void RandomModulator::update() {}
 double RandomModulator::value(int index) { return 0.0; }
+
+
+void ModKnobsModulator::init() {
+
+}
+
+void ModKnobsModulator::update() {
+}
+
+double ModKnobsModulator::value(int index) {
+
+}
 
 void ModulatorHandle::init(Matrix *matrix) {
   // we create and add Modulators here... that makes it easy to handle them ;)

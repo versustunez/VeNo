@@ -136,6 +136,10 @@ BaseComponent *Interpreter::find(const char *selector,
 bool Interpreter::contains(const char *name, GUIParseItem *item) {
   return item->properties.find(name) != item->properties.end();
 }
+void Interpreter::removeUI() {
+  if (componentGroup != nullptr)
+    componentGroup.reset();
+}
 void Interpreter::triggerAfterParsing(ComponentGroup *inGroup) {
   VENO_PROFILE_FUNCTION();
   if (inGroup == nullptr)

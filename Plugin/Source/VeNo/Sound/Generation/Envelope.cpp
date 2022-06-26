@@ -71,7 +71,7 @@ void Envelope::noteOff(EnvelopeVoiceData &data, EnvelopeData &envelope) {
     double release = envelope.parameters.release->getValue() / 1000;
     if (release > 0.0) {
       data.releaseRate = getRate(data.value, release, envelope.sampleRate);
-      data.state = RELEASE;
+      data.state = EnvelopeState::RELEASE;
     } else {
       data.value = 0.0;
       data.state = EnvelopeState::IDLE;

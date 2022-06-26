@@ -27,7 +27,15 @@ void Matrix::update() {
   }
 
   // @TODO: Add Modulator -> Modulation
-  // for (auto &item : m_items) {}
+/*  for (auto &item : m_items) {
+    if(item.src->isVoiceModulator()) {
+      for (int i = 0; i < MAX_VOICES; ++i) {
+        item.dst->addValueVoice(i, item.src->value(i));
+      }
+    } else {
+      item.dst->addValue(item.src->value(-1));
+    };
+  }*/
 }
 void Matrix::remove(const VString &name, const VString &dst) {
   std::string key = name + dst;

@@ -33,6 +33,7 @@ void VeNoEditor::paint(juce::Graphics &g) {
 VeNoEditor::~VeNoEditor() {
   auto *instance = VeNo::Core::Instance::get(m_instanceId);
   instance->state.actionRegistry.reset(nullptr);
+  mainInterpreter->removeUI();
   mainInterpreter.reset();
   VeNo::Core::Config::get().removeEditor(m_id);
   m_openGLContext.detach();
@@ -46,7 +47,7 @@ void VeNoEditor::setupGL(bool vsync) {
   m_openGLContext.setRenderer(this);
   if (!vsync && !m_openGLContext.setSwapInterval(0))
     ERR("Cannot deactivate VSync");
-  m_openGLContext.setContinuousRepainting(true);
+  m_openGLContext.setContinuousRepainting(false);
   m_openGLContext.setComponentPaintingEnabled(true);
   m_openGLContext.attachTo(*this);
   m_openGLContext.makeActive();

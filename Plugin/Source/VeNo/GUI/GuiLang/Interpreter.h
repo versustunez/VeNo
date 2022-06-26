@@ -22,6 +22,8 @@ public:
   BaseComponent *find(const char *selector, ComponentGroup *inGroup = nullptr);
   static bool contains(const char *name, GUIParseItem *item);
 
+  void removeUI();
+
 protected:
   Ref<BaseComponent> createComponent(GUIParseItem *item);
   Ref<BaseComponent> createFromType(GUIParseItem *item,
