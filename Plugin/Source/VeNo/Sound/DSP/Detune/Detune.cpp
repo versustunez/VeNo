@@ -17,6 +17,7 @@ void Detune::update(DetuneState &detune, OscillatorState &osc) {
     return;
   detune.lastVoices = voices;
   detune.lastDetune = amount;
+  detune.lastMode = mode;
   switch (mode) {
   case DetuneModes::SUPER: SuperDetune::create(detune); break;
   case DetuneModes::VeNoX: VeNoXDetune::create(detune); break;

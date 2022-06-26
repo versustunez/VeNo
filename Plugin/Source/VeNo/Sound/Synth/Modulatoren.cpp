@@ -73,9 +73,7 @@ void ModKnobsModulator::init() {
 void ModKnobsModulator::update() {
 }
 
-double ModKnobsModulator::value(int index) {
-
-}
+double ModKnobsModulator::value(int index) { return 0.0; }
 
 void ModulatorHandle::init(Matrix *matrix) {
   // we create and add Modulators here... that makes it easy to handle them ;)

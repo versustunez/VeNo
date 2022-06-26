@@ -99,12 +99,11 @@ void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice,
   if (voiceCount > 1) {
     double dOut[2] = {0, 0};
     for (int i = 1; i < voiceCount; ++i) {
-      output = renderVoice(voice, osc.detuneState, inc, table, i);
-      dOut[i & 1] = output * 0.43333333;
+      dOut[i & 1] = renderVoice(voice, osc.detuneState, inc, table, i);
     }
     double amount = osc.state.detuneAmount->getValue();
-    dOut[0] *= amount;
-    dOut[1] *= amount;
+    dOut[0] *= amount * 0.43333333;
+    dOut[1] *= amount * 0.43333333;
     voice.output.left += dOut[0];
     voice.output.right += dOut[1];
   }
