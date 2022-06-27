@@ -15,6 +15,7 @@ struct SynthVoice {
   uint64_t noteOnTime{0};
   bool legato{false};
   bool isDirty{true};
+  juce::SmoothedValue<float> midiNotePortamento{};
 };
 
 struct SynthVoiceHelper {

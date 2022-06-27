@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Matrix.h"
+#include "ParameterCacheStruct.h"
 #include "ParameterEventHandler.h"
 #include "SynthVoice.h"
 
@@ -35,14 +36,14 @@ public:
 private:
   void renderVoices(juce::AudioBuffer<float> &, int startSample,
                     int numSamples);
-
   void addEvents();
 
+public:
+  CachedCoreParameters ParameterCache;
 private:
   friend MidiHandler;
   InstanceID m_instanceId{0};
   Core::ParameterHandler *m_parameterHandler{nullptr};
-  Core::ModulateParameter *m_masterVolume;
   Core::Config *m_config{nullptr};
   Scope<SynthVoice> m_voices[MAX_VOICES]{};
   ParameterEventHandler m_parameterEventHandler{};
@@ -53,5 +54,7 @@ private:
   juce::CriticalSection lock;
   Matrix m_matrix;
   double m_sampleRate{44100};
+private:
+  friend ParameterEventHandler;
 };
 } // namespace VeNo::Audio

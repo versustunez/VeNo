@@ -8,8 +8,8 @@ Buffer::Buffer(VeNo::InstanceID id) : m_ID(id) {
 }
 void Buffer::reset(int size) {
   size = size < 2048 ? 2048 : size;
-  m_Right.resize(size);
-  m_Left.resize(size);
+  m_Right.resize((size_t)size);
+  m_Left.resize((size_t)size);
 }
 
 // rebuild to be a FIFO-Buffer :>

@@ -18,19 +18,13 @@ void MidiHandler::handleMidiMessage(juce::MidiMessage message,
     }
   } else if (message.isPitchWheel()) {
     double realValue = (((double)message.getPitchWheelValue() / 16383) * 2) - 1;
-    synthesizer.parameterHandler()
-        ->getParameter("pitch__wheel")
-        ->setValue(realValue);
+    synthesizer.ParameterCache.PitchWheel->setValue(realValue);
   } else if (message.isAftertouch()) {
     double realValue = message.getAfterTouchValue() / 127.0;
-    synthesizer.parameterHandler()
-        ->getParameter("after__touch")
-        ->setValue(realValue);
+    synthesizer.ParameterCache.AfterTouch->setValue(realValue);
   } else if (message.isController()) {
     if (message.getControllerNumber() == 1) {
-      synthesizer.parameterHandler()
-          ->getParameter("mod__wheel")
-          ->setValue(message.getControllerValue() / 127.0);
+      synthesizer.ParameterCache.ModWheel->setValue(message.getControllerValue() / 127.0);
     }
   }
 }
@@ -46,8 +40,7 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
       SynthVoiceHelper::noteOff(synthesizer, *voice, 1.0);
     }
   }
-  Core::ParameterHandler &handler = *synthesizer.parameterHandler();
-  bool legato = handler["mono_legato"]->getBool();
+  bool legato = synthesizer.ParameterCache.Legato->getBool();
   int index = 0;
   int voiceToSteal = -1;
   float velocity = message.getFloatVelocity();

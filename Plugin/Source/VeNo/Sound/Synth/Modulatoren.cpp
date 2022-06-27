@@ -34,7 +34,7 @@ double EnvModulator::value(int index) {
   return m_voiceData[index].value;
 }
 void EnvModulator::handle(Events::Event *event) {
-  if (event->is<Events::ChangeEvent>()) {
+  if (event->is<Events::ParameterChange>()) {
     m_data.needRecalculate = true;
   }
 }

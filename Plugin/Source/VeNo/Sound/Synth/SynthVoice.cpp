@@ -6,12 +6,18 @@ namespace VeNo::Audio {
 void SynthVoiceHelper::noteOn(Synthesizer &synth, SynthVoice &voice,
                               int channel, int note, float velocity,
                               bool legato = false) {
+  if (legato && voice.currentNote != 0) {
+    voice.midiNotePortamento.setTargetValue(note);
+  } else {
+    voice.midiNotePortamento.setCurrentAndTargetValue(note);
+  }
   voice.isActive = true;
   voice.currentChannel = channel;
   voice.currentNote = note;
   voice.legato = legato;
   voice.velocity = velocity;
   voice.isDirty = true;
+
   Envelope::noteOn(voice.envelopeData, synth.envelope());
 }
 void SynthVoiceHelper::noteOff(Synthesizer &synth, SynthVoice &voice,

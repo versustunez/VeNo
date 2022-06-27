@@ -15,11 +15,13 @@ Synthesizer::Synthesizer(size_t instanceID)
   m_config = &Core::Config::get();
   auto *instance = Core::Instance::get(instanceID);
   m_parameterHandler = instance->handler.get();
-  m_masterVolume = m_parameterHandler->getModulateParameter("master__volume");
+  ParameterCache.setup(m_parameterHandler);
   m_envelope = CreateRef<EnvelopeData>();
   Envelope::setup(*m_envelope, m_instanceId, "env1");
+  double val = ParameterCache.Portamento->getValue() / 1000.0;
   for (auto &m_voice : m_voices) {
     m_voice = CreateScope<SynthVoice>();
+    m_voice->midiNotePortamento.reset(m_sampleRate,val);
   }
   for (int i = 0; i < OSCILLATORS; ++i) {
     m_oscillators[i] = CreateRef<OscillatorData>();
@@ -117,7 +119,7 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
       Channel voiceData{};
       for (int j = 0; j < OSCILLATORS; ++j) {
         auto &voiceD = voice->voiceData.oscillatorVoices[j];
-        if (Oscillator::process(*m_oscillators[j], voiceD, voice->currentNote,
+        if (Oscillator::process(*m_oscillators[j], voiceD, voice->midiNotePortamento.getNextValue(),
                                 m_sampleRate)) {
           voiceData.left += voiceD.output.left;
           voiceData.right += voiceD.output.right;
@@ -130,8 +132,8 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
     // Create Rendering  Buffer
     // Do Post-Effect Chain after each voices
 
-    outChannel.left *= m_masterVolume->getValue();
-    outChannel.right *= m_masterVolume->getValue();
+    outChannel.left *= ParameterCache.MasterVolume->getValue();
+    outChannel.right *= ParameterCache.MasterVolume->getValue();
     buffer.addSample(0, startSample, (float)outChannel.left);
     buffer.addSample(1, startSample, (float)outChannel.right);
     ++startSample;
@@ -145,6 +147,7 @@ void Synthesizer::addEvents() {
   handler.addHandler("env1__decay", &m_parameterEventHandler);
   handler.addHandler("env1__release", &m_parameterEventHandler);
   handler.addHandler("env1__sustain", &m_parameterEventHandler);
+  handler.addHandler("portamento", &m_parameterEventHandler);
 }
 void Synthesizer::invalidateEnvelopes() { m_envelope->needRecalculate = true; }
 EnvelopeData &Synthesizer::envelope() { return *m_envelope; }
