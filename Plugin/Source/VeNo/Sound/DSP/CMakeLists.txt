@@ -1,2 +1,6 @@
 add_subdirectory(Detune)
-add_sources(Widener.cpp)
+add_subdirectory(FX)
+add_sources(
+        FXChain.cpp
+        Widener.cpp
+)

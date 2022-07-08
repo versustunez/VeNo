@@ -68,4 +68,9 @@ public:
     return m_values[voice];
   }
 };
+
+class FakeParameter : public Parameter {
+public:
+  FakeParameter(double value, InstanceID id);
+};
 } // namespace VeNo::Core

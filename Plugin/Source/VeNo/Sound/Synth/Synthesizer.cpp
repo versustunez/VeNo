@@ -15,6 +15,8 @@ Synthesizer::Synthesizer(size_t instanceID)
   m_config = &Core::Config::get();
   auto *instance = Core::Instance::get(instanceID);
   m_parameterHandler = instance->handler.get();
+  instance->state.RegisterSynth();
+  m_FXChain = instance->state.FXChain.get();
   ParameterCache.setup(m_parameterHandler);
   m_envelope = CreateRef<EnvelopeData>();
   Envelope::setup(*m_envelope, m_instanceId, "env1");
@@ -134,6 +136,7 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
 
     outChannel.left *= ParameterCache.MasterVolume->getValue();
     outChannel.right *= ParameterCache.MasterVolume->getValue();
+    m_FXChain->process(outChannel);
     buffer.addSample(0, startSample, (float)outChannel.left);
     buffer.addSample(1, startSample, (float)outChannel.right);
     ++startSample;
