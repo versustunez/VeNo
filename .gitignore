@@ -33,3 +33,12 @@ Makefile
 workspace.xml
 xcuserdata
 /Apps/SerumStandAlone/Builds/MacOSX/RecentFilesMenuTemplate.nib
+
+_deps/
+**/*proj*
+*.obj
+*.tlog
+*.sln
+
+VeNo_artefacts/
+**/Debug
