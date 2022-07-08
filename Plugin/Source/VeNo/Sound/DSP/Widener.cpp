@@ -16,9 +16,11 @@ void Widener::Update(VeNo::Audio::OscillatorData & oscillatorData) {
     widenerState.Wideness = wideness;
   }
   if (widenerState.LastPanning != panning) {
-    double angle = panning * PI_4;
-    widenerState.Panning[0] = SQRT2_2 * double (std::cos (angle) - std::sin (angle));
-    widenerState.Panning[1] = SQRT2_2 * double (std::cos (angle) + std::sin (angle));
+    double angle = panning * PI_4,
+      angleCosine = std::cos(angle),
+      angleSine = std::sin(angle);
+    widenerState.Panning[0] = SQRT2_2 * (angleCosine - angleSine);
+    widenerState.Panning[1] = SQRT2_2 * (angleCosine + angleSine);
     widenerState.LastPanning = panning;
   }
 }
