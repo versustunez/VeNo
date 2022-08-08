@@ -42,3 +42,4 @@ _deps/
 
 VeNo_artefacts/
 **/Debug
+**/Release
