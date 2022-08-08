@@ -5,14 +5,14 @@
 namespace VeNo::Audio {
 
 struct RawTable {
-  float* Data{nullptr};
+  double* Data{nullptr};
   bool IsNonImpulse{false};
   size_t Length{0};
   ~RawTable();
 };
 
 struct Wave {
-  float* Data{nullptr};
+  double* Data{nullptr};
   double TopFreq{0.0};
   size_t Length{0};
   ~Wave();

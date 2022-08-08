@@ -41,7 +41,7 @@ bool Oscillator::prepare(OscillatorData &osc) {
   return false;
 }
 bool Oscillator::process(OscillatorData &osc, SingleVoiceData &voice,
-                         int currentNote, double sR) {
+                         float currentNote, double sR) {
   if (!osc.state.active->getBool())
     return false;
   // update voice data
@@ -55,7 +55,7 @@ bool Oscillator::finish(OscillatorData &, SingleVoiceData &) {
   return false;
 }
 void Oscillator::updateFrequency(OscillatorData &osc, SingleVoiceData &voice,
-                                 int currentNote) {
+                                 float currentNote) {
   // Create Lookup Table for Midi Lookups
   static Utils::LookupTable<130> s_MidiLookup{[](float *elements, size_t size) {
     for (size_t i = 0; i < size; ++i) {
@@ -99,9 +99,9 @@ void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice,
   if (voiceCount > 1) {
     double dOut[2] = {0, 0};
     for (int i = 1; i < voiceCount; ++i) {
-      dOut[i & 1] = renderVoice(voice, osc.detuneState, inc, table, i);
+      dOut[i & 1] += renderVoice(voice, osc.detuneState, inc, table, i);
     }
-    double amount = osc.state.detuneAmount->getValue() * 0.43333333;
+    double amount = osc.state.detuneAmount->getValue() * 0.3333333;
     dOut[0] *= amount;
     dOut[1] *= amount;
     voice.output.left += dOut[0];
@@ -113,7 +113,8 @@ void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice,
   voice.output.left *= vol;
   voice.output.right *= vol;
 }
-float Oscillator::renderVoice(SingleVoiceData &voice, DetuneState &state,
+
+double Oscillator::renderVoice(SingleVoiceData &voice, DetuneState &state,
                               double inc, const Wave &table, int idx) {
   auto &d = voice.unisonVoices[idx];
   d.phaseInc = (float)inc * state.lookup[idx];
@@ -127,8 +128,8 @@ float Oscillator::renderVoice(SingleVoiceData &voice, DetuneState &state,
   double sum = table.Data[value];
   double sum2 = table.Data[temp];
 
-  double fraction = val - (double)value;
-  return (float)VUtils::Math::lerp(sum, sum2, fraction);
+  double fraction = val - value;
+  return VUtils::Math::lerp(sum, sum2, fraction);
 }
 
 void Oscillator::prepareVoice(OscillatorData &osc, SingleVoiceData voice) {
