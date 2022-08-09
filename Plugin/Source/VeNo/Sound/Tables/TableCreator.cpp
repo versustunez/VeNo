@@ -74,7 +74,7 @@ void TableCreator::CreateTableRaw(RawTable& rawTable, WaveTable *waveTable) {
   wave.Data = new double[rawTable.Length+1];
   for (size_t x = 0; x < rawTable.Length; x++)
           wave.Data[x] = rawTable.Data[x];
-  waveTable[rawTable.Length] = waveTable[0];
+  wave.Data[rawTable.Length] = wave.Data[0];
 }
 
 void TableCreator::MakeWaveTable(Wave& wave, double topFreq, double *tempData) {

@@ -5,11 +5,7 @@ VeNo started as a pure learning project for C ++ and the understanding of how sy
 The learning project turned into the dream of a new open source synthesizer which offers enough features for newcomers
 
 ## Features
-
-- Dynamic Wavetables
-    - Import predefined or draw them by yourself
-        - Will generated on-start / on-change
-    - Support for "WaveChange functions"
+- 
 - 4 Oscillators
 - 2 LFOs
 - 1 Noise Generator
@@ -20,7 +16,7 @@ The learning project turned into the dream of a new open source synthesizer whic
     - Distortion
     - Compressor
 - GUI
-    - Layoutable GUI via .gui files (or let them default :P)
+    - Layoutable GUI via .vui files (or let them default :P)
     - Multiple Theme
     - Colorable GUI
   

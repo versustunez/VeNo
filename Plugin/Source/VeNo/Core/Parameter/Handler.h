@@ -25,6 +25,7 @@ public:
 
   bool hasParameter(const char *name);
   Parameter* createFakeParameter(double value);
+  ModulateParameter* createFakeModulateParameter(double value);
 
 protected:
   void setupParameter();

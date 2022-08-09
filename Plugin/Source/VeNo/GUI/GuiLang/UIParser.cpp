@@ -53,6 +53,10 @@ void UIParser::parse() {
       m_parameters[loop.itVar] = std::to_string(loop.done + 1);
       m_parameters[loop.itVarOffset] =
           std::to_string(loop.done + 1 + loop.offset);
+      if (!loop.userIteratorVar.empty()) {
+        m_parameters[loop.userIteratorVar] = m_parameters[loop.itVar];
+      }
+
       continue;
     } else if (line.rfind(')') == 0) {
       if (m_loopStack.empty() || m_loopStack.top().size != m_stack.size()) {
@@ -70,10 +74,14 @@ void UIParser::parse() {
         m_parameters[top.itVar] = std::to_string(top.done + 1);
         m_parameters[top.itVarOffset] =
             std::to_string(top.done + 1 + top.offset);
+        if (!top.userIteratorVar.empty()) {
+          m_parameters[top.userIteratorVar] = m_parameters[top.itVar];
+        }
         continue;
       }
       m_parameters.erase(top.itVar);
       m_parameters.erase(top.itVarOffset);
+      m_parameters.erase(top.userIteratorVar);
       m_loopStack.pop();
     } else if (line.rfind("@import", 0) == 0) {
       importLine(item, line);
@@ -189,10 +197,14 @@ UIParserLoop UIParser::getLoop(VString &line, size_t lineNumber) {
   }
   // how often?
   auto timesString = line.substr(startPos + 1, endPos - 1);
-  auto split = VUtils::StringUtils::split(timesString, ":", -1);
+  auto As = VUtils::StringUtils::split(timesString, " as ", -1);
+  auto split = VUtils::StringUtils::split(As[0], ":", -1);
   loop.times = VUtils::StringUtils::toNumber(split[0], -1);
   if (split.size() > 1) {
     loop.offset = VUtils::StringUtils::toNumber(split[1], 0);
+  }
+  if (As.size() > 1) {
+    loop.userIteratorVar = VUtils::StringUtils::trimCopy(As[1]);
   }
   return loop;
 }

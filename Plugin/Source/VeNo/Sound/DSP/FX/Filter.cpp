@@ -2,20 +2,30 @@
 
 #include "VeNo/Core/Config.h"
 #include "VeNo/Core/Instance.h"
+#include <VUtils/LogInclude.h>
 
 namespace VeNo::Audio {
 
 Filter::Filter(InstanceID id) : FX(id) {
+  Setup();
+}
+
+
+Filter::Filter(InstanceID id, const std::string &lookup_key, int index) : FX(id) {
   auto &instance = Core::Instance::get(id)->handler;
-  Type = instance->createFakeParameter(0);
-  m_Config = &Core::Config::get();
-  m_filters.emplace_back ();
-  m_filters.emplace_back ();
+  const auto getKey = [&](const std::string& addon) {
+    return index == -1 ? fmt::format("{}__{}", lookup_key, addon) : fmt::format("{}{}__{}", lookup_key, index, addon);
+  };
+  Frequency = instance->getModulateParameter(getKey("frequency"));
+  QFactor = instance->getModulateParameter(getKey("q_factor"));
+  Gain = instance->getModulateParameter(getKey("gain"));
+  Type = instance->getParameter(getKey("type"));
+  Setup();
 }
 
 void Filter::update() {
   // NO FILTER ;)
-  auto type = (FilterType)Type->getInt();
+  auto type = Type->getInt()-1;
   if (type == FilterType::NO) {
     return;
   }
@@ -32,7 +42,6 @@ void Filter::update() {
     m_Gain = gain;
     juce::IIRCoefficients coefficients;
     switch (type) {
-    case NO: break;
     case LP:
     case LP2:
       coefficients = juce::IIRCoefficients::makeLowPass(
@@ -62,21 +71,47 @@ void Filter::update() {
       coefficients = juce::IIRCoefficients::makePeakFilter(
           sampleRate, frequencyValue, qFactor, (float)gain);
       break;
+    case NO:
+    default:
+      break;
     }
     setCoefficients(coefficients);
   }
 }
 
 void Filter::process(Channel &channel) {
-  if (Type->getInt() == FilterType::NO)
+  if (Type->getInt()-1 == FilterType::NO)
     return;
-  channel.left = m_filters[0].processSingleSampleRaw (channel.left);
-  channel.right = m_filters[1].processSingleSampleRaw (channel.right);
+  channel.left = m_filters[0].processSingleSampleRaw ((float)channel.left);
+  channel.right = m_filters[1].processSingleSampleRaw ((float)channel.right);
+}
+
+void Filter::Setup() {
+  CheckForNullParameters();
+  m_Config = &Core::Config::get();
+  m_filters.emplace_back ();
+  m_filters.emplace_back ();
 }
 
 void Filter::setCoefficients(juce::IIRCoefficients &coefficients) {
   for (auto& filter : m_filters)
     filter.setCoefficients (coefficients);
+}
+
+void Filter::CheckForNullParameters() {
+  auto &instance = Core::Instance::get(m_ID)->handler;
+  if (Type == nullptr) {
+    // mean we will skip always no other parameters are needed ;)
+    Type = instance->createFakeParameter(1.0);
+    return;
+  }
+  if (Frequency == nullptr)
+    Frequency = instance->createFakeModulateParameter(20000);
+  if (QFactor == nullptr)
+    QFactor = instance->createFakeModulateParameter(1.0);
+  if (Gain == nullptr)
+    Gain = instance->createFakeModulateParameter(0.0);
+
 }
 
 } // namespace VeNo::Audio

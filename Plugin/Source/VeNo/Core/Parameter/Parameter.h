@@ -73,4 +73,9 @@ class FakeParameter : public Parameter {
 public:
   FakeParameter(double value, InstanceID id);
 };
+
+class FakeModulateParameter : public ModulateParameter {
+public:
+  FakeModulateParameter(double value, InstanceID id);
+};
 } // namespace VeNo::Core

@@ -29,6 +29,7 @@ Ref<BaseComponent> ScrollComponentFactory::create(GUIParseItem &item,
   if (item.has("axis")) {
     comp->setWidthMode(item["axis"] == "x");
   }
+  comp->enableVerticalScrollbar();
   return comp;
 }
 

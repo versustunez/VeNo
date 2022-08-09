@@ -5,6 +5,7 @@ namespace VeNo::Audio {
 class FX {
 public:
   explicit FX(InstanceID id) : m_ID(id){};
+  virtual ~FX() = default;
   virtual void update() = 0;
   virtual void process(Channel &) = 0;
 

@@ -6,8 +6,9 @@
 namespace VeNo::Audio {
 
 FXChain::FXChain(InstanceID id): m_ID(id) {
+  m_FX.push_back(CreateRef<Filter>(m_ID, "filter", 1)); // First Filter
   m_FX.push_back(CreateRef<Distortion>(m_ID));
-  m_FX.push_back(CreateRef<Filter>(m_ID));
+  m_FX.push_back(CreateRef<Filter>(m_ID, "filter", 2)); // Second Filter
 }
 void FXChain::process(Channel &channel) {
   for (auto& item : m_FX) {

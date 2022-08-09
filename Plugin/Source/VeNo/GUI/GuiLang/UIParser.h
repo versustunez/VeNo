@@ -14,6 +14,7 @@ struct UIParserLoop {
   size_t size{0};
   VString itVar{};
   VString itVarOffset{};
+  VString userIteratorVar{};
 };
 class UIParser {
 public:

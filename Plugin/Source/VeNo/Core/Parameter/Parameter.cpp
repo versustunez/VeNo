@@ -70,4 +70,9 @@ FakeParameter::FakeParameter(double value, InstanceID id)
     : Parameter("", "", 0, value, value, id) {
   m_value = value;
 }
+
+FakeModulateParameter::FakeModulateParameter(double value, InstanceID id)
+    : ModulateParameter("", "", 0, value, value, id) {
+  m_value = value;
+}
 } // namespace VeNo::Core

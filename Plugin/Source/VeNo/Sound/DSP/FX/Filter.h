@@ -14,24 +14,28 @@ enum FilterType {
   LP2 = 2, // FIRST ORDER LP! NO JUCE :P
   BP = 3,
   HP = 4,
-  LS = 5,
-  HS = 6,
-  NOTCH = 7,
+  NOTCH = 5,
+  LS = 6,
+  HS = 7,
   PEAK = 8
 };
 class Filter : public FX {
 public:
   explicit Filter(InstanceID id);
+  explicit Filter(InstanceID id, const std::string& lookup_key, int index = -1);
+
   void update() override;
   void process(Channel &channel) override;
 
 protected:
+  void Setup();
   void setCoefficients(juce::IIRCoefficients &coefficients);
+  void CheckForNullParameters();
 
 public:
-  Core::Parameter *Frequency{};
-  Core::Parameter *QFactor{};
-  Core::Parameter *Gain{};
+  Core::ModulateParameter *Frequency{};
+  Core::ModulateParameter *QFactor{};
+  Core::ModulateParameter *Gain{};
   Core::Parameter *Type{};
 protected:
   Core::Config* m_Config{ nullptr};
