@@ -19,6 +19,7 @@ public:
   Scope<GUI::ActionRegistry> actionRegistry;
   Scope<GUI::LCDListener> lcdListener;
   Scope<Core::PresetManager> PresetManager;
+  Map<std::string, std::string> PresetState;
   Scope<Audio::FXChain> FXChain;
   void RegisterSynth();
 };

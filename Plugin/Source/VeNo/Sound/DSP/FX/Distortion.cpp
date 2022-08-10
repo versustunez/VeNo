@@ -4,6 +4,7 @@
 #include "VeNo/Core/Instance.h"
 namespace VeNo::Audio {
 Distortion::Distortion(InstanceID id) : FX(id) {
+  SetName("Distortion");
   m_Filter = CreateScope<Filter>(m_ID, "dist__filter", -1);
   auto &handler = Core::Instance::get(id)->handler;
   m_InputGain = handler->getParameter("dist__input_gain");

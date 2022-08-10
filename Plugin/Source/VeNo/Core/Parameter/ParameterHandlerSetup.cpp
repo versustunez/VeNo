@@ -14,7 +14,7 @@ void ParameterHandler::setupParameter () {
     if (hasQ)
       addParameterModulate (id + "q_factor", name + " QFactor", 0.2, 4, 1.0, Float);
     if (useGain)
-      addParameterModulate (id + "gain", name + " Gain", 0, 2, 0.5, Float);
+      addParameterModulate (id + "gain", name + " Gain", 0.01, 3.0, 0.5, Float);
   };
 
   addParameterModulate ("master__volume", "Synth Volume", 0, 1.5, 1, Float);

@@ -43,6 +43,7 @@ Scope<juce::XmlElement> PresetManager::GetCurrentData() {
   auto preset = new juce::XmlElement("VeNoPreset");
   preset->setAttribute("preset-name", m_PresetName);
   preset->setAttribute("file-name", m_CurrentPreset);
+  preset->setAttribute("fx-series", instance->state.FXChain->Serialize());
   preset->addChildElement(new juce::XmlElement(*state.createXml()));
   // @TODO: MATRIX ;)
   auto xml = CreateScope<juce::XmlElement>(*preset);
@@ -60,10 +61,17 @@ void PresetManager::SetCurrentData(const Scope<juce::XmlElement> &data) {
       auto amount = item->getDoubleAttribute("value");
       auto parameter = treeState->getParameter(src);
       if (parameter != nullptr)
-        parameter->setValueNotifyingHost(parameter->convertTo0to1(amount));
+        parameter->setValueNotifyingHost(parameter->convertTo0to1((float)amount));
     }
   }
   m_PresetName = data->getStringAttribute("preset-name").toStdString();
+  if (data->hasAttribute("fx-series")) {
+    if (instance->state.FXChain) {
+      instance->state.FXChain->Deserialize(data->getStringAttribute("fx-series").toStdString());
+    } else {
+      instance->state.PresetState["fx-series"] = data->getStringAttribute("fx-series").toStdString();
+    }
+  }
   auto fileName = data->getStringAttribute("file-name").toStdString();
   if (!fileName.empty())
     m_CurrentPreset = fileName;

@@ -38,12 +38,19 @@ position-x: automatic
             w: 50%
             @Tab {
                 name: FX
-                height: 100%
                 @Scrollable {
-                    height: 100%
-                    width: 100%
                     @import FXSection
                 }
+            }
+            @Tab {
+                name: FX-List
+                @FXListSort {
+                    -- will set its real height ;)
+                }
+            }
+            @Tab {
+                name: Matrix
+                -- @Matrix
             }
             @Tab {
                 name: Config

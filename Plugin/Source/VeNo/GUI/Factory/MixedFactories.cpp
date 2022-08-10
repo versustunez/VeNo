@@ -1,3 +1,4 @@
+#include "VeNo/GUI/Components/FXListSort.h"
 #include "VeNo/GUI/Components/Preset.h"
 #include "VeNo/GUI/Components/WaveForm.h"
 
@@ -120,6 +121,15 @@ Ref<BaseComponent> PresetFactory::create(GUIParseItem &,
   auto presetComponent = CreateScope<PresetComponent>(parameter, name, id);
   presetComponent->init();
   return presetComponent;
+}
+
+Ref<BaseComponent> FXListSortFactory::create(GUIParseItem &,
+                                         const std::string &parameter,
+                                         const std::string &name, InstanceID id,
+                                         Interpreter *) {
+  auto component = CreateScope<FXListSort>(parameter, name, id);
+  component->Init();
+  return component;
 }
 
 } // namespace VeNo::GUI

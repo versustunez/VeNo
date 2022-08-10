@@ -16,5 +16,6 @@ void Interpreter::initMapping() {
   factories["LCD"] = CreateRef<LCDFactory>();
   factories["Config"] = CreateRef<ConfigFactory>();
   factories["Preset"] = CreateRef<PresetFactory>();
+  factories["FXListSort"] = CreateRef<FXListSortFactory>();
 }
 } // namespace VeNo::GUI

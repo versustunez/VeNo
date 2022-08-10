@@ -16,6 +16,9 @@ Filter::Filter(InstanceID id, const std::string &lookup_key, int index) : FX(id)
   const auto getKey = [&](const std::string& addon) {
     return index == -1 ? fmt::format("{}__{}", lookup_key, addon) : fmt::format("{}{}__{}", lookup_key, index, addon);
   };
+
+  if (index != -1)
+    SetName(fmt::format("Filter {}", index));
   Frequency = instance->getModulateParameter(getKey("frequency"));
   QFactor = instance->getModulateParameter(getKey("q_factor"));
   Gain = instance->getModulateParameter(getKey("gain"));
