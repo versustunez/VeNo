@@ -63,7 +63,10 @@ void setupDistortionPreset(Select &comboBox) {
   comboBox.addItem("SOFT");
   comboBox.addItem("HARD");
   comboBox.addItem("RECTIFIER");
-  comboBox.addItem("EXPERIMENTAL");
+  comboBox.addItem("HALF RECTIFIER");
+  comboBox.addItem("SIN");
+  comboBox.addItem("TANH");
+  comboBox.addItem("FOLD BACK");
 }
 
 void Select::setupPreset(const VString &preset) {

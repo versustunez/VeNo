@@ -2,6 +2,7 @@
 #include "Parameter.h"
 
 #include <VUtils/LogInclude.h>
+#include <VeNo/Sound/DSP/FX/FXEnums.h>
 
 // THIS FILE FOLLOWS A SPECIFIC: ONE PARAMETER PER LINE!
 
@@ -10,7 +11,7 @@ namespace VeNo::Core {
 void ParameterHandler::setupParameter () {
   const auto addFilter = [&](const std::string& id, const std::string& name, bool hasQ, bool useGain, bool isLimited = false) {
     addParameterModulate(id + "frequency", name + " Frequency", 20, 20000, 20000, Float);
-    addParameter (id + "type", name + " Type", 1, isLimited ? 6 : 9, 1, Integer);
+    addParameter (id + "type", name + " Type", 1, isLimited ? 6 : static_cast<int>(Audio::FilterType::END), 1, Integer);
     if (hasQ)
       addParameterModulate (id + "q_factor", name + " QFactor", 0.2, 4, 1.0, Float);
     if (useGain)
@@ -77,10 +78,9 @@ void ParameterHandler::setupParameter () {
     addFilter("dist__filter__", "Distortion Filter", true, false, true);
     addParameter ("dist__input_gain", "Distortion Input Gain", 0, 3, 1, Float);
     addParameter ("dist__output_gain", "Distortion Output Gain", 0, 3, 1, Float);
-    addParameter ("dist__type", "Distortion Type", 1, 5, 1, Integer);
+    addParameter ("dist__type", "Distortion Type", 1, static_cast<int>(Audio::DistortionMode::END), 1, Integer);
     addParameterModulate("dist__drive", "Distortion DRIVE", 0, 32, 0, Float);
     addParameterModulate ("dist__dynamic1", "Distortion Dynamic Parameter", 0, 1, 0, Float);
-    addParameterModulate ("dist__dynamic2", "Distortion Dynamic Parameter2", 0, 1, 0, Float);
     addParameterModulate ("dist__mix", "Distortion DRY/WET", 0, 1, 0.5, Float);
   }
 
@@ -90,6 +90,13 @@ void ParameterHandler::setupParameter () {
     addFilter(id, name, true, true);
   }
 
+  {
+    addParameter("compressor_threshold", "Compressor Threshold", -70, 0, 0, Float);
+    addParameter("compressor_ratio", "Compressor Ratio", 1, 10, 1, Float);
+    addParameter("compressor_attack", "Compressor Attack", 1, 1000, 1, Float);
+    addParameter("compressor_release", "Compressor Release", 1, 1000, 1, Float);
+    addParameter("compressor_active", "Compressor Active", 0, 1, 0, Boolean);
+  }
 }
 } // namespace VeNo::Core
 // clang-format on

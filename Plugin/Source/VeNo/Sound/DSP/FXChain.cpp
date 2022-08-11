@@ -2,6 +2,7 @@
 
 #include "VUtils/StringUtils.h"
 #include "VeNo/Core/Instance.h"
+#include "VeNo/Sound/DSP/FX/Compressor.h"
 #include "VeNo/Sound/DSP/FX/Distortion.h"
 #include "VeNo/Sound/DSP/FX/Filter.h"
 
@@ -13,6 +14,7 @@ FXChain::FXChain(InstanceID id) : m_ID(id) {
   m_FX.push_back(CreateRef<Filter>(m_ID, "filter", 1)); // First Filter
   m_FX.push_back(CreateRef<Distortion>(m_ID));
   m_FX.push_back(CreateRef<Filter>(m_ID, "filter", 2)); // Second Filter
+  m_FX.push_back(CreateRef<Compressor>(m_ID));
   for (size_t i = 0; i < m_FX.size(); ++i) {
     m_SortedFX.push_back(i);
   }
@@ -62,6 +64,11 @@ void FXChain::FixMissingFX() {
     if (x == m_SortedFX.end()) {
       m_SortedFX.push_back(i);
     }
+  }
+}
+void FXChain::SetSampleRate(double sampleRate) {
+  for (auto &item : m_FX) {
+    item->setSampleRate(sampleRate);
   }
 }
 } // namespace VeNo::Audio

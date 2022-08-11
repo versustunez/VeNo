@@ -8,6 +8,7 @@ public:
   virtual ~FX() = default;
   virtual void update() = 0;
   virtual void process(Channel &) = 0;
+  virtual void setSampleRate(double) {};
   VString& GetName() { return m_Name; }
   void SetName(const VString& name) { m_Name = name; }
 protected:

@@ -1,0 +1,176 @@
+-- FX Section
+position-y: automatic
+[2 as i](
+    #Filter {i} {
+        header: true
+        bg: primaryBG
+        height: 100
+        flex: true
+        justify-content: space-around
+        align-items: center
+        @Knob#Frequency {
+            bind: filter{i}__frequency
+            w: 25%
+            h: 70
+            label-value: semi
+        }
+        @Select#Type {
+            preset: filter
+            w: 25%
+            h: 50
+            bind: filter{i}__type
+        }
+        @Knob#Q-Factor {
+            bind: filter{i}__q_factor
+            w: 25%
+            h: 70
+            label-value: semi
+        }
+        @Knob#Gain {
+            w: 25%
+            h: 70
+            bind: filter{i}__gain
+            label-value: semi
+        }
+    }
+)
+
+#Distortion {
+    header: true
+    bg: secondaryBG
+    height: 200
+    position-x: automatic
+    #LeftGroup {
+        y-offset: 10
+        position-y: automatic
+        width: 60%
+        # {
+            y-offset: 5
+            h: 70
+            flex: true
+            justify-content: space-around
+            align-items: center
+            @Knob#Gain (In) {
+                w: 30%
+                x-offset: 3%
+                bind: dist__input_gain
+                label-value: semi
+            }
+            @Knob#Drive {
+                w: 30%
+                bind: dist__drive
+                label-value: semi
+            }
+            @Knob#Gain (Out) {
+                w: 30%
+                bind: dist__output_gain
+                label-value: semi
+            }
+        }
+        # {
+            h: 70
+            y-offset: 20
+            flex: true
+            justify-content: space-around
+            align-items: center
+            @Knob#Frequency {
+                width: 30%
+                bind: dist__filter__frequency
+                label-value: semi
+            }
+            @Knob#Q-Factor {
+                width: 30%
+                bind: dist__filter__q_factor
+                label-value: semi
+            }
+            @Select#Filter {
+                width: 30%
+                height: 50
+                preset: filter_dist
+                bind: dist__filter__type
+            }
+        }
+    }
+
+    #{
+        y-offset: 10
+        width: 40%
+        height: 170
+        position-y: automatic
+        @Select#Type {
+            width: 70%
+            x-offset: 15%
+            height: 50
+            bind: dist__type
+            preset: distortion
+        }
+        #{
+            width: 100%
+            height: 50%
+            y-offset: 10%
+            position-x: automatic
+            @Knob#Dynamic1 {
+                w: 50%
+                height: 80
+                bind: dist__dynamic1
+                label-value: semi
+            }
+            @Knob#Mix {
+                w: 50%
+                height: 80
+                bind: dist__mix
+                label-value: semi
+            }
+        }
+    }
+}
+
+#Compressor {
+    position-y: automatic
+    bg: primaryBG
+    height: 160;
+    #headLine {
+        width: 100%
+        height: 30
+        @Label {
+            text: Compressor
+            width: 100%
+            height: 30
+        }
+        @Switch {
+            bind: compressor_active
+            noText: true
+            w: 20
+            h: 20
+            x: 5
+            y: 5
+        }
+    }
+    #Knobs {
+        height: 90
+        flex: true
+        justify-content: space-around
+        align-items: center
+
+        @Knob#Threshold {
+            w: 25%
+            bind: compressor_threshold
+            label-value: semi
+        }
+        @Knob#Ratio {
+            w: 25%
+            bind: compressor_ratio
+            label-value: semi
+        }
+        @Knob#Attack {
+            w: 25%
+            bind: compressor_attack
+            label-value: semi
+        }
+        @Knob#Release {
+            w: 25%
+            bind: compressor_release
+            label-value: semi
+        }
+    }
+}

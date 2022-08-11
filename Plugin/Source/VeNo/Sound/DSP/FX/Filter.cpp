@@ -28,8 +28,9 @@ Filter::Filter(InstanceID id, const std::string &lookup_key, int index) : FX(id)
 
 void Filter::update() {
   // NO FILTER ;)
-  auto type = Type->getInt()-1;
+  auto type = static_cast<FilterType>(Type->getInt()-1);
   if (type == FilterType::NO) {
+    m_Type = type;
     return;
   }
   double sampleRate = m_Config->sampleRate;
@@ -43,38 +44,40 @@ void Filter::update() {
     m_Frequency = frequencyValue;
     m_QFactor = qFactor;
     m_Gain = gain;
+    m_Type = type;
     juce::IIRCoefficients coefficients;
     switch (type) {
-    case LP:
-    case LP2:
+    case FilterType::LP:
+    case FilterType::LP2:
       coefficients = juce::IIRCoefficients::makeLowPass(
           sampleRate, frequencyValue, qFactor);
       break;
-    case BP:
+    case FilterType::BP:
       coefficients = juce::IIRCoefficients::makeBandPass(
           sampleRate, frequencyValue, qFactor);
       break;
-    case HP:
+    case FilterType::HP:
       coefficients = juce::IIRCoefficients::makeHighPass(
           sampleRate, frequencyValue, qFactor);
       break;
-    case LS:
+    case FilterType::LS:
       coefficients = juce::IIRCoefficients::makeLowShelf(
           sampleRate, frequencyValue, qFactor, (float)gain);
       break;
-    case HS:
+    case FilterType::HS:
       coefficients = juce::IIRCoefficients::makeHighShelf(
           sampleRate, frequencyValue, qFactor, (float)gain);
       break;
-    case NOTCH:
+    case FilterType::NOTCH:
       coefficients = juce::IIRCoefficients::makeNotchFilter(
           sampleRate, frequencyValue, qFactor);
       break;
-    case PEAK:
+    case FilterType::PEAK:
       coefficients = juce::IIRCoefficients::makePeakFilter(
           sampleRate, frequencyValue, qFactor, (float)gain);
       break;
-    case NO:
+    case FilterType::NO:
+    case FilterType::END:
     default:
       break;
     }
@@ -83,7 +86,7 @@ void Filter::update() {
 }
 
 void Filter::process(Channel &channel) {
-  if (Type->getInt()-1 == FilterType::NO)
+  if (m_Type == FilterType::NO)
     return;
   channel.left = m_filters[0].processSingleSampleRaw ((float)channel.left);
   channel.right = m_filters[1].processSingleSampleRaw ((float)channel.right);

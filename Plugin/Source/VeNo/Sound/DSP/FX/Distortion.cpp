@@ -13,11 +13,10 @@ Distortion::Distortion(InstanceID id) : FX(id) {
 
   m_Drive = handler->getModulateParameter("dist__drive");
   m_DynamicOne = handler->getModulateParameter("dist__dynamic1");
-  m_DynamicTwo = handler->getModulateParameter("dist__dynamic2");
   m_Mix = handler->getModulateParameter("dist__mix");
 }
 void Distortion::update() {
-  m_Mode = m_Type->getInt() - 1;
+  m_Mode = static_cast<DistortionMode>(m_Type->getInt() - 1);
   if (m_Mode == DistortionMode::OFF)
     return;
   m_Filter->update();
@@ -25,25 +24,49 @@ void Distortion::update() {
 void Distortion::process(Channel &channel) {
   if (m_Mode == DistortionMode::OFF)
     return;
+
   auto copyChannel = channel;
   copyChannel *= m_InputGain->getValue();
   m_Filter->process(copyChannel);
   double driveVal = VUtils::Math::dbToGain(m_Drive->getValue());
   copyChannel *= driveVal;
   switch (m_Mode) {
-  case DistortionMode::SOFT:
-    copyChannel.left = std::atan(copyChannel.left);
-    copyChannel.right = std::atan(copyChannel.right);
+  case DistortionMode::SOFT: {
+    constexpr auto factor = 2.f / juce::MathConstants<float>::pi;
+    copyChannel.left = std::atan(copyChannel.left) * factor;
+    copyChannel.right = std::atan(copyChannel.right) * factor;
     break;
+  }
   case DistortionMode::HARD:
     copyChannel.left = VUtils::Math::clamp(copyChannel.left, -1, 1);
     copyChannel.right = VUtils::Math::clamp(copyChannel.right, -1, 1);
     break;
-  case DistortionMode::RECTIFIER: {
+  case DistortionMode::HALF_RECTIFIER:
     copyChannel.left = copyChannel.left > 0 ? copyChannel.left : 0;
     copyChannel.right = copyChannel.right > 0 ? copyChannel.right : 0;
     break;
-  } case DistortionMode::EXPERIMENTAL:
+  case DistortionMode::RECTIFIER:
+    copyChannel.left = abs(copyChannel.left);
+    copyChannel.right = abs(copyChannel.right);
+    break;
+  case DistortionMode::SIN:
+    copyChannel.left = std::sin(copyChannel.left);
+    copyChannel.right = std::sin(copyChannel.right);
+    break;
+  case DistortionMode::TAN:
+    copyChannel.left = std::tanh(copyChannel.left);
+    copyChannel.right = std::tanh(copyChannel.right);
+    break;
+  case DistortionMode::FOLD_BACK: {
+    double th = 1.0 + (m_DynamicOne->getValue() * 5.0);
+    double th4 = th * 4;
+    double th2 = th * 2;
+    copyChannel.left = fabs(fabs(fmod(copyChannel.left - th, th4)) - th2) - th;
+    copyChannel.right = fabs(fabs(fmod(copyChannel.right - th, th4)) - th2) - th;
+    break;
+  }
+  case DistortionMode::END:
+  case DistortionMode::OFF:
   default:
     break;
   }

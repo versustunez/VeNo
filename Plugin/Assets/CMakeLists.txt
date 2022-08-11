@@ -8,6 +8,7 @@ set(
 set(
         UIFILES
         UIFiles/Footer.vui
+        UIFiles/FXSection.vui
         UIFiles/LFO.vui
         UIFiles/MainGui.vui
         UIFiles/OSC.vui

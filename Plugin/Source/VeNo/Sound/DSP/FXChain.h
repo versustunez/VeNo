@@ -7,6 +7,7 @@ class FXChain {
 public:
   explicit FXChain(InstanceID id);
   void process(Channel &channel);
+  void SetSampleRate(double sampleRate);
   Vector<size_t>& GetSorted() { return m_SortedFX; }
   Vector<Ref<FX>>& GetFXData() { return m_FX; }
   void Deserialize(const VString& data);
