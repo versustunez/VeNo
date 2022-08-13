@@ -43,7 +43,9 @@ Scope<juce::XmlElement> PresetManager::GetCurrentData() {
   auto preset = new juce::XmlElement("VeNoPreset");
   preset->setAttribute("preset-name", m_PresetName);
   preset->setAttribute("file-name", m_CurrentPreset);
-  preset->setAttribute("fx-series", instance->state.FXChain->Serialize());
+  if (instance->state.FXChain != nullptr) {
+    preset->setAttribute("fx-series", instance->state.FXChain->Serialize());
+  }
   preset->addChildElement(new juce::XmlElement(*state.createXml()));
   // @TODO: MATRIX ;)
   auto xml = CreateScope<juce::XmlElement>(*preset);

@@ -4,7 +4,7 @@
 
 #include <VUtils/Math.h>
 namespace VeNo::Audio {
-Compressor::Compressor(unsigned long id) : FX(id) {
+Compressor::Compressor(InstanceID id) : FX(id) {
   auto *handler = Core::Instance::get(m_ID)->handler.get();
   SetName("Compressor");
   m_ThreshHoldParameter = handler->getParameter("compressor_threshold");
