@@ -9,6 +9,7 @@
 #include <VeNo/Core/Config.h>
 #include <VeNo/Core/Parameter/Handler.h>
 #include <VeNo/Sound/Generation/OscillatorStructs.h>
+#include <VeNo/Sound/DSP/FXChain.h>
 
 #define MAX_VOICES 5
 
@@ -39,13 +40,14 @@ private:
   void addEvents();
 
 public:
-  CachedCoreParameters ParameterCache;
+  CachedCoreParameters ParameterCache{};
 private:
   friend MidiHandler;
   InstanceID m_instanceId{0};
   Core::ParameterHandler *m_parameterHandler{nullptr};
   Core::Config *m_config{nullptr};
   Scope<SynthVoice> m_voices[MAX_VOICES]{};
+  FXChain* m_FXChain{nullptr};
   ParameterEventHandler m_parameterEventHandler{};
   uint64_t lastNoteOnCounter{0};
   bool hasActiveNote{false};

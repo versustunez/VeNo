@@ -9,9 +9,7 @@ echo -e "NODEJS FOUND!";
 echo -e "START PRE-BUILD";
 cd helper || exit
 # RUN our both generation helper
-cd parameter || exit
-node ./parameterToCPP.js
-cd ../guiFiles || exit
+cd guiFiles || exit
 node ./generate.js
 
 cd ../../Plugin || exit

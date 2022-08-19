@@ -12,6 +12,7 @@ VeNoProcessor::VeNoProcessor()
       treeState(*this, nullptr, "VeNo", instance->handler->setupProcessor()) {
   instance->treeState = &treeState;
   VeNo::Core::Config::get().registerProcessor(m_id, this);
+  instance->synthesizer = VeNo::CreateRef<VeNo::Audio::Synthesizer>(instance->id);
   VENO_PROFILE_BEGIN_SESSION("VeNo", "res://PROFILES/" + m_id);
 }
 

@@ -2,6 +2,7 @@
 
 #include "../PresetManager.h"
 #include "ComponentStates.h"
+#include "VeNo/Sound/DSP/FXChain.h"
 
 #include <VeNo/GUI/ActionRegistry.h>
 #include <VeNo/GUI/Events/LCDListener.h>
@@ -18,5 +19,8 @@ public:
   Scope<GUI::ActionRegistry> actionRegistry;
   Scope<GUI::LCDListener> lcdListener;
   Scope<Core::PresetManager> PresetManager;
+  Map<std::string, std::string> PresetState;
+  Scope<Audio::FXChain> FXChain;
+  void RegisterSynth();
 };
 } // namespace VeNo::State

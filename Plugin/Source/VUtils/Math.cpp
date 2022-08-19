@@ -53,11 +53,9 @@ double Math::centsToRatio(double cents) {
   return std::pow(2.0, cents / (double)1200);
 }
 
-double Math::gainToDb (double gain)
-{
-  return 20.0 * std::log10 (gain);
-}
+double Math::gainToDb(double gain) { return 20.0 * std::log10(gain); }
 
+double Math::dbToGain(double value) { return std::pow(10.0, value * 0.05); }
 
 double Math::normalize(double val, float min, float max) {
   return (val - min) / (max - min);

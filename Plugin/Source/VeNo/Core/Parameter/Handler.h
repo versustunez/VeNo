@@ -24,6 +24,8 @@ public:
   Parameter *operator[](const char *name);
 
   bool hasParameter(const char *name);
+  Parameter* createFakeParameter(double value);
+  ModulateParameter* createFakeModulateParameter(double value);
 
 protected:
   void setupParameter();
@@ -34,9 +36,10 @@ protected:
                     double min, double max, double value, ParameterTypes type);
 
   InstanceID m_id = 0;
-  std::vector<std::string> m_paramMaps;
-  std::unordered_map<std::string, Parameter *> m_parameters;
-  std::unordered_map<std::string, ModulateParameter *> m_modularParameters;
-  std::vector<Scope<juce::RangedAudioParameter>> m_params;
+  Vector<std::string> m_paramMaps;
+  Map<std::string, Parameter *> m_parameters;
+  Map<std::string, ModulateParameter *> m_modularParameters;
+  Vector<Scope<juce::RangedAudioParameter>> m_params;
+  Vector<Parameter*> m_FakeParameter{};
 };
 } // namespace VeNo::Core

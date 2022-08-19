@@ -25,6 +25,7 @@ using VString = std::string;
 
 template <typename T, typename S> using Map = std::unordered_map<T, S>;
 template <typename T> using Queue = std::queue<T>;
+template <typename T> using Dequeue = std::deque<T>;
 template <typename T> using Vector = std::vector<T>;
 
 #define NO_COPY_BASE_CONSTRUCTOR(TypeName)                                     \

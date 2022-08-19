@@ -43,11 +43,43 @@ void setupWavePreset(Select &comboBox) {
   comboBox.addItem("Triangle");
 }
 
+void setupFilterPreset(Select &comboBox, bool isAll = true) {
+  comboBox.addItem("OFF");
+  comboBox.addItem("LP");
+  comboBox.addItem("LP2");
+  comboBox.addItem("BP");
+  comboBox.addItem("HP");
+  comboBox.addItem("NOTCH");
+  if (isAll) {
+    comboBox.addItem("LS");
+    comboBox.addItem("HS");
+    comboBox.addItem("PEAK");
+  }
+
+}
+
+void setupDistortionPreset(Select &comboBox) {
+  comboBox.addItem("OFF");
+  comboBox.addItem("SOFT");
+  comboBox.addItem("HARD");
+  comboBox.addItem("RECTIFIER");
+  comboBox.addItem("HALF RECTIFIER");
+  comboBox.addItem("SIN");
+  comboBox.addItem("TANH");
+  comboBox.addItem("FOLD BACK");
+}
+
 void Select::setupPreset(const VString &preset) {
   if (preset == "detune") {
     setupDetunePreset(*this);
   } else if (preset == "waves") {
     setupWavePreset(*this);
+  } else if (preset == "filter") {
+    setupFilterPreset(*this);
+  } else if (preset == "filter_dist") {
+    setupFilterPreset(*this, false);
+  } else if (preset == "distortion") {
+    setupDistortionPreset(*this);
   } else {
     // UNKNOWN
   }

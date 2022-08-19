@@ -6,6 +6,9 @@ InstanceState::InstanceState(InstanceID id) : m_id(id) {
   PresetManager = CreateScope<Core::PresetManager>(m_id);
 }
 
-InstanceState::~InstanceState() {
+InstanceState::~InstanceState() = default;
+void InstanceState::RegisterSynth() {
+  FXChain = CreateScope<Audio::FXChain>(m_id);
+  FXChain->Deserialize(PresetState["fx-series"]);
 }
 } // namespace VeNo::State

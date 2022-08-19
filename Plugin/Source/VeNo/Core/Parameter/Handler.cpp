@@ -9,9 +9,12 @@ ParameterHandler::ParameterHandler(InstanceID id) : m_id(id) {}
 ParameterHandler::~ParameterHandler() {
   for (auto &param : m_parameters)
     delete param.second;
+  for (auto param : m_FakeParameter)
+    delete param;
   m_params.clear();
   m_paramMaps.clear();
   m_parameters.clear();
+  m_FakeParameter.clear();
 }
 
 void ParameterHandler::addParameterModulate(const std::string &name,
@@ -93,6 +96,18 @@ Parameter *ParameterHandler::operator[](const char *name) {
 }
 bool ParameterHandler::hasParameter(const char *name) {
   return m_parameters.find(name) != m_parameters.end();
+}
+
+Parameter *ParameterHandler::createFakeParameter(double value) {
+  auto* parameter = new FakeParameter(value, m_id);
+  m_FakeParameter.push_back(parameter);
+  return parameter;
+}
+
+ModulateParameter *ParameterHandler::createFakeModulateParameter(double value) {
+  auto* parameter = new FakeModulateParameter(value, m_id);
+  m_FakeParameter.push_back(parameter);
+  return parameter;
 }
 
 } // namespace VeNo::Core

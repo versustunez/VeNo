@@ -1,4 +1,4 @@
-°~Author: Maurice Grönwoldt (VersusTuneZ)
+~Author: Maurice Grönwoldt (VersusTuneZ)
 ~Version: 1.0
 ~Name: MainTheme
 ~Look: Flat
@@ -37,10 +37,20 @@ position-x: automatic
         @Tabbed {
             w: 50%
             @Tab {
-                name: Filter
+                name: FX
+                @Scrollable {
+                    @import FXSection
+                }
             }
             @Tab {
-                name: FX
+                name: FX-List
+                @FXListSort {
+                    -- will set its real height ;)
+                }
+            }
+            @Tab {
+                name: Matrix
+                -- @Matrix
             }
             @Tab {
                 name: Config
