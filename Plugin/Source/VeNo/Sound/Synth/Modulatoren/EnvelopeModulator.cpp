@@ -31,7 +31,7 @@ void EnvModulator::update() {
 }
 double EnvModulator::value(int index) {
   assert(index < MAX_VOICES);
-  return index == -1 ? m_voiceData[0].value : m_voiceData[index].value;
+  return index == -1 ? m_voiceData[0].value : m_voiceData[index+1].value;
 }
 void EnvModulator::handle(Events::Event *event) {
   if (event->is<Events::ParameterChange>()) {

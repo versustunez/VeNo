@@ -67,8 +67,8 @@ void Oscillator::updateFrequency(OscillatorData &osc, SingleVoiceData &voice,
   double pitchPos = wheelPos >= 0 ? state.pitchBendUp->getValue()
                                   : state.pitchBendDown->getValue();
   double pitchBend = pitchPos * wheelPos;
-  auto semitones = (*state.semitones)[-1];
-  auto cents = (*state.cents)[-1] / 100.0;
+  auto semitones = (*state.semitones)[voice.id];
+  auto cents = (*state.cents)[voice.id] / 100.0;
   double orgMid =
       std::clamp(currentNote + semitones + cents + pitchBend, 0.0, 127.0);
   int midi = (int)(orgMid);
@@ -122,9 +122,9 @@ double Oscillator::renderVoice(SingleVoiceData &voice, DetuneState &state,
   d.phaseOffset -= float(d.phaseOffset >= 1.0);
 
   // LETS GO ;)
-  double val = d.phaseOffset * (double)table.Length;
+  double val = d.phaseOffset * table.Length;
   int value = (int)val;
-  int temp = (int)val + 1;
+  int temp = value + 1;
   double sum = table.Data[value];
   double sum2 = table.Data[temp];
 

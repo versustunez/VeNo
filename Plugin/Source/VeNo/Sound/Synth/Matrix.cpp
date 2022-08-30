@@ -21,26 +21,11 @@ void Matrix::update() {
   for (auto &modulator : m_modulators) {
     modulator->update();
   }
-
-  if (!m_deletedItems.empty()) {
-    for (auto &deletedItem : m_deletedItems) {
-      auto element =
-          std::find_if(m_items.begin(), m_items.end(), [&](auto &item) {
-            return item.Source == deletedItem->Source &&
-                   item.Destination == deletedItem->Destination;
-          });
-      if (element != m_items.end()) {
-        element->Destination->reset();
-        m_items.erase(element);
-      }
-    }
-    m_deletedItems.clear();
-  }
   const juce::GenericScopedLock<juce::CriticalSection> myScopedLock(m_Mutex);
-  for (auto &item : m_items) {
+  for (auto &[key, item] : m_items) {
     item.Destination->Begin();
   }
-  for (auto &item : m_items) {
+  for (auto  &[key, item] : m_items) {
     if (item.Source->isVoiceModulator()) {
       for (int i = 0; i < MAX_VOICES; ++i) {
         item.Destination->addValueVoice(i, item.Source->value(i) * item.Amount);
@@ -49,22 +34,22 @@ void Matrix::update() {
       item.Destination->addValue(item.Source->value(-1) * item.Amount);
     }
   }
-  for (auto &item : m_items) {
+  for (auto  &[key, item] : m_items) {
     item.Destination->Finish();
   }
 }
 void Matrix::remove(const VString &key) {
-  auto it = m_indexLookup.find(key);
-  if (it == m_indexLookup.end())
+  auto it = m_items.find(key);
+  if (it == m_items.end())
     return;
-  m_deletedItems.push_back(it->second);
-  m_indexLookup.erase(it);
+  const juce::GenericScopedLock<juce::CriticalSection> myScopedLock(m_Mutex);
+  m_items.erase(key);
 }
 
 bool Matrix::add(const VString &modulatorKey, const VString &dst) {
   std::string key = modulatorKey + dst;
-  auto it = m_indexLookup.find(key);
-  if (it != m_indexLookup.end())
+  auto it = m_items.find(key);
+  if (it != m_items.end())
     return false;
   auto srcMod = std::find_if(m_modulators.begin(), m_modulators.end(),
                              [&](Ref<Modulator> &modulator) {
@@ -74,19 +59,19 @@ bool Matrix::add(const VString &modulatorKey, const VString &dst) {
     return false;
   auto *handler = Core::Instance::get(m_id)->handler.get();
   auto *parameter = handler->getModulateParameter(dst);
-  m_indexLookup[key] =
-      &m_items.emplace_back(ModulationItem{srcMod.base()->get(), parameter, 0});
+  m_items[key] = {srcMod->get(), parameter,0.0};
   return true;
 }
 void Matrix::setAmount(const VeNo::VString &key, double amount) {
-  auto it = m_indexLookup.find(key);
-  if (it == m_indexLookup.end())
+  const juce::GenericScopedLock<juce::CriticalSection> myScopedLock(m_Mutex);
+  auto it = m_items.find(key);
+  if (it == m_items.end())
     return;
-  it->second->Amount = amount;
+  it->second.Amount = amount;
 }
 juce::XmlElement *Matrix::ToXml() {
   auto matrix = new juce::XmlElement("Matrix");
-  for (auto &item : m_items) {
+  for (auto &[key, item] : m_items) {
     auto element = new juce::XmlElement("Matrix-Item");
     element->setAttribute("Source", item.Source->name());
     element->setAttribute("Destination", item.Destination->getName());
@@ -96,7 +81,6 @@ juce::XmlElement *Matrix::ToXml() {
   return matrix;
 }
 void Matrix::FromXML(const Scope<juce::XmlElement> &data) {
-  m_deletedItems.clear();
   const juce::GenericScopedLock<juce::CriticalSection> myScopedLock(m_Mutex);
   m_items.clear();
   auto *matrix = data->getChildByName("Matrix");

@@ -46,11 +46,11 @@ void TableCreator::FillTables(RawTable& rawTable, WaveTable* waveTable) {
   waveTable->Length = size;
   for (size_t i = 0; i < size; ++i) {
     auto& wave = waveTable->Waves[i];
-    wave.Length = rawTable.Length;
+    wave.Length = (double)rawTable.Length;
     wave.TopFreq = topFreq;
-    size_t len = wave.Length;
+    auto len = (size_t)wave.Length;
     auto* tempData = new double[len+1]{};
-    int numSamples = len;
+    size_t numSamples = len;
     tempData[0] = 0;
     tempData[numSamples] = 0;
     for (size_t x = 1; x <= maxHarmonic; ++x) {
@@ -70,7 +70,7 @@ void TableCreator::CreateTableRaw(RawTable& rawTable, WaveTable *waveTable) {
   waveTable->Length = 1;
   auto& wave = waveTable->Waves[0];
   wave.TopFreq = config.sampleRate / 2.0;
-  wave.Length = rawTable.Length;
+  wave.Length = (double)rawTable.Length;
   wave.Data = new double[rawTable.Length+1];
   for (size_t x = 0; x < rawTable.Length; x++)
           wave.Data[x] = rawTable.Data[x];
@@ -78,13 +78,14 @@ void TableCreator::CreateTableRaw(RawTable& rawTable, WaveTable *waveTable) {
 }
 
 void TableCreator::MakeWaveTable(Wave& wave, double topFreq, double *tempData) {
-  wave.Data = new double[wave.Length+1]{};
+  auto length = (size_t)wave.Length;
+  wave.Data = new double[length+1]{};
   FFT((int)wave.Length, tempData, wave.Data);
   ApplyCutoff(wave, topFreq);
   double scale = FindScale(wave);
-  for (size_t idx = 0; idx < wave.Length; idx++)
+  for (size_t idx = 0; idx < length; idx++)
     wave.Data[idx] = wave.Data[idx] * scale;
-  wave.Data[wave.Length] = wave.Data[0];
+  wave.Data[length] = wave.Data[0];
 }
 
 void TableCreator::FFT(int N, double *ar, double *ai) {
@@ -166,7 +167,8 @@ void TableCreator::ApplyCutoff(Wave& wave, double topFreq) {
   double alpha = dt / (RC + dt);
 
   double prev_sample = 0.0;
-  for (size_t i = 0; i < wave.Length; ++i) {
+  auto length = (size_t)wave.Length;
+  for (size_t i = 0; i < length; ++i) {
     double tmp = wave.Data[i];
     wave.Data[i] = prev_sample + (alpha * (wave.Data[i] - prev_sample));
     prev_sample = tmp;

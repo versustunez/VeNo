@@ -20,8 +20,8 @@ MatrixItemComponent::MatrixItemComponent(const std::string &name,
   m_AddRemoveButton->GetButton()->addListener(this);
 
   m_AmountKnob = CreateRef<Knob>("", "Amount", m_id);
-  m_AmountKnob->slider()->addListener(this);
-  m_AmountKnob->slider()->setRange(-1, 1, 0.01);
+  auto* slider =  m_AmountKnob->slider();
+  slider->setRange(-1, 1, 0.01);
 
   if (!matrix.Has(m_Key)) {
     m_AddRemoveButton->setButtonText("Add");
@@ -29,8 +29,9 @@ MatrixItemComponent::MatrixItemComponent(const std::string &name,
   } else {
     m_AddRemoveButton->setButtonText("Remove");
     m_AmountKnob->setVisible(true);
-    m_AmountKnob->setValue(matrix.GetAmount(m_Key));
+    slider->setValue(matrix.GetAmount(m_Key), juce::NotificationType::dontSendNotification);
   }
+  slider->addListener(this);
   addAndMakeVisible(*m_Label);
   addAndMakeVisible(*m_AddRemoveButton);
   addChildComponent(*m_AmountKnob);

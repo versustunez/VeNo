@@ -41,7 +41,7 @@ public:
 protected:
   VString m_name{};
   EnvelopeData m_data{};
-  EnvelopeVoiceData m_voiceData[MAX_VOICES];
+  EnvelopeVoiceData m_voiceData[MAX_VOICES+1];
   int m_envelope{2};
 };
 // Random Data ;)

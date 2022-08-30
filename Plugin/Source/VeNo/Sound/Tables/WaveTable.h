@@ -14,7 +14,7 @@ struct RawTable {
 struct Wave {
   double* Data{nullptr};
   double TopFreq{0.0};
-  size_t Length{0};
+  double Length{0};
   ~Wave();
 };
 
