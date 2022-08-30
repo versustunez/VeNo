@@ -205,4 +205,18 @@ void LookHandler::drawTabbedButtonBarBackground(juce::TabbedButtonBar &,
   graphics.setColour(theme->getColor(Colors::bg));
   graphics.fillAll();
 }
+void LookHandler::drawCallOutBoxBackground(juce::CallOutBox &box,
+                                           juce::Graphics &g,
+                                           const juce::Path &,
+                                           juce::Image &image) {
+  if (image.isNull())
+    image = {juce::Image::ARGB, box.getWidth(), box.getHeight(), true};
+
+  g.setColour(juce::Colours::black);
+  g.drawImageAt(image, 0, 0);
+}
+int LookHandler::getCallOutBoxBorderSize(const juce::CallOutBox &) { return 0; }
+float LookHandler::getCallOutBoxCornerSize(const juce::CallOutBox &) {
+  return 0;
+}
 } // namespace VeNo::GUI

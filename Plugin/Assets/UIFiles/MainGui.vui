@@ -112,6 +112,41 @@ position-x: automatic
                 )
                 [2](
                     @Tab#Random {it0} {
+                        position-y: automatic
+                        #CTRLGroup {
+                            x: 0
+                            y: 0
+                            background: secondaryBG
+                            width: 100%
+                            height: 30
+
+                            @Switch {
+                                bind: rng{it0}__active
+                                noText: true
+                                w: 20
+                                h: 20
+                                x: 10
+                                y: 5
+                            }
+                        }
+                        #RandomGroup {
+                            flex: true
+                            justify-content: space-between
+                            align-items: center
+                            height: 115
+                            @Knob#Rate {
+                                bind: rng{it0}__change_rate
+                                width: 40%
+                                height: 80
+                                label-value: semi
+                            }
+                            @Knob#Mode {
+                                bind: rng{it0}__mode
+                                width: 40%
+                                height: 80
+                                label-value: semi
+                            }
+                        }
                     }
                 )
             }

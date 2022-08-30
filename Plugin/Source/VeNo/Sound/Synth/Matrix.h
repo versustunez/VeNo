@@ -7,8 +7,9 @@
 
 namespace VeNo::Audio {
 struct ModulationItem {
-  Modulator *src{nullptr};
-  Core::ModulateParameter *dst{nullptr};
+  Modulator *Source{nullptr};
+  Core::ModulateParameter *Destination{nullptr};
+  double Amount{0.0};
 };
 class Matrix {
 public:
@@ -18,15 +19,24 @@ public:
   void addModulator(const Ref<Modulator> &modulator) {
     m_modulators.push_back(modulator);
   }
-  void remove(const VString &name, const VString &dst);
+  void remove(const VString &key);
+  bool add(const VString &modulator, const VString &dst);
+  void setAmount(const VString &key, double amount);
+  bool Has(const VString& key) { return m_indexLookup.find(key) != m_indexLookup.end(); }
+  double GetAmount(const VString& key) { return m_indexLookup[key]->Amount; }
   ModulatorHandle &handle() { return m_modulatorHandle; }
+  const Vector<Ref<Modulator>>& Modulators() { return m_modulators; }
+
+  juce::XmlElement* ToXml();
+  void FromXML(const Scope<juce::XmlElement> &data);
 
 protected:
   InstanceID m_id{0};
   Vector<Ref<Modulator>> m_modulators{};
   Vector<ModulationItem> m_items{};
-  Map<VString, size_t> m_indexLookup{};
-  Vector<size_t> m_deletedItems;
+  Map<VString, ModulationItem*> m_indexLookup{};
+  Vector<ModulationItem*> m_deletedItems;
   ModulatorHandle m_modulatorHandle;
+  juce::CriticalSection m_Mutex;
 };
 } // namespace VeNo::Audio

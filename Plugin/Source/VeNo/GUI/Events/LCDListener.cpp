@@ -22,7 +22,7 @@ void LCDListener::sliderDragStarted(juce::Slider *slider) {
   m_eventHandler->triggerEvent("lcd-change", event);
 }
 
-void LCDListener::sliderDragEnded(juce::Slider *slider) {
+void LCDListener::sliderDragEnded(juce::Slider *) {
   if (!m_eventHandler)
     init();
   m_eventHandler->triggerEvent("lcd-change", new Events::ParameterChangeEnd);

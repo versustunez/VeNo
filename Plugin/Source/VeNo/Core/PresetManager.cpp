@@ -47,7 +47,7 @@ Scope<juce::XmlElement> PresetManager::GetCurrentData() {
     preset->setAttribute("fx-series", instance->state.FXChain->Serialize());
   }
   preset->addChildElement(new juce::XmlElement(*state.createXml()));
-  // @TODO: MATRIX ;)
+  preset->addChildElement(instance->synthesizer->matrix().ToXml());
   auto xml = CreateScope<juce::XmlElement>(*preset);
   delete preset;
   return xml;
@@ -77,6 +77,8 @@ void PresetManager::SetCurrentData(const Scope<juce::XmlElement> &data) {
   auto fileName = data->getStringAttribute("file-name").toStdString();
   if (!fileName.empty())
     m_CurrentPreset = fileName;
+  if (instance->synthesizer)
+    instance->synthesizer->matrix().FromXML(data);
   instance->eventHandler.triggerEvent("preset_changed",
                                       new Events::ChangeEvent);
 }

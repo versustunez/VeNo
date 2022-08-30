@@ -75,6 +75,12 @@ public:
   void drawTabbedButtonBarBackground(juce::TabbedButtonBar &bar,
                                      juce::Graphics &graphics) override;
 
+  void drawCallOutBoxBackground(juce::CallOutBox &box, juce::Graphics &graphics,
+                                const juce::Path &path,
+                                juce::Image &image) override;
+  int getCallOutBoxBorderSize(const juce::CallOutBox &box) override;
+  float getCallOutBoxCornerSize(const juce::CallOutBox &box) override;
+
 protected:
   void drawBasedOnKnob(juce::Graphics &g, int x, int y, int width, int height,
                        float sliderPosProportional, float rotaryStartAngle,

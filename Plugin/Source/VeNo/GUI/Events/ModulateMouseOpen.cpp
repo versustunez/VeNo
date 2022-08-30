@@ -1,3 +1,6 @@
+#include "VeNo/GUI/Components/Matrix.h"
+#include "VeNo/GUI/Components/ScrollComponent.h"
+
 #include <VeNo/GUI/Components/BaseComponent.h>
 #include <VeNo/GUI/Events/ModulateMouseOpen.h>
 
@@ -11,11 +14,13 @@ void ModulateMouseOpen::mouseDown(const juce::MouseEvent &event) {
     openPopupMenu();
 }
 void ModulateMouseOpen::openPopupMenu() {
-  auto component = std::make_unique<juce::TextEditor>();
-  component->setMultiLine(true, false);
-  component->setReturnKeyStartsNewLine(true);
-  component->setSize(300, 600);
+  auto component = CreateRef<GUI::MatrixComponent>(m_component->name(), m_component->id());
+  auto viewport = CreateScope<GUI::ScrollComponent>("", "", m_component->id());
+  viewport->setViewComponent(component);
+  viewport->pos.w = component->getWidth();
+  viewport->pos.h = 400;
+  viewport->setSize(component->getWidth(), 400);
   (void)juce::CallOutBox::launchAsynchronously(
-      std::move(component), m_component->getScreenBounds(), nullptr);
+      std::move(viewport), m_component->getScreenBounds(), nullptr);
 }
 } // namespace VeNo::GUIEvents

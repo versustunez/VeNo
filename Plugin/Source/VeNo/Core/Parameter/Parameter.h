@@ -62,11 +62,15 @@ public:
   void addValueVoice(int voice, double value);
   void reset();
 
+  void Begin() { reset(); }
+  void Finish();
   double operator[](int voice) {
     if (voice == -1)
       return m_value;
     return m_values[voice];
   }
+protected:
+  bool m_isDirty{true};
 };
 
 class FakeParameter : public Parameter {

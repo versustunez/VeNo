@@ -1,4 +1,6 @@
 #pragma once
+#include "VeNo/Utils/Random.h"
+
 #include <VeNo/Events/Event.h>
 #include <VeNo/Sound/Generation/EnvelopeStructs.h>
 #include <VeNo/Sound/Generation/LFO.h>
@@ -6,6 +8,7 @@
 
 namespace VeNo::Audio {
 class Matrix;
+class ModulatorHandle;
 class Modulator {
 public:
   explicit Modulator(InstanceID id) : m_id(id){};
@@ -17,11 +20,13 @@ public:
 
 protected:
   InstanceID m_id{0};
+  double m_SampleRate = 44100.0;
+  friend ModulatorHandle;
 };
 // Wrapping Env2-4
 class EnvModulator : public Modulator, Events::Handler {
 public:
-  explicit EnvModulator(InstanceID id) : Modulator(id) { init(); };
+  explicit EnvModulator(InstanceID id) : Modulator(id) {};
   void init(int envelope = 2);
   void update() override;
   double value(int index) override;
@@ -42,42 +47,51 @@ protected:
 // Random Data ;)
 class RandomModulator : public Modulator {
 public:
-  explicit RandomModulator(InstanceID id) : Modulator(id) { init(); };
-  void init();
+  explicit RandomModulator(InstanceID id) : Modulator(id) {}
+  void init(int index);
   void update() override;
   double value(int index) override;
   VString &name() override { return m_name; }
 
 protected:
-  VString m_name{"LFO"};
+  VString m_name;
+  Core::ModulateParameter* m_ChangeRate{nullptr};
+  Core::Parameter* m_Active{nullptr};
+  Core::Parameter* m_Mode{nullptr};
+  double m_Value{0};
+  int m_Samples{0};
+  Utils::Random m_Random{};
+  double m_Values[5]{0,0,0,0,0};
 };
 
 class LFOModulator : public Modulator {
 public:
-  explicit LFOModulator(InstanceID id) : Modulator(id) { init(); };
-  void init();
+  explicit LFOModulator(InstanceID id) : Modulator(id) {}
+  void init(int number);
   void update() override;
   double value(int index) override;
 
   VString &name() override { return m_name; }
-  bool isVoiceModulator() override;
 
 protected:
   VString m_name{"LFO"};
-  LFOData m_data;
+  LFOData m_Data{};
+  WaveLib *m_WaveLib{nullptr};
 };
 
 class ModKnobsModulator : public Modulator {
 public:
-  explicit ModKnobsModulator(InstanceID id, int index)
-      : Modulator(id), m_index(index) {
-    init();
-  };
-  void init();
+  explicit ModKnobsModulator(InstanceID id): Modulator(id) {}
+  void init(int index);
+  void init(const VString& name, int index);
   void update() override;
   double value(int index) override;
+
+  VString &name() override { return m_Parameter->getShowName(); }
+
 protected:
-  int m_index{1};
+  Core::Parameter* m_Parameter{nullptr};
+  double m_Value{0.0};
 };
 
 class ModulatorHandle {
@@ -92,6 +106,7 @@ protected:
   Vector<Ref<LFOModulator>> m_LFOs;
   Vector<Ref<RandomModulator>> m_randomGenerators;
   Vector<Ref<EnvModulator>> m_envelopes;
+  Vector<Ref<ModKnobsModulator>> m_knobsModulator;
   InstanceID m_id{};
 };
 } // namespace VeNo::Audio

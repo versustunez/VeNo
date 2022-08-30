@@ -6,4 +6,8 @@ add_sources(
         ParameterEventHandler.cpp
         Synthesizer.cpp
         SynthVoice.cpp
+        Modulatoren/EnvelopeModulator.cpp
+        Modulatoren/LFOModulator.cpp
+        Modulatoren/ModKnobModulator.cpp
+        Modulatoren/RandomModulator.cpp
 )

@@ -61,8 +61,8 @@ void ParameterHandler::setupParameter () {
     std::string id = fmt::format("rng{}__", i);
     std::string name = fmt::format("Random {}", i);
     addParameter (id + "active", name + " Active", 0, 1, 0, Boolean);
-    addParameterModulate (id + "change_rate", name + " Change Rate", 16, 4096, 256, Integer);
-    addParameterModulate (id + "mode", name + " Mode", 1, 2, 1, Integer);
+    addParameterModulate (id + "change_rate", name + " Change Rate", 8, 4096, 256, Integer);
+    addParameter(id + "mode", name + " Mode", 1, 3, 1, Integer);
   }
 
   for (int i = 1; i < 5; i++) {

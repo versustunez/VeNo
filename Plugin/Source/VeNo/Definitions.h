@@ -8,5 +8,5 @@
 #define MAX_VOICES 5 // Notes at the same time
 #define OSCILLATORS 4
 #define LFOS 2
-#define ENVELOPES 2
+#define ENVELOPES 4
 #define MAX_TABLES 4

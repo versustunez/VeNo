@@ -12,6 +12,7 @@ ModulateParameter::ModulateParameter(std::string name, std::string showName,
 
   m_preMinMax = m_max - m_min;
   m_normalised = (value - m_min) / (m_preMinMax);
+  reset();
 }
 
 double ModulateParameter::getVoice(int voice) {
@@ -33,23 +34,32 @@ void ModulateParameter::setValue(double value) {
     xvalue = value;
 }
 void ModulateParameter::addValueVoice(int voice, double value) {
+  m_matrixPos += value;
   m_matrix[voice] += value;
-  m_values[voice] = VUtils::Math::clamp(m_matrix[voice] * (m_preMinMax) + m_min,
-                                        m_min, m_max);
+  m_isDirty = true;
 }
 void ModulateParameter::addValue(double value) {
   m_matrixPos += value;
-  m_value =
-      VUtils::Math::clamp(m_matrixPos * (m_preMinMax) + m_min, m_min, m_max);
-  for (int i = 0; i < MAX_VOICES; ++i) {
-    m_matrix[i] += value;
-    m_values[i] =
-        VUtils::Math::clamp(m_matrix[i] * (m_preMinMax) + m_min, m_min, m_max);
-  }
+  for (double &matrixPos : m_matrix)
+    matrixPos += value;
+  m_isDirty = true;
 }
+
 void ModulateParameter::reset() {
   m_matrixPos = m_normalised;
   for (double &value : m_matrix)
     value = m_normalised;
+}
+
+void ModulateParameter::Finish() {
+  if (m_isDirty) {
+    m_value =
+        VUtils::Math::clamp(m_matrixPos * m_preMinMax + m_min, m_min, m_max);
+    for (int i = 0; i < MAX_VOICES; ++i) {
+      m_values[i] = VUtils::Math::clamp(m_matrix[i] * m_preMinMax + m_min,
+                                        m_min, m_max);
+    }
+    m_isDirty = false;
+  }
 }
 } // namespace VeNo::Core

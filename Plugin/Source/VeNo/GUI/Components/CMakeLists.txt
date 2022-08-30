@@ -6,6 +6,7 @@ add_sources(
         Knob.cpp
         Label.cpp
         Logo.cpp
+        Matrix.cpp
         NestedComponent.cpp
         Preset.cpp
         ScrollComponent.cpp
