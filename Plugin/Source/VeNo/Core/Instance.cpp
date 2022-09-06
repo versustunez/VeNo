@@ -2,6 +2,7 @@
 #include <VeNo/Core/Instance.h>
 
 namespace VeNo::Core {
+Mutex Instance::s_CreateInstanceGuard{};
 std::vector<Instance *> Instance::m_instances = {};
 Instance::~Instance() {
   mainInterpreter = nullptr;
@@ -12,22 +13,22 @@ Instance *Instance::get(InstanceID m_id) {
   return m_instances[m_id];
 }
 Instance *Instance::create() {
-  auto *instance = new Instance();
+  Guard lockGuard(s_CreateInstanceGuard);
   // if m_instances is not empty we search for an empty slot... this happens on
   // start-time so no problem here :D
   if (!m_instances.empty()) {
     for (size_t i = 0; i < m_instances.size(); i++) {
       if (m_instances[i] == nullptr) {
         DBGN("Reuse Slot: {}", i);
-        instance->id = i;
+        auto *instance = new Instance(i);
         instance->init();
         m_instances[i] = instance;
         return instance;
       }
     }
   }
-  m_instances.push_back(instance);
-  instance->id = m_instances.size() - 1;
+  m_instances.push_back(new Instance(m_instances.size()));
+  auto* instance = m_instances[m_instances.size()-1];
   instance->init();
   DBGN("New Spot: {}", instance->id);
   return instance;

@@ -11,6 +11,10 @@ namespace VeNo::Core {
 // Instance has a GetInstance method
 class Instance {
 public:
+  InstanceID id;
+  double bpm{120};
+
+public:
   static Instance *get(InstanceID m_id);
   static Instance *create();
   static void remove(InstanceID m_id);
@@ -23,14 +27,13 @@ public:
   Ref<Audio::Synthesizer> synthesizer{nullptr};
   Ref<Audio::Buffer> buffer{nullptr};
   Events::EventHandler eventHandler{id};
-
-public:
-  InstanceID id{};
-  double bpm{120};
 protected:
-  Instance() = default;
+  Instance(InstanceID _id) : id(_id) {}
   ~Instance();
   static std::vector<Instance *> m_instances;
   juce::AudioProcessorEditor *m_editor{};
+
+protected:
+  static Mutex s_CreateInstanceGuard;
 };
 } // namespace VeNo::Core
