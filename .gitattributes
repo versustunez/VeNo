@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.txt text
+*.cpp text
+*.h text
+*.vui text
