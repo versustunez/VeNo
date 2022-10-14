@@ -45,9 +45,7 @@ void LCDInfo::paint(juce::Graphics &g) {
   case LCDInfoState::WAVE:
     g.strokePath(m_DrawPath, juce::PathStrokeType(1.0f));
     break;
-  case LCDInfoState::STEREO:
-    g.strokePath(m_DrawPath, juce::PathStrokeType(0.3f));
-    break;
+  case LCDInfoState::STEREO: g.fillPath(m_DrawPath); break;
   case LCDInfoState::STEREO_TWO: drawStereoTwo(g); break;
   case LCDInfoState::LOGO_ONLY: drawLogo(g); break;
   }
@@ -194,23 +192,26 @@ void LCDInfo::updateData() {
       x += xInc;
     }
   } else if (m_state == LCDInfoState::STEREO) {
-    auto leftData = (leftChannel[0] + 1.0) * 0.5;
-    auto rightData = (rightChannel[0] + 1.0) * 0.5;
-    m_DrawPath.startNewSubPath((float)leftData * width,
-                               height - ((float)rightData * height));
+    double radius;
+    float halfWidth = width / 2.0f;
+    float halfHeight = height / 2.0f;
     for (size_t i = 0; i < leftChannel.size(); ++i) {
-      leftData = (leftChannel[i] + 1.0) * 0.5;
-      rightData = (rightChannel[i] + 1.0) * 0.5;
-      m_DrawPath.lineTo((float)leftData * width,
-                        height - ((float)rightData * height));
+      double x = std::clamp(leftChannel[i], -1.0, 1.0);
+      double y = std::clamp(rightChannel[i], -1.0, 1.0);
+      radius = std::sqrt(x * x + y * y);
+      double theta = std::atan(y / x);
+      double angle = theta * (180.0/juce::MathConstants<double>::pi);
+      double radX = radius * std::cos(angle);
+      double radY = radius * std::sin(angle);
+      m_DrawPath.addRectangle(radX * halfWidth + halfWidth, radY * halfHeight + halfHeight, 0.5, 0.5);
     }
-    m_DrawPath.closeSubPath();
   } else if (m_state == LCDInfoState::STEREO_TWO) {
     float halfWidth = width / 2.0f;
     float halfHeight = height / 2.0f;
     for (size_t i = 0; i < leftChannel.size(); ++i) {
       auto [x, y] = getStereoData(leftChannel[i], rightChannel[i]);
-      m_DrawPath.addRectangle((x * halfWidth) + halfWidth, (y*halfHeight) + halfHeight, 0.5, 0.5);
+      m_DrawPath.addRectangle((x * halfWidth) + halfWidth,
+                              (y * halfHeight) + halfHeight, 0.5, 0.5);
     }
   }
 }
@@ -220,10 +221,10 @@ void LCDInfo::drawStereoTwo(juce::Graphics &graphics) {
   graphics.setColour(color.withAlpha(0.2f));
   auto width = (float)getWidth();
   auto height = (float)getHeight();
-  float halfWidth = width/2.0f;
-  float halfHeight = height/2.0f;
-  graphics.drawLine(10,halfHeight, width-10, halfHeight);
-  graphics.drawLine(halfWidth,10, halfWidth, height-10);
+  float halfWidth = width / 2.0f;
+  float halfHeight = height / 2.0f;
+  graphics.drawLine(10, halfHeight, width - 10, halfHeight);
+  graphics.drawLine(halfWidth, 10, halfWidth, height - 10);
   graphics.setColour(color);
   graphics.fillPath(m_DrawPath);
 }

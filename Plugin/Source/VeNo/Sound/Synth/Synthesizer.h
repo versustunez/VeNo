@@ -4,12 +4,13 @@
 #include "ParameterCacheStruct.h"
 #include "ParameterEventHandler.h"
 #include "SynthVoice.h"
+#include "VeNo/Sound/DSP/FX/Filter.h"
 
 #include <JuceHeader.h>
 #include <VeNo/Core/Config.h>
 #include <VeNo/Core/Parameter/Handler.h>
-#include <VeNo/Sound/Generation/OscillatorStructs.h>
 #include <VeNo/Sound/DSP/FXChain.h>
+#include <VeNo/Sound/Generation/OscillatorStructs.h>
 
 #define MAX_VOICES 5
 
@@ -56,6 +57,7 @@ private:
   juce::CriticalSection lock;
   Matrix m_matrix;
   double m_sampleRate{44100};
+  Filter m_Filter{m_instanceId, true};
 private:
   friend ParameterEventHandler;
 };

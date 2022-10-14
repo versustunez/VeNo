@@ -25,6 +25,7 @@ bool Oscillator::setup(OscillatorData &osc, size_t instanceId) {
   state.detuneMode = handler->getOscParameter("detune_mode", osc.id);
   state.phase = handler->getOscModulateParameter("phase", osc.id);
   state.randomPhase = handler->getOscParameter("random_phase", osc.id);
+  state.retrigger = handler->getOscParameter("retrigger", osc.id);
   state.stereo = handler->getOscModulateParameter("stereo", osc.id);
   state.wave = handler->getOscParameter("wave", osc.id);
   state.pitchWheel = handler->getParameter("pitch__wheel");
@@ -132,7 +133,9 @@ double Oscillator::renderVoice(SingleVoiceData &voice, DetuneState &state,
   return VUtils::Math::lerp(sum, sum2, fraction);
 }
 
-void Oscillator::prepareVoice(OscillatorData &osc, SingleVoiceData voice) {
+void Oscillator::prepareVoice(OscillatorData &osc, SingleVoiceData& voice) {
+  if(!osc.state.retrigger->getBool())
+    return;
   if (osc.state.randomPhase->getBool()) {
     auto &random = Utils::Random::get();
     for (auto &unisonVoice : voice.unisonVoices) {

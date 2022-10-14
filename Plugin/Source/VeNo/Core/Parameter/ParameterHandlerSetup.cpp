@@ -45,6 +45,7 @@ void ParameterHandler::setupParameter () {
     addParameter (id + "detune_mode", name + " Detune Mode", 1, 4, 2, Integer);
     addParameterModulate (id + "phase", name + " Phase offset", 0, 1, 0, Float);
     addParameter (id + "random_phase", name + " Random Phase", 0, 1, 0, Boolean);
+    addParameter (id + "retrigger", name + " Retrigger", 0, 1, 1, Boolean);
     addParameterModulate (id + "stereo", name + " Detune Stereo", 0, 200, 100, Float);
     addParameter (id + "wave", name + " Waveform", 1, 4, 1, Integer);
   }

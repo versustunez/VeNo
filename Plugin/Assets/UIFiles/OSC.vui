@@ -66,6 +66,12 @@
             width: 80
             height: 30
         }
+
+        @Switch#Retrigger {
+            bind: osc{i}__retrigger
+            width: 80
+            height: 30
+        }
     }
 
     #OSCControls {

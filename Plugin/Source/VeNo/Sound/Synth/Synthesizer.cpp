@@ -81,6 +81,7 @@ void Synthesizer::setSampleRate(double sampleRate) {
   m_envelope->needRecalculate = true;
   m_FXChain->SetSampleRate(sampleRate);
   m_matrix.handle().setSampleRate(sampleRate);
+  m_Filter.update();
 }
 void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
                                int startSample, int numSamples) {
@@ -139,6 +140,7 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
     outChannel.left *= ParameterCache.MasterVolume->getValue();
     outChannel.right *= ParameterCache.MasterVolume->getValue();
     m_FXChain->process(outChannel);
+    m_Filter.process(outChannel);
     buffer.addSample(0, startSample, (float)outChannel.left);
     buffer.addSample(1, startSample, (float)outChannel.right);
     ++startSample;

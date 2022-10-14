@@ -73,7 +73,7 @@ void Distortion::process(Channel &channel) {
   copyChannel *= (1 / (log(driveVal + 1) + 1));
   copyChannel *= m_OutputGain->getValue();
   double mix = m_Mix->getValue();
-  channel.right = VUtils::Math::lerp(channel.right, copyChannel.right, mix);
-  channel.left = VUtils::Math::lerp(channel.left, copyChannel.left, mix);
+  channel.right = std::clamp(VUtils::Math::lerp(channel.right, copyChannel.right, mix), -1.0, 1.0);
+  channel.left = std::clamp(VUtils::Math::lerp(channel.left, copyChannel.left, mix), -1.0, 1.0);
 }
 } // namespace VeNo::Audio

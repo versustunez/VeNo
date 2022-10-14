@@ -82,6 +82,7 @@ void Envelope::noteOff(EnvelopeVoiceData &data, EnvelopeData &envelope) {
 void Envelope::noteOn(EnvelopeVoiceData &data, EnvelopeData &envelope) {
   data.releaseRate = envelope.release;
   if (envelope.attack > 0.0) {
+    data.value = 0.0;
     data.state = EnvelopeState::ATTACK;
   } else if (envelope.decay > 0.0) {
     data.value = 1.0;

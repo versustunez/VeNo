@@ -22,6 +22,7 @@ struct OscillatorState {
   Parameter *detuneMode;
   ModParameter *phase;
   Parameter *randomPhase;
+  Parameter *retrigger;
   ModParameter *stereo;
   Parameter *wave;
   Parameter *pitchWheel;
