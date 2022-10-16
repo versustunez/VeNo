@@ -10,6 +10,9 @@
 using micro = std::chrono::duration<double, std::micro>;
 using ms = std::chrono::duration<double, std::milli>;
 
+namespace VeNo::Core {
+class Config;
+}
 class VeNoEditor : public juce::AudioProcessorEditor,
                    public juce::OpenGLRenderer {
 public:
@@ -31,4 +34,5 @@ protected:
   VeNo::InstanceID m_instanceId;
   juce::OpenGLContext m_openGLContext;
   VeNo::Core::Instance *m_instance;
+  friend VeNo::Core::Config;
 };

@@ -28,7 +28,7 @@ Instance *Instance::create() {
     }
   }
   m_instances.push_back(new Instance(m_instances.size()));
-  auto* instance = m_instances[m_instances.size()-1];
+  auto *instance = m_instances[m_instances.size() - 1];
   instance->init();
   DBGN("New Spot: {}", instance->id);
   return instance;
@@ -54,6 +54,14 @@ void Instance::remove(InstanceID m_id) {
 
 State::InstanceState *Instance::getState(VeNo::InstanceID id) {
   return &m_instances[id]->state;
+}
+
+void Instance::TriggerEventOnAllInstances(const char *name) {
+  for (auto *instance : m_instances) {
+    if (instance != nullptr) {
+      instance->eventHandler.triggerEvent(name, nullptr);
+    }
+  }
 }
 
 void Instance::init() {

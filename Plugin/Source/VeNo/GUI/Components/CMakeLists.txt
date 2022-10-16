@@ -21,5 +21,6 @@ add_sources(
 
         # Config Component Space
         Config/ConfigComponent.cpp
+        Config/ColorComponent.cpp
         Config/ColorChangeComponent.cpp
 )

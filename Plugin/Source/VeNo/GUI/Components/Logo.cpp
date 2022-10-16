@@ -40,5 +40,7 @@ void Logo::createLogo() {
           juce::Colours::black, theme->getColor(Theme::Colors::logoAccent)))
     ERR("Something went wrong swapping Color: Black");
   resized();
+  if (isVisible())
+    repaint();
 }
 } // namespace VeNo::GUI

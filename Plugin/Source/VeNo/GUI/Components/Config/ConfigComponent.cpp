@@ -37,7 +37,7 @@ void ConfigComponent::init() {
     auto colorItem = Make<ColorChangeComponent>("", showName);
     colorItem->setColorIndex(i);
     colorItem->pos.w = getWidth();
-    colorItem->pos.h = 160;
+    colorItem->pos.h = 60;
     m_components.push_back(colorItem);
   }
   typedef juce::FlexBox FlexBox;

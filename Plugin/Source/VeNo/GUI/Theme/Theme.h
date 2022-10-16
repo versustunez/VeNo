@@ -9,6 +9,7 @@
 namespace VeNo::Theme {
 enum class Colors {
   unknown = 0,
+  root,
   bg,
   bgTwo,
   accent,
@@ -19,7 +20,6 @@ enum class Colors {
   lcd,
   logo,
   logoAccent,
-  root,
   end
 };
 

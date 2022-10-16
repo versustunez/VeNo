@@ -110,8 +110,7 @@ void Config::setScale(double scale) {
 
 }
 void Config::repaintEditors() {
-  for(auto& [idx,editor] : m_editors) {
-    editor->repaint();
-  }
+  for (auto& [idx,editor] : m_editors)
+    editor->m_instance->mainInterpreter->componentGroup->repaint();
 }
 } // namespace VeNo::Core
