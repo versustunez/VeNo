@@ -38,7 +38,7 @@ void TableCreator::FillTables(RawTable& rawTable, WaveTable* waveTable) {
   size_t size = 0;
   size_t maxHarmonicTemps = maxHarmonic;
   // This should create enough Headroom...
-  while (maxHarmonicTemps > 32) {
+  while (maxHarmonicTemps > 4) {
     size++;
     maxHarmonicTemps >>= 1u;
   }
