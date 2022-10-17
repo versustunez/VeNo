@@ -1,18 +1,19 @@
 #pragma once
 
 #include "FX.h"
+#include "VeNo/Sound/DSP/FX/Filter.h"
 #include "VeNo/Sound/Structs.h"
+
 namespace VeNo::Audio {
 
 class StepLowPass {
 public:
   StepLowPass();
-  float DoFilter(float input, float cut);
+  float DoFilter(float input);
+  void SetSampleRate(double sr);
+
 public:
-  float output{0.0};
-  int counter{0};
-  float feedback[4][16]{};
-  float filterOutput[4]{};
+  Vector<juce::IIRFilter> m_Filter{};
 };
 class FXChain {
 public:
@@ -34,5 +35,6 @@ protected:
   Vector<size_t> m_SortedFX;
   StepLowPass m_PreFilter[2]{};
   StepLowPass m_PostFilter[2]{};
+  Filter m_DCFilter{m_ID, true};
 };
 } // namespace VeNo::Audio

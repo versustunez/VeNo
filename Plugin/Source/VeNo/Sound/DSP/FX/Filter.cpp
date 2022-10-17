@@ -34,7 +34,7 @@ Filter::Filter(InstanceID id, const std::string &lookup_key, int index)
 
 void Filter::update() {
   // NO FILTER ;)
-  double sampleRate = m_Config->sampleRate;
+  double sampleRate = m_FXSampleRate == 0 ? m_Config->sampleRate : m_FXSampleRate;
   if (m_DCFilter) {
     m_Type = FilterType::HP;
     auto coeff = juce::IIRCoefficients::makeHighPass(sampleRate, 10.0);

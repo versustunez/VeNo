@@ -58,7 +58,6 @@ private:
   juce::CriticalSection lock;
   Matrix m_matrix;
   double m_sampleRate{44100};
-  Filter m_Filter{m_instanceId, true};
 
 private:
   friend ParameterEventHandler;

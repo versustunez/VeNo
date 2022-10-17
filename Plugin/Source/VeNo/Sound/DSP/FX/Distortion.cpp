@@ -19,6 +19,7 @@ void Distortion::update() {
   m_Mode = static_cast<DistortionMode>(m_Type->getInt() - 1);
   if (m_Mode == DistortionMode::OFF)
     return;
+  m_Filter->setSampleRate(m_FXSampleRate);
   m_Filter->update();
 }
 void Distortion::process(Channel &channel) {
@@ -71,7 +72,7 @@ void Distortion::process(Channel &channel) {
   default: break;
   }
   copyChannel *= (1 / (log(driveVal + 1) + 1));
-  copyChannel *= m_OutputGain->getValue();
+  copyChannel *= m_OutputGain->getValue() * 0.5;
   double mix = m_Mix->getValue();
   channel.right = std::clamp(
       VUtils::Math::lerp(channel.right, copyChannel.right, mix), -1.0, 1.0);
