@@ -34,7 +34,7 @@ public:
 
   Colors getColorIndex(const std::string &color);
   static std::string colorName(Colors index);
-  static juce::Colour getContrastColor(const juce::Colour& colour);
+  static juce::Colour getContrastColor(const juce::Colour &colour);
 
 protected:
   void getColourFromConfig(Colors index);

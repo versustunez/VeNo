@@ -56,7 +56,7 @@ void ConfigComponent::calculateSize(int width) {
   for (auto &component : m_components) {
     size.h += component->pos.h + 2;
   }
-  setSize(width, size.h+20);
+  setSize(width, size.h + 20);
 }
 void ConfigComponent::sliderValueChanged(juce::Slider *) {}
 void ConfigComponent::sliderDragEnded(juce::Slider *slider) {

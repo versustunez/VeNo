@@ -37,8 +37,7 @@ void Config::initConfig() {
   m_scale = m_config->asDouble("editor.scale", 1.0);
   juce::Desktop::getInstance().setGlobalScaleFactor(m_scale);
 }
-void Config::registerEditor(std::string &id,
-                            VeNoEditor *editor) {
+void Config::registerEditor(std::string &id, VeNoEditor *editor) {
   DBGN("ID: {}", id.c_str());
   initLayout();
   initTheme();
@@ -100,17 +99,16 @@ void Config::setScale(double scale) {
   m_scale = scale;
   m_config->setValue("editor.scale", m_scale);
   juce::Desktop::getInstance().setGlobalScaleFactor(m_scale);
-  for(auto& [idx,editor] : m_editors) {
+  for (auto &[idx, editor] : m_editors) {
     auto &pos = editor->mainInterpreter->componentGroup->position();
     int width = pos.w > 0 ? pos.w : WINDOW_WIDTH;
     int height = pos.h > 0 ? pos.h : WINDOW_HEIGHT;
     editor->setSize(width, height);
     editor->repaint();
   }
-
 }
 void Config::repaintEditors() {
-  for (auto& [idx,editor] : m_editors)
+  for (auto &[idx, editor] : m_editors)
     editor->m_instance->mainInterpreter->componentGroup->repaint();
 }
 } // namespace VeNo::Core

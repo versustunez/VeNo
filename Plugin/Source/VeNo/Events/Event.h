@@ -6,7 +6,7 @@ namespace VeNo::Events {
 class Event {
 public:
   virtual ~Event() = default;
-  virtual void handle(){};
+  virtual void handle() {}
   template <class AsClass> AsClass *as() {
     return dynamic_cast<AsClass *>(this);
   }
@@ -17,7 +17,7 @@ public:
 
 class NoHandleEvent : public Event {
 public:
-  void handle() override{};
+  void handle() override {}
 };
 
 class ChangeEvent : public NoHandleEvent {};
@@ -34,7 +34,7 @@ public:
 };
 class ValueChange : public NoHandleEvent {
 public:
-  explicit ValueChange(double val) : value(val){};
+  explicit ValueChange(double val) : value(val) {}
   double value{0.0};
 };
 class RemoveEvent : public NoHandleEvent {};

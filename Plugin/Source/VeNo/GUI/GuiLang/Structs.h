@@ -40,7 +40,7 @@ struct GUIParseItem {
     for (auto &item : items)
       delete item;
     delete component;
-  };
+  }
   GUIParseItem() = default;
   GUIParseItem(GUIParseItem &) = delete;
   VString name;

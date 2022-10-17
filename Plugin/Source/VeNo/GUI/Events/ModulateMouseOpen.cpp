@@ -14,7 +14,8 @@ void ModulateMouseOpen::mouseDown(const juce::MouseEvent &event) {
     openPopupMenu();
 }
 void ModulateMouseOpen::openPopupMenu() {
-  auto component = CreateRef<GUI::MatrixComponent>(m_component->name(), m_component->id());
+  auto component =
+      CreateRef<GUI::MatrixComponent>(m_component->name(), m_component->id());
   auto viewport = CreateScope<GUI::ScrollComponent>("", "", m_component->id());
   viewport->setViewComponent(component);
   viewport->pos.w = component->getWidth();

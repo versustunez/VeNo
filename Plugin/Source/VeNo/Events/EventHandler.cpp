@@ -45,7 +45,6 @@ void EventHandler::handleAsyncUpdate() {
     juce::ScopedLock local_lock(m_queueLock);
     queue = m_queue;
     m_queue = {};
-
   }
   while (!queue.empty()) {
     juce::ScopedLock local_lock(m_handlerLock);

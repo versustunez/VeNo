@@ -1,7 +1,6 @@
 #include <VeNo/Core/Config.h>
 #include <VeNo/Definitions.h>
 #include <VeNo/PluginEditor.h>
-#include <VeNo/Utils/ProfileMacros.h>
 
 VeNoEditor::VeNoEditor(VeNoProcessor &p, std::string id)
     : AudioProcessorEditor(&p),
@@ -26,10 +25,7 @@ VeNoEditor::VeNoEditor(VeNoProcessor &p, std::string id)
   addAndMakeVisible(mainInterpreter->componentGroup.get());
 }
 
-void VeNoEditor::paint(juce::Graphics &g) {
-  VENO_PROFILE_FUNCTION();
-  g.fillAll(juce::Colour(0, 0, 0));
-}
+void VeNoEditor::paint(juce::Graphics &g) { g.fillAll(juce::Colour(0, 0, 0)); }
 VeNoEditor::~VeNoEditor() {
   auto *instance = VeNo::Core::Instance::get(m_instanceId);
   instance->state.actionRegistry.reset(nullptr);
@@ -39,7 +35,6 @@ VeNoEditor::~VeNoEditor() {
   m_openGLContext.detach();
 }
 void VeNoEditor::resized() {
-  VENO_PROFILE_FUNCTION();
   mainInterpreter->componentGroup->setBounds(0, 0, getWidth(), getHeight());
 }
 void VeNoEditor::setupGL(bool vsync) {

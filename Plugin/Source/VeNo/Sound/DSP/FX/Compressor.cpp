@@ -42,7 +42,10 @@ void Compressor::process(Channel &channel) {
   auto env = sideInput + cte * (m_State - sideInput);
   m_State = env;
 
-  auto cv = (env <= m_ThresholdGain ? 1.f : std::pow (env / m_ThresholdGain, 1.f / m_RatioParameter->getValue() - 1.f));
+  auto cv = (env <= m_ThresholdGain
+                 ? 1.f
+                 : std::pow(env / m_ThresholdGain,
+                            1.f / m_RatioParameter->getValue() - 1.f));
   channel *= cv;
 }
 
@@ -52,9 +55,11 @@ void Compressor::setSampleRate(double sampleRate) {
   CalculateRelease();
 }
 void Compressor::CalculateAttack() {
-  m_AttackCT = std::exp (-2.f * juce::MathConstants<float>::pi * 1000.f / m_AttackMS / m_SampleRate);
+  m_AttackCT = std::exp(-2.f * juce::MathConstants<float>::pi * 1000.f /
+                        m_AttackMS / m_SampleRate);
 }
 void Compressor::CalculateRelease() {
-  m_ReleaseCT = std::exp (-2.f * juce::MathConstants<float>::pi * 1000.f / m_ReleaseCT / m_SampleRate);
+  m_ReleaseCT = std::exp(-2.f * juce::MathConstants<float>::pi * 1000.f /
+                         m_ReleaseCT / m_SampleRate);
 }
 } // namespace VeNo::Audio

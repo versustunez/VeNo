@@ -69,13 +69,16 @@ void PresetComponent::handle(Events::Event *event) {
   auto *button = realEvent->button;
   if (button == m_SaveButton.get()) {
     presetManager->Save();
-    tooltipEvent->text = fmt::format("Saved Preset: {}", presetManager->GetName());
+    tooltipEvent->text =
+        fmt::format("Saved Preset: {}", presetManager->GetName());
   } else if (button == m_NextButton.get()) {
     presetManager->LoadNext();
-    tooltipEvent->text = fmt::format("Loaded Next Preset: {}", presetManager->GetName());
+    tooltipEvent->text =
+        fmt::format("Loaded Next Preset: {}", presetManager->GetName());
   } else if (button == m_PrevButton.get()) {
     presetManager->LoadPrevious();
-    tooltipEvent->text = fmt::format("Loaded Previous Preset: {}", presetManager->GetName());
+    tooltipEvent->text =
+        fmt::format("Loaded Previous Preset: {}", presetManager->GetName());
   } else {
     tooltipEvent->text = "Unknown Event Triggered";
   }

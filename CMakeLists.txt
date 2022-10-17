@@ -26,7 +26,7 @@ endmacro()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "^GNU$")
   message(STATUS "Add GNU Options for Compiling")
-  add_compile_options(-Wno-free-nonheap-object)
+  add_compile_options(-Wno-free-nonheap-object -Wextra-semi)
 endif()
 
 add_library(sse4_1 INTERFACE IMPORTED)

@@ -1,14 +1,10 @@
 #include <VUtils/Logging.h>
 #include <VeNo/Core/Config.h>
 #include <VeNo/GUI/GuiLang/Init.h>
-#include <VeNo/Utils/ProfileMacros.h>
 
 namespace VeNo::GUI {
 Ref<UIParser> &Initializer::createParser(std::string &name) {
   if (m_guiParser.find(name) == m_guiParser.end()) {
-#ifdef VENO_PROFILE
-    VENO_PROFILE_SCOPE("Initializer::createParser > " + name);
-#endif
     m_guiParser.emplace(name, CreateRef<UIParser>());
     auto &parser = m_guiParser[name];
     parser->setName(name);
@@ -24,7 +20,6 @@ Ref<UIParser> &Initializer::createParser(std::string &name) {
 Initializer::~Initializer() { m_guiParser.clear(); }
 
 void Initializer::parseMain(std::string &name) {
-  VENO_PROFILE_FUNCTION();
   auto mainFB = "Bin::MainGui";
   auto file = getPreparedFilePath(name);
   DBGN("Using {} as MainGui File", file);
@@ -72,9 +67,6 @@ GUIParseItem *Initializer::get(const std::string &name) {
 GUIParseItem *Initializer::getOrCreate(const std::string &name) {
   if (m_guiParser.find(name) == m_guiParser.end() ||
       m_guiParser[name] == nullptr) {
-#ifdef VENO_PROFILE
-    VENO_PROFILE_SCOPE("Initializer::getOrCreate > " + name);
-#endif
     auto fileName = getPreparedFilePath(name);
     bool isBin = name.rfind("Bin::", 0) == 0;
     bool fileExists = !isBin && VUtils::FileHandler::fileExists(fileName);

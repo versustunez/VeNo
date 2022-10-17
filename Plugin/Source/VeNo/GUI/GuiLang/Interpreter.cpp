@@ -3,7 +3,6 @@
 #include <VeNo/Core/Config.h>
 #include <VeNo/Core/Instance.h>
 #include <VeNo/GUI/GuiLang/Interpreter.h>
-#include <VeNo/Utils/ProfileMacros.h>
 #include <regex>
 
 namespace VeNo::GUI {
@@ -14,12 +13,6 @@ Ref<ComponentGroup> Interpreter::parseTree(GUIParseItem *item,
                                            ComponentGroup *inGroup) {
   if (item == nullptr)
     return nullptr;
-#ifdef VENO_PROFILE
-  auto name = item->name.empty() && item->component != nullptr
-                  ? item->component->name + " | " + item->component->parameter
-                  : item->name;
-  VENO_PROFILE_SCOPE("Interpreter::parseTree > " + name);
-#endif
   auto &guiItem = *item;
   Ref<ComponentGroup> group = CreateRef<ComponentGroup>();
   group->setColor(item->colorComponent);
@@ -59,7 +52,6 @@ Ref<ComponentGroup> Interpreter::parseTree(GUIParseItem *item,
   return group;
 }
 Ref<BaseComponent> Interpreter::createComponent(GUIParseItem *item) {
-  VENO_PROFILE_FUNCTION();
   auto instance = Core::Instance::get(m_id);
   if (!instance) {
     ERR("Cannot find Instance what happens here?");
@@ -75,7 +67,6 @@ Ref<BaseComponent> Interpreter::createComponent(GUIParseItem *item) {
   return createFromType(item, param, name, m_id);
 }
 void Interpreter::parseMain(GUIParseItem *item) {
-  VENO_PROFILE_FUNCTION();
   if (componentGroup != nullptr)
     componentGroup.reset();
   auto parsed = parseTree(item, nullptr);
@@ -91,7 +82,6 @@ Ref<BaseComponent> Interpreter::createFromType(GUIParseItem *item,
                                                const std::string &parameter,
                                                const std::string &name,
                                                InstanceID id) {
-  VENO_PROFILE_FUNCTION();
   if (factories.empty())
     initMapping();
   if (factories.find(item->component->name) != factories.end())
@@ -103,7 +93,6 @@ Ref<BaseComponent> Interpreter::createFromType(GUIParseItem *item,
 
 BaseComponent *Interpreter::find(const char *selector,
                                  ComponentGroup *inGroup) {
-  VENO_PROFILE_FUNCTION();
   if (!inGroup)
     inGroup = componentGroup.get();
   auto selectors = VUtils::StringUtils::split(selector, " ");
@@ -141,7 +130,6 @@ void Interpreter::removeUI() {
     componentGroup.reset();
 }
 void Interpreter::triggerAfterParsing(ComponentGroup *inGroup) {
-  VENO_PROFILE_FUNCTION();
   if (inGroup == nullptr)
     return;
 

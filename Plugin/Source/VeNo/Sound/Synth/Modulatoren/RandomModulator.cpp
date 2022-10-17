@@ -30,13 +30,12 @@ void RandomModulator::update() {
         m_Value += value;
       m_Value /= 5;
     } else {
-      m_Value = std::sin(m_Random.generate() * juce::MathConstants<double>::twoPi);
+      m_Value =
+          std::sin(m_Random.generate() * juce::MathConstants<double>::twoPi);
     }
     m_Samples = 0;
   }
 }
 
-double RandomModulator::value(int) {
-  return m_Value;
-}
+double RandomModulator::value(int) { return m_Value; }
 } // namespace VeNo::Audio

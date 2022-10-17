@@ -11,10 +11,10 @@ struct LFOData {
   double Output{};
   double Phase{0};
   double FreqInc{0}; // already calculated based on SampleRate and Freq.
-  Core::ModulateParameter* Frequency{nullptr};
-  Core::Parameter* Active{nullptr};
-  Core::Parameter* WaveForm{nullptr};
+  Core::ModulateParameter *Frequency{nullptr};
+  Core::Parameter *Active{nullptr};
+  Core::Parameter *WaveForm{nullptr};
   int LastWaveForm{0};
-  WaveTable* Table{nullptr};
+  WaveTable *Table{nullptr};
 };
 } // namespace VeNo::Audio

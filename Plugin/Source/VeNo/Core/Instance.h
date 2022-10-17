@@ -4,8 +4,8 @@
 #include <VeNo/Core/Parameter/Handler.h>
 #include <VeNo/Core/State/InstanceState.h>
 #include <VeNo/GUI/GuiLang/Interpreter.h>
-#include <VeNo/Sound/Synth/Synthesizer.h>
 #include <VeNo/Sound/Buffer.h>
+#include <VeNo/Sound/Synth/Synthesizer.h>
 
 namespace VeNo::Core {
 // Instance has a GetInstance method
@@ -18,8 +18,8 @@ public:
   static Instance *get(InstanceID m_id);
   static Instance *create();
   static void remove(InstanceID m_id);
-  static State::InstanceState* getState(InstanceID id);
-  static void TriggerEventOnAllInstances(const char* name);
+  static State::InstanceState *getState(InstanceID id);
+  static void TriggerEventOnAllInstances(const char *name);
   void init();
   Scope<ParameterHandler> handler{nullptr};
   juce::AudioProcessorValueTreeState *treeState = nullptr;
@@ -28,6 +28,7 @@ public:
   Ref<Audio::Synthesizer> synthesizer{nullptr};
   Ref<Audio::Buffer> buffer{nullptr};
   Events::EventHandler eventHandler{id};
+
 protected:
   Instance(InstanceID _id) : id(_id) {}
   ~Instance();

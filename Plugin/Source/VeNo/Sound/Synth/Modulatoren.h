@@ -11,7 +11,7 @@ class Matrix;
 class ModulatorHandle;
 class Modulator {
 public:
-  explicit Modulator(InstanceID id) : m_id(id){};
+  explicit Modulator(InstanceID id) : m_id(id) {}
   virtual ~Modulator() = default;
   virtual void update() = 0;
   virtual double value(int index) = 0;
@@ -26,7 +26,7 @@ protected:
 // Wrapping Env2-4
 class EnvModulator : public Modulator, Events::Handler {
 public:
-  explicit EnvModulator(InstanceID id) : Modulator(id) {};
+  explicit EnvModulator(InstanceID id) : Modulator(id) {}
   void init(int envelope = 2);
   void update() override;
   double value(int index) override;
@@ -36,12 +36,12 @@ public:
   EnvelopeVoiceData &voiceData(int voice) { return m_voiceData[voice]; }
   bool isVoiceModulator() override;
 
-  VString &name() override { return m_name; };
+  VString &name() override { return m_name; }
 
 protected:
   VString m_name{};
   EnvelopeData m_data{};
-  EnvelopeVoiceData m_voiceData[MAX_VOICES+1];
+  EnvelopeVoiceData m_voiceData[MAX_VOICES + 1];
   int m_envelope{2};
 };
 // Random Data ;)
@@ -55,13 +55,13 @@ public:
 
 protected:
   VString m_name;
-  Core::ModulateParameter* m_ChangeRate{nullptr};
-  Core::Parameter* m_Active{nullptr};
-  Core::Parameter* m_Mode{nullptr};
+  Core::ModulateParameter *m_ChangeRate{nullptr};
+  Core::Parameter *m_Active{nullptr};
+  Core::Parameter *m_Mode{nullptr};
   double m_Value{0};
   int m_Samples{0};
   Utils::Random m_Random{};
-  double m_Values[5]{0,0,0,0,0};
+  double m_Values[5]{0, 0, 0, 0, 0};
 };
 
 class LFOModulator : public Modulator {
@@ -81,16 +81,16 @@ protected:
 
 class ModKnobsModulator : public Modulator {
 public:
-  explicit ModKnobsModulator(InstanceID id): Modulator(id) {}
+  explicit ModKnobsModulator(InstanceID id) : Modulator(id) {}
   void init(int index);
-  void init(const VString& name, int index);
+  void init(const VString &name, int index);
   void update() override;
   double value(int index) override;
 
   VString &name() override { return m_Parameter->getShowName(); }
 
 protected:
-  Core::Parameter* m_Parameter{nullptr};
+  Core::Parameter *m_Parameter{nullptr};
   double m_Value{0.0};
 };
 

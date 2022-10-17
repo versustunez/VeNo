@@ -30,7 +30,7 @@ void ColorChangeComponent::paint(juce::Graphics &g) {
 }
 
 void ColorChangeComponent::resized() {
-  m_label->setBounds(20, 0, getWidth()-20, getHeight());
+  m_label->setBounds(20, 0, getWidth() - 20, getHeight());
 }
 
 void ColorChangeComponent::HandleColorChange(const juce::Colour &color) {
@@ -42,7 +42,7 @@ void ColorChangeComponent::HandleColorChange(const juce::Colour &color) {
     m_config->repaintEditors();
   }
 }
-void ColorChangeComponent::mouseDown(const juce::MouseEvent &event) {
+void ColorChangeComponent::mouseDown(const juce::MouseEvent &) {
   Scope<ColorComponent> colorComponent =
       CreateScope<ColorComponent>(this, m_theme->getColor(m_color));
   colorComponent->setBounds(0, 0, 200, 300);

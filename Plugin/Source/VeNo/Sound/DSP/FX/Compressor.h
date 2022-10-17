@@ -9,15 +9,17 @@ public:
   void update() override;
   void process(Channel &channel) override;
   void setSampleRate(double d) override;
+
 protected:
   void CalculateAttack();
   void CalculateRelease();
+
 protected:
-  Core::Parameter* m_IsActiveParameter;
-  Core::Parameter* m_ThreshHoldParameter;
-  Core::Parameter* m_RatioParameter;
-  Core::Parameter* m_ReleaseParameter;
-  Core::Parameter* m_AttackParameter;
+  Core::Parameter *m_IsActiveParameter;
+  Core::Parameter *m_ThreshHoldParameter;
+  Core::Parameter *m_RatioParameter;
+  Core::Parameter *m_ReleaseParameter;
+  Core::Parameter *m_AttackParameter;
 
   double m_AttackMS{0};
   double m_ReleaseMS{0};
@@ -30,5 +32,4 @@ protected:
 
   double m_State;
 };
-}
-
+} // namespace VeNo::Audio

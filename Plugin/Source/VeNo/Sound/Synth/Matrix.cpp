@@ -25,7 +25,7 @@ void Matrix::update() {
   for (auto &[key, item] : m_items) {
     item.Destination->Begin();
   }
-  for (auto  &[key, item] : m_items) {
+  for (auto &[key, item] : m_items) {
     if (item.Source->isVoiceModulator()) {
       for (int i = 0; i < MAX_VOICES; ++i) {
         item.Destination->addValueVoice(i, item.Source->value(i) * item.Amount);
@@ -34,7 +34,7 @@ void Matrix::update() {
       item.Destination->addValue(item.Source->value(-1) * item.Amount);
     }
   }
-  for (auto  &[key, item] : m_items) {
+  for (auto &[key, item] : m_items) {
     item.Destination->Finish();
   }
 }
@@ -59,7 +59,7 @@ bool Matrix::add(const VString &modulatorKey, const VString &dst) {
     return false;
   auto *handler = Core::Instance::get(m_id)->handler.get();
   auto *parameter = handler->getModulateParameter(dst);
-  m_items[key] = {srcMod->get(), parameter,0.0};
+  m_items[key] = {srcMod->get(), parameter, 0.0};
   return true;
 }
 void Matrix::setAmount(const VeNo::VString &key, double amount) {

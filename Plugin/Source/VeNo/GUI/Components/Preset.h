@@ -4,7 +4,9 @@
 #include "Button.h"
 
 namespace VeNo::GUI {
-class PresetComponent : public BaseComponent, public Events::Handler, public juce::Label::Listener {
+class PresetComponent : public BaseComponent,
+                        public Events::Handler,
+                        public juce::Label::Listener {
 public:
   PresetComponent(const std::string &name, const std::string &showName,
                   InstanceID id);
@@ -22,4 +24,4 @@ protected:
   Ref<Button> m_SaveButton{};
   Ref<Button> m_LibraryButton{};
 };
-}
+} // namespace VeNo::GUI

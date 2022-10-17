@@ -24,7 +24,8 @@ void MidiHandler::handleMidiMessage(juce::MidiMessage message,
     synthesizer.ParameterCache.AfterTouch->setValue(realValue);
   } else if (message.isController()) {
     if (message.getControllerNumber() == 1) {
-      synthesizer.ParameterCache.ModWheel->setValue(message.getControllerValue() / 127.0);
+      synthesizer.ParameterCache.ModWheel->setValue(
+          message.getControllerValue() / 127.0);
     }
   }
 }

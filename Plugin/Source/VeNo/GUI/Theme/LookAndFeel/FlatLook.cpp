@@ -143,10 +143,12 @@ void FlatLook::drawLabel(juce::Graphics &graphics, juce::Label &label) {
   if (!label.isBeingEdited()) {
     auto alpha = label.isEnabled() ? 1.0f : 0.5f;
     const juce::Font font(getLabelFont(label));
-    if (Utils::instanceOf<BaseComponent>(&label) || Utils::instanceOf<BaseComponent>(label.getParentComponent())) {
+    if (Utils::instanceOf<BaseComponent>(&label) ||
+        Utils::instanceOf<BaseComponent>(label.getParentComponent())) {
       graphics.setColour(theme->getColor(Theme::Colors::font).withAlpha(alpha));
     } else {
-      graphics.setColour (label.findColour (juce::Label::textColourId).withAlpha (alpha));
+      graphics.setColour(
+          label.findColour(juce::Label::textColourId).withAlpha(alpha));
     }
     auto textArea =
         getLabelBorderSize(label).subtractedFrom(label.getLocalBounds());

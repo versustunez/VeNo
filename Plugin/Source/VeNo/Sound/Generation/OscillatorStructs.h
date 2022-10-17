@@ -33,7 +33,7 @@ struct OscillatorState {
 
 struct OscillatorData {
   int id{0};
-  WaveTable* group{};
+  WaveTable *group{};
   OscillatorState state{};
   DetuneState detuneState;
   WidenerState widenerState;

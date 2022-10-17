@@ -55,7 +55,6 @@ void setupFilterPreset(Select &comboBox, bool isAll = true) {
     comboBox.addItem("HS");
     comboBox.addItem("PEAK");
   }
-
 }
 
 void setupDistortionPreset(Select &comboBox) {

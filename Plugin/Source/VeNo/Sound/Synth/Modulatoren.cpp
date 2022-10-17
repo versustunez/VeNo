@@ -53,13 +53,13 @@ void ModulatorHandle::setSampleRate(double sampleRate) {
 }
 void ModulatorHandle::triggerNoteOn(int voice) {
   for (auto &envelope : m_envelopes) {
-    Envelope::noteOn(envelope->voiceData(voice+1), envelope->data());
+    Envelope::noteOn(envelope->voiceData(voice + 1), envelope->data());
     Envelope::noteOn(envelope->voiceData(0), envelope->data());
   }
 }
 void ModulatorHandle::triggerNoteOff(int voice) {
   for (auto &envelope : m_envelopes) {
-    Envelope::noteOff(envelope->voiceData(voice+1), envelope->data());
+    Envelope::noteOff(envelope->voiceData(voice + 1), envelope->data());
     Envelope::noteOff(envelope->voiceData(0), envelope->data());
   }
 }

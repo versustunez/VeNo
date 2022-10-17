@@ -4,7 +4,6 @@
 #include <VeNo/Core/Instance.h>
 #include <VeNo/Sound/DSP/Detune/Detune.h>
 #include <VeNo/Sound/Generation/Oscillator.h>
-#include <VeNo/Utils/ProfileMacros.h>
 #include <VeNo/Utils/Random.h>
 namespace VeNo::Audio {
 bool Oscillator::setup(OscillatorData &osc, size_t instanceId) {
@@ -36,7 +35,7 @@ bool Oscillator::setup(OscillatorData &osc, size_t instanceId) {
 }
 
 bool Oscillator::prepare(OscillatorData &osc) {
-  osc.group = osc.state.lib->GetWaveTable(osc.state.wave->getInt()-1);
+  osc.group = osc.state.lib->GetWaveTable(osc.state.wave->getInt() - 1);
   Detune::update(osc.detuneState, osc.state);
   Widener::Update(osc);
   return false;
@@ -116,7 +115,7 @@ void Oscillator::render(OscillatorData &osc, SingleVoiceData &voice,
 }
 
 double Oscillator::renderVoice(SingleVoiceData &voice, DetuneState &state,
-                              double inc, const Wave &table, int idx) {
+                               double inc, const Wave &table, int idx) {
   auto &d = voice.unisonVoices[idx];
   d.phaseInc = (float)inc * state.lookup[idx];
   d.phaseOffset += d.phaseInc;
@@ -133,8 +132,8 @@ double Oscillator::renderVoice(SingleVoiceData &voice, DetuneState &state,
   return VUtils::Math::lerp(sum, sum2, fraction);
 }
 
-void Oscillator::prepareVoice(OscillatorData &osc, SingleVoiceData& voice) {
-  if(!osc.state.retrigger->getBool())
+void Oscillator::prepareVoice(OscillatorData &osc, SingleVoiceData &voice) {
+  if (!osc.state.retrigger->getBool())
     return;
   if (osc.state.randomPhase->getBool()) {
     auto &random = Utils::Random::get();

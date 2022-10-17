@@ -8,7 +8,7 @@ namespace VeNo::GUI {
 class Logo : public BaseComponent, public Events::Handler {
 public:
   Logo(std::string name, std::string showName, InstanceID id);
-  ~Logo() override { m_instance->eventHandler.removeHandler("logo"); };
+  ~Logo() override { m_instance->eventHandler.removeHandler("logo"); }
 
   void paint(juce::Graphics &g) override;
   void resized() override;

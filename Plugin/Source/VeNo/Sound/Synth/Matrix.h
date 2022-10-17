@@ -22,7 +22,7 @@ public:
   void remove(const VString &key);
   bool add(const VString &modulator, const VString &dst);
   void setAmount(const VString &key, double amount);
-  bool Has(const VString& key) { return m_items.find(key) != m_items.end(); }
+  bool Has(const VString &key) { return m_items.find(key) != m_items.end(); }
   double GetAmount(const VString &key) { return m_items[key].Amount; }
   ModulatorHandle &handle() { return m_modulatorHandle; }
   const Vector<Ref<Modulator>> &Modulators() { return m_modulators; }

@@ -37,6 +37,7 @@ public:
 
 private:
   VString m_componentName;
+
 protected:
   Core::Instance *m_Instance;
   Audio::Matrix *m_Matrix;

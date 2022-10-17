@@ -4,16 +4,17 @@
 
 namespace VeNo::GUI {
 struct ColorChangeListener {
-  virtual void HandleColorChange(const juce::Colour& color) = 0;
+  virtual void HandleColorChange(const juce::Colour &color) = 0;
 };
 class ColorComponent : public juce::Component, public juce::ChangeListener {
 public:
-  ColorComponent(ColorChangeListener* listener, const juce::Colour& currentColor);
+  ColorComponent(ColorChangeListener *listener,
+                 const juce::Colour &currentColor);
   void resized() override;
   void changeListenerCallback(juce::ChangeBroadcaster *source) override;
 
 protected:
   Scope<juce::ColourSelector> m_Selector;
-  ColorChangeListener* m_ColorListener;
+  ColorChangeListener *m_ColorListener;
 };
-}
+} // namespace VeNo::GUI

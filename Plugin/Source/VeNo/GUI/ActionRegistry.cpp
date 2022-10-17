@@ -26,16 +26,16 @@ ActionRegistry::ActionRegistry(size_t instanceId) : m_id(instanceId) {
 
 void ActionRegistry::addWaveFormCreatedEvents() {
   for (int i = 0; i < OSCILLATORS; ++i) {
-    std::string actionIdx = fmt::format("osc{}__wave",i+1);
-    addAction(actionIdx)->setCB([&, i](Events::Event*){
+    std::string actionIdx = fmt::format("osc{}__wave", i + 1);
+    addAction(actionIdx)->setCB([&, i](Events::Event *) {
       std::string localTrigger = "waveform_" + std::to_string(i + 1);
       m_handler->triggerEvent(localTrigger, new Events::ChangeEvent);
     });
   }
   for (int i = 0; i < LFOS; ++i) {
-    std::string actionIdx = fmt::format("lfo{}__wave",i+1);
-    int localX = i+OSCILLATORS;
-    addAction(actionIdx)->setCB([&, localX](Events::Event*){
+    std::string actionIdx = fmt::format("lfo{}__wave", i + 1);
+    int localX = i + OSCILLATORS;
+    addAction(actionIdx)->setCB([&, localX](Events::Event *) {
       std::string localTrigger = "waveform_" + std::to_string(localX + 1);
       m_handler->triggerEvent(localTrigger, new Events::ChangeEvent);
     });

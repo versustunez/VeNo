@@ -18,7 +18,7 @@ void WaveLib::Clear() {
   }
 }
 void WaveLib::CreateAll() {
-  auto& config = Core::Config::get();
+  auto &config = Core::Config::get();
   if (config.sampleRate != m_SampleRate) {
     m_SampleRate = config.sampleRate;
     Clear();
@@ -26,11 +26,9 @@ void WaveLib::CreateAll() {
     TableCreator::CreateAll();
   }
 }
-WaveTable *WaveLib::GetWaveTable(int index) {
-  return m_WaveTables[index];
-}
+WaveTable *WaveLib::GetWaveTable(int index) { return m_WaveTables[index]; }
 void WaveLib::SetWaveTable(int index, WaveTable *table) {
   delete m_WaveTables[index];
   m_WaveTables[index] = table;
 }
-} // namespace VeNo::Sound
+} // namespace VeNo::Audio

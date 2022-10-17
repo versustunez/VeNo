@@ -1,13 +1,25 @@
 #include "PresetManager.h"
 
 #include "Instance.h"
-#include "vendors/NameGen/NameGen.h"
 
 namespace VeNo::Core {
+std::string GenerateFileName() {
+  const char charset[] = "0123456789"
+                         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                         "abcdefghijklmnopqrstuvwxyz";
+  Utils::Random rng;
+  rng.setRange(0,sizeof(charset) - 1);
+  auto random_char = [&]() -> char {
+    return charset[(int)rng.generate()];
+  };
+  std::string str(24, 0);
+  std::generate_n(str.begin(), 24, random_char);
+  return str;
+}
 PresetManager::PresetManager(InstanceID id) : m_ID(id) {
-  NameGen::Generator generator("s~Vi");
   m_PresetName = "Init";
-  m_CurrentPreset = generator.toString() + ".vnp";
+  m_CurrentPreset = GenerateFileName() + ".vnp";
+  DBGN("Preset Name: {}", m_CurrentPreset);
 }
 
 void PresetManager::Reset() {}
@@ -63,15 +75,18 @@ void PresetManager::SetCurrentData(const Scope<juce::XmlElement> &data) {
       auto amount = item->getDoubleAttribute("value");
       auto parameter = treeState->getParameter(src);
       if (parameter != nullptr)
-        parameter->setValueNotifyingHost(parameter->convertTo0to1((float)amount));
+        parameter->setValueNotifyingHost(
+            parameter->convertTo0to1((float)amount));
     }
   }
   m_PresetName = data->getStringAttribute("preset-name").toStdString();
   if (data->hasAttribute("fx-series")) {
     if (instance->state.FXChain) {
-      instance->state.FXChain->Deserialize(data->getStringAttribute("fx-series").toStdString());
+      instance->state.FXChain->Deserialize(
+          data->getStringAttribute("fx-series").toStdString());
     } else {
-      instance->state.PresetState["fx-series"] = data->getStringAttribute("fx-series").toStdString();
+      instance->state.PresetState["fx-series"] =
+          data->getStringAttribute("fx-series").toStdString();
     }
   }
   auto fileName = data->getStringAttribute("file-name").toStdString();

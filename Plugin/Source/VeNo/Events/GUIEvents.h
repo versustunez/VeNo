@@ -6,7 +6,7 @@
 namespace VeNo::Events {
 class ButtonClickedEvent : public NoHandleEvent {
 public:
-  explicit ButtonClickedEvent(GUI::Button *_button) : button(_button){};
+  explicit ButtonClickedEvent(GUI::Button *_button) : button(_button) {}
   GUI::Button *button;
 };
 

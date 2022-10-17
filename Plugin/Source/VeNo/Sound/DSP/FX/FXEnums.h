@@ -1,7 +1,7 @@
 #pragma once
 
 namespace VeNo::Audio {
-enum class FilterType : int{
+enum class FilterType : int {
   NO = 0,
   LP = 1,
   LP2 = 2, // FIRST ORDER LP! NO JUCE :P
@@ -25,4 +25,4 @@ enum class DistortionMode : int {
   FOLD_BACK,
   END
 };
-}
+} // namespace VeNo::Audio

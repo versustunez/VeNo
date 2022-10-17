@@ -2,15 +2,9 @@
 
 namespace VeNo::Audio {
 
-RawTable::~RawTable() {
-  delete[] Data;
-}
+RawTable::~RawTable() { delete[] Data; }
 
-Wave::~Wave() {
-  delete[] Data;
-}
+Wave::~Wave() { delete[] Data; }
 
-WaveTable::~WaveTable() {
-  delete[] Waves;
-}
-}
+WaveTable::~WaveTable() { delete[] Waves; }
+} // namespace VeNo::Audio

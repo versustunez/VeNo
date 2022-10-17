@@ -11,14 +11,16 @@ class WaveLib {
 public:
   ~WaveLib();
   static WaveLib &Get();
-  WaveTable* GetWaveTable(int index);
-  void SetWaveTable(int index, WaveTable* table);
+  WaveTable *GetWaveTable(int index);
+  void SetWaveTable(int index, WaveTable *table);
   void CreateAll();
+
 protected:
   void Clear();
+
 protected:
   static Mutex createGuard;
-  WaveTable* m_WaveTables[MAX_TABLES]{};
+  WaveTable *m_WaveTables[MAX_TABLES]{};
   double m_SampleRate{0};
 };
-}
+} // namespace VeNo::Audio

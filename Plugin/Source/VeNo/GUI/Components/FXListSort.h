@@ -17,7 +17,7 @@ public:
   void itemDropped(const SourceDetails &dragSourceDetails) override;
 
 public:
-  FXListSort* ListSortContainer{nullptr};
+  FXListSort *ListSortContainer{nullptr};
   size_t Index{0};
   size_t OriginalIndex{0};
 };
@@ -33,7 +33,8 @@ public:
   void handle(Events::Event *event) override;
   void resized() override;
 
-  void HandleInsertAfter(Component *toInsert, FXListItem *currentContainer, bool insertAfter);
+  void HandleInsertAfter(Component *toInsert, FXListItem *currentContainer,
+                         bool insertAfter);
   bool
   isInterestedInDragSource(const SourceDetails &dragSourceDetails) override;
   void itemDropped(const SourceDetails &dragSourceDetails) override;

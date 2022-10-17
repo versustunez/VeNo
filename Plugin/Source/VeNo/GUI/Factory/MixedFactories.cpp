@@ -99,10 +99,10 @@ Ref<BaseComponent> LCDFactory::create(GUIParseItem &,
   return CreateRef<LCDComponent>(parameter, name, id);
 }
 
-Ref<BaseComponent> ConfigFactory::create(GUIParseItem & item,
-                                      const std::string &parameter,
-                                      const std::string &name, InstanceID id,
-                                      Interpreter *) {
+Ref<BaseComponent> ConfigFactory::create(GUIParseItem &item,
+                                         const std::string &parameter,
+                                         const std::string &name, InstanceID id,
+                                         Interpreter *) {
 
   auto scrollComponent = CreateRef<ScrollComponent>(parameter, name, id);
   scrollComponent->setSelectorId("ConfigFactory");
@@ -124,9 +124,9 @@ Ref<BaseComponent> PresetFactory::create(GUIParseItem &,
 }
 
 Ref<BaseComponent> FXListSortFactory::create(GUIParseItem &,
-                                         const std::string &parameter,
-                                         const std::string &name, InstanceID id,
-                                         Interpreter *) {
+                                             const std::string &parameter,
+                                             const std::string &name,
+                                             InstanceID id, Interpreter *) {
   auto component = CreateScope<FXListSort>(parameter, name, id);
   component->Init();
   return component;

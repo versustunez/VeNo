@@ -17,7 +17,7 @@ public:
   void setColorIndex(Theme::Colors idx) { m_color = idx; }
   void resized() override;
   void mouseDown(const juce::MouseEvent &event) override;
-  void HandleColorChange(const juce::Colour& color) override;
+  void HandleColorChange(const juce::Colour &color) override;
 
 protected:
   Core::Config *m_config{nullptr};

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "VeNo/Core/Parameter/Parameter.h"
 #include "VeNo/Core/Parameter/Handler.h"
+#include "VeNo/Core/Parameter/Parameter.h"
 
 namespace VeNo::Audio {
 struct CachedCoreParameters {
@@ -12,6 +12,6 @@ struct CachedCoreParameters {
   Core::Parameter *AfterTouch;
   Core::Parameter *ModWheel;
 
-  void setup(Core::ParameterHandler*);
+  void setup(Core::ParameterHandler *);
 };
-}
+} // namespace VeNo::Audio

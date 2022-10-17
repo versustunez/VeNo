@@ -99,13 +99,13 @@ bool ParameterHandler::hasParameter(const char *name) {
 }
 
 Parameter *ParameterHandler::createFakeParameter(double value) {
-  auto* parameter = new FakeParameter(value, m_id);
+  auto *parameter = new FakeParameter(value, m_id);
   m_FakeParameter.push_back(parameter);
   return parameter;
 }
 
 ModulateParameter *ParameterHandler::createFakeModulateParameter(double value) {
-  auto* parameter = new FakeModulateParameter(value, m_id);
+  auto *parameter = new FakeModulateParameter(value, m_id);
   m_FakeParameter.push_back(parameter);
   return parameter;
 }

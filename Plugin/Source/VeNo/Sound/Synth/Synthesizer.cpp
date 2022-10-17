@@ -4,14 +4,12 @@
 #include <VeNo/Sound/Generation/Oscillator.h>
 #include <VeNo/Sound/Synth/MidiHandler.h>
 #include <VeNo/Sound/Synth/Synthesizer.h>
-#include <VeNo/Utils/ProfileMacros.h>
 #include <random>
 
 namespace VeNo::Audio {
 Synthesizer::Synthesizer(size_t instanceID)
     : m_instanceId(instanceID),
       m_matrix(instanceID) {
-  VENO_PROFILE_FUNCTION();
   m_config = &Core::Config::get();
   auto *instance = Core::Instance::get(instanceID);
   m_parameterHandler = instance->handler.get();
@@ -24,7 +22,7 @@ Synthesizer::Synthesizer(size_t instanceID)
   double val = ParameterCache.Portamento->getValue() / 1000.0;
   for (auto &m_voice : m_voices) {
     m_voice = CreateScope<SynthVoice>();
-    m_voice->midiNotePortamento.reset(m_sampleRate,val);
+    m_voice->midiNotePortamento.reset(m_sampleRate, val);
   }
   for (int i = 0; i < OSCILLATORS; ++i) {
     m_oscillators[i] = CreateRef<OscillatorData>();
@@ -36,7 +34,6 @@ Synthesizer::Synthesizer(size_t instanceID)
 }
 void Synthesizer::processBlock(juce::AudioBuffer<float> &audioBuffer,
                                juce::MidiBuffer &midiBuffer) {
-  VENO_PROFILE_FUNCTION();
   int startSample = 0;
   int numSamples = audioBuffer.getNumSamples();
   const juce::ScopedLock sl(lock);
@@ -74,7 +71,6 @@ void Synthesizer::processBlock(juce::AudioBuffer<float> &audioBuffer,
                 });
 }
 void Synthesizer::setSampleRate(double sampleRate) {
-  VENO_PROFILE_FUNCTION();
   assert(sampleRate > 0);
   m_sampleRate = sampleRate;
   m_envelope->sampleRate = sampleRate;
@@ -85,14 +81,12 @@ void Synthesizer::setSampleRate(double sampleRate) {
 }
 void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
                                int startSample, int numSamples) {
-  VENO_PROFILE_FUNCTION();
   // If VeNo is not playing any note he will skip rendering anything also
   // skipping Matrix because that's how it should be
   if (!hasActiveNote)
     return;
 
   for (int i = 0; i < numSamples; ++i) {
-    VENO_PROFILE_SCOPE("renderVoices[sample]");
     Channel outChannel{};
     // Update Matrix here
     m_matrix.update();
@@ -124,7 +118,8 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
       Channel voiceData{};
       for (int j = 0; j < OSCILLATORS; ++j) {
         auto &voiceD = voice->voiceData.oscillatorVoices[j];
-        if (Oscillator::process(*m_oscillators[j], voiceD, voice->midiNotePortamento.getNextValue(),
+        if (Oscillator::process(*m_oscillators[j], voiceD,
+                                voice->midiNotePortamento.getNextValue(),
                                 m_sampleRate)) {
           voiceData.left += voiceD.output.left;
           voiceData.right += voiceD.output.right;
@@ -147,7 +142,6 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
   }
 }
 void Synthesizer::addEvents() {
-  VENO_PROFILE_FUNCTION();
   m_parameterEventHandler.setSynthesizer(this);
   auto &handler = Core::Instance::get(m_instanceId)->eventHandler;
   handler.addHandler("env1__attack", &m_parameterEventHandler);

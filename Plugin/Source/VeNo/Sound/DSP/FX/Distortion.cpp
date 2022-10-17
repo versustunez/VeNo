@@ -62,18 +62,20 @@ void Distortion::process(Channel &channel) {
     double th4 = th * 4;
     double th2 = th * 2;
     copyChannel.left = fabs(fabs(fmod(copyChannel.left - th, th4)) - th2) - th;
-    copyChannel.right = fabs(fabs(fmod(copyChannel.right - th, th4)) - th2) - th;
+    copyChannel.right =
+        fabs(fabs(fmod(copyChannel.right - th, th4)) - th2) - th;
     break;
   }
   case DistortionMode::END:
   case DistortionMode::OFF:
-  default:
-    break;
+  default: break;
   }
   copyChannel *= (1 / (log(driveVal + 1) + 1));
   copyChannel *= m_OutputGain->getValue();
   double mix = m_Mix->getValue();
-  channel.right = std::clamp(VUtils::Math::lerp(channel.right, copyChannel.right, mix), -1.0, 1.0);
-  channel.left = std::clamp(VUtils::Math::lerp(channel.left, copyChannel.left, mix), -1.0, 1.0);
+  channel.right = std::clamp(
+      VUtils::Math::lerp(channel.right, copyChannel.right, mix), -1.0, 1.0);
+  channel.left = std::clamp(
+      VUtils::Math::lerp(channel.left, copyChannel.left, mix), -1.0, 1.0);
 }
 } // namespace VeNo::Audio

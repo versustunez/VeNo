@@ -7,7 +7,7 @@ class Synthesizer;
 class ParameterEventHandler : public Events::Handler {
 public:
   void handle(Events::Event *event) override;
-  void setSynthesizer(Synthesizer *synthesizer) { m_synth = synthesizer; };
+  void setSynthesizer(Synthesizer *synthesizer) { m_synth = synthesizer; }
 
 private:
   Synthesizer *m_synth{nullptr};

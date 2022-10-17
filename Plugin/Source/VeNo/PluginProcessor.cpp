@@ -2,7 +2,6 @@
 #include <VeNo/Core/Config.h>
 #include <VeNo/PluginEditor.h>
 #include <VeNo/PluginProcessor.h>
-#include <VeNo/Utils/ProfileMacros.h>
 
 VeNoProcessor::VeNoProcessor()
     : AudioProcessor(BusesProperties().withOutput(
@@ -12,13 +11,12 @@ VeNoProcessor::VeNoProcessor()
       treeState(*this, nullptr, "VeNo", instance->handler->setupProcessor()) {
   instance->treeState = &treeState;
   VeNo::Core::Config::get().registerProcessor(m_id, this);
-  instance->synthesizer = VeNo::CreateRef<VeNo::Audio::Synthesizer>(instance->id);
-  VENO_PROFILE_BEGIN_SESSION("VeNo", "res://PROFILES/" + m_id);
+  instance->synthesizer =
+      VeNo::CreateRef<VeNo::Audio::Synthesizer>(instance->id);
 }
 
 void VeNoProcessor::processBlock(juce::AudioBuffer<float> &buffer,
                                  juce::MidiBuffer &midiMessages) {
-  VENO_PROFILE_FUNCTION();
   auto *head = getPlayHead();
   if (head) {
     auto position = head->getPosition();
@@ -38,13 +36,11 @@ juce::AudioProcessorEditor *VeNoProcessor::createEditor() {
 }
 
 void VeNoProcessor::getStateInformation(juce::MemoryBlock &destData) {
-  VENO_PROFILE_FUNCTION();
-  copyXmlToBinary (*instance->state.PresetManager->GetCurrentData (), destData);
+  copyXmlToBinary(*instance->state.PresetManager->GetCurrentData(), destData);
 }
 
-void VeNoProcessor::setStateInformation(const void * data, int sizeInBytes) {
-  VENO_PROFILE_FUNCTION();
-  VeNo::Scope<juce::XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
+void VeNoProcessor::setStateInformation(const void *data, int sizeInBytes) {
+  VeNo::Scope<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
   if (xmlState != nullptr)
     instance->state.PresetManager->SetCurrentData(xmlState);
 }
@@ -52,11 +48,9 @@ void VeNoProcessor::setStateInformation(const void * data, int sizeInBytes) {
 VeNoProcessor::~VeNoProcessor() {
   VeNo::Core::Config::get().removeProcessor(m_id);
   VeNo::Core::Instance::remove(instance->id);
-  VENO_PROFILE_END_SESSION();
 }
 
 void VeNoProcessor::prepareToPlay(double sampleRate, int _blockSize) {
-  VENO_PROFILE_FUNCTION();
   auto &config = VeNo::Core::Config::get();
   if (config.sampleRate != sampleRate) {
     config.sampleRate = sampleRate;
@@ -67,7 +61,8 @@ void VeNoProcessor::prepareToPlay(double sampleRate, int _blockSize) {
         VeNo::CreateRef<VeNo::Audio::Synthesizer>(instance->id);
   instance->synthesizer->setSampleRate(sampleRate);
   instance->buffer->reset(_blockSize);
-  instance->eventHandler.triggerEvent("audioLibCreated", new VeNo::Events::AddEvent);
+  instance->eventHandler.triggerEvent("audioLibCreated",
+                                      new VeNo::Events::AddEvent);
 }
 
 juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter() {

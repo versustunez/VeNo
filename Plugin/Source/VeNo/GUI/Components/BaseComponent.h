@@ -32,7 +32,7 @@ public:
   void setText(const std::string &text);
   void triggerAfterParsing(Interpreter *);
 
-  virtual void addChild(const Ref<ComponentGroup> &){};
+  virtual void addChild(const Ref<ComponentGroup> &) {}
 
   Position resize();
   void setLabelPosition(const std::string &pos);

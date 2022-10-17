@@ -37,7 +37,7 @@ public:
   void setDefaultValue(double defaultValue) {
     m_slider->setDoubleClickReturnValue(true, defaultValue);
   }
-  double getValue() { return m_slider->getValue(); };
+  double getValue() { return m_slider->getValue(); }
 
   void setTooltip(bool tooltip);
   void enableFullWidth() { m_isFullWidth = true; }
@@ -45,7 +45,7 @@ public:
     m_isValueBox = valueBox;
     if (valueBox)
       m_slider->setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-  };
+  }
   [[nodiscard]] bool isValueBox() const { return m_isValueBox; }
   [[nodiscard]] bool isFullWidth() const { return m_isFullWidth; }
 

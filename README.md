@@ -1,23 +1,25 @@
+
+<img src="./Plugin/Assets/Logo.svg" alt="VeNo Logo" style="margin: auto; display: block;">
+
 # VeNo
+
+
+![Screenshot](./Assets/Screenshot1.png)
 
 VeNo started as a pure learning project for C ++ and the understanding of how synths and audio processing work.
 
 The learning project turned into the dream of a new open source synthesizer which offers enough features for newcomers
 
 ## Features
-- 
+
 - 4 Oscillators
 - 2 LFOs
-- 1 Noise Generator
-    - Effects only no ouput
+- 2 Random Generator
 - Dual Filter
-- Routing System
-- FX-System
-    - Distortion
-    - Compressor
+- Distortion
+- Compressor
 - GUI
     - Layoutable GUI via .vui files (or let them default :P)
-    - Multiple Theme
     - Colorable GUI
   
 ## GUI-Lang
@@ -30,12 +32,44 @@ For information look into: DOCS/GUILang.md
 
 ## Build
 
-Coming soon
+For building you need:
+- CMake `3.16 or Newer`
+- Compiler (MSVC, GCC, Clang)
+- Visual Studio (Windows only)
+- Terminal :P
 
-## Generated files
+### Windows
+```
+mkdir build
+cd build
+cmake ..
+```
+Then open the .sln file inside the build directory with Visual Studio.
+Select Start Project -> VST3
+Build :>
 
-VeNo use File Generatoren written in JavaScript.
+### Linux
+```
+mkdir build
+cd build
+// For Release
+cmake -DCMAKE_BUILD_TYPE=Release ..
+// For Debug
+cmake -DCMAKE_BUILD_TYPE=Debug ..
 
-The Generator only process "Files" to simplify the changes and use the same-source for the Docs.
+make -j${nproc}
+```
 
-GUIFiles for example are simple text files i can also write them direct in the C++ Code but so i can "texteditor support" for some operations
+
+### MacOS
+
+```
+mkdir build
+cd build
+// For Release
+cmake -DCMAKE_BUILD_TYPE=Release ..
+// For Debug
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+
+make -j${nproc}
+```

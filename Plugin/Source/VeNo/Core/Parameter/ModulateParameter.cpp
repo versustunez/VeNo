@@ -56,8 +56,8 @@ void ModulateParameter::Finish() {
     m_value =
         VUtils::Math::clamp(m_matrixPos * m_preMinMax + m_min, m_min, m_max);
     for (int i = 0; i < MAX_VOICES; ++i) {
-      m_values[i] = VUtils::Math::clamp(m_matrix[i] * m_preMinMax + m_min,
-                                        m_min, m_max);
+      m_values[i] =
+          VUtils::Math::clamp(m_matrix[i] * m_preMinMax + m_min, m_min, m_max);
     }
     m_isDirty = false;
   }

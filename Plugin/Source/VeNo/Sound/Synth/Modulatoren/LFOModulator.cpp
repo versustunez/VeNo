@@ -12,15 +12,16 @@ void LFOModulator::init(int number) {
     return;
 
   // Setup LFO-Data ;)
-  auto* handler = instance->handler.get();
-  m_Data.Frequency = handler->getModulateParameter(fmt::format("lfo{}__rate", number));
+  auto *handler = instance->handler.get();
+  m_Data.Frequency =
+      handler->getModulateParameter(fmt::format("lfo{}__rate", number));
   m_Data.Active = handler->getParameter(fmt::format("lfo{}__active", number));
   m_Data.WaveForm = handler->getParameter(fmt::format("lfo{}__wave", number));
   m_Data.Table = m_WaveLib->GetWaveTable(0);
 }
 
-void renderLFOVoice(LFOData& data) {
-  auto& table = data.Table->Waves[0];
+void renderLFOVoice(LFOData &data) {
+  auto &table = data.Table->Waves[0];
   data.Phase += data.FreqInc;
   data.Phase -= float(data.Phase >= 1.0);
   double val = data.Phase * (double)table.Length;
@@ -41,12 +42,10 @@ void LFOModulator::update() {
   int wave = m_Data.WaveForm->getInt();
   if (wave != m_Data.LastWaveForm) {
     m_Data.LastWaveForm = wave;
-    m_Data.Table = m_WaveLib->GetWaveTable(wave-1);
+    m_Data.Table = m_WaveLib->GetWaveTable(wave - 1);
   }
   renderLFOVoice(m_Data);
 }
-double LFOModulator::value(int) {
-  return m_Data.Output;
-}
+double LFOModulator::value(int) { return m_Data.Output; }
 
-}
+} // namespace VeNo::Audio

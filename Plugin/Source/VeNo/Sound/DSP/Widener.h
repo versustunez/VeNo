@@ -6,7 +6,7 @@
 namespace VeNo::Audio {
 struct OscillatorData;
 struct WidenerState {
-  double Panning[2]{SQRT2_2,SQRT2_2};
+  double Panning[2]{SQRT2_2, SQRT2_2};
   double LastPanning{0};
   double Wideness{0};
   double Coefficient{0};
@@ -14,8 +14,8 @@ struct WidenerState {
 };
 class Widener {
 public:
-  static void Update(OscillatorData&);
-  static void Apply(OscillatorData&, Channel&);
-  static void ApplyPanning(OscillatorData&, Channel&);
+  static void Update(OscillatorData &);
+  static void Apply(OscillatorData &, Channel &);
+  static void ApplyPanning(OscillatorData &, Channel &);
 };
-}
+} // namespace VeNo::Audio

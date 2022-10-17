@@ -23,4 +23,4 @@ protected:
   int m_CurrentTable{0};
   std::string m_HandlerIndex{};
 };
-}
+} // namespace VeNo::GUI

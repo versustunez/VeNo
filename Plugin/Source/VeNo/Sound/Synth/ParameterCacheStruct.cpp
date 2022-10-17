@@ -1,7 +1,7 @@
 #include "ParameterCacheStruct.h"
 
 namespace VeNo::Audio {
-void CachedCoreParameters::setup(Core::ParameterHandler * handler) {
+void CachedCoreParameters::setup(Core::ParameterHandler *handler) {
   MasterVolume = handler->getModulateParameter("master__volume");
   Portamento = handler->getParameter("portamento");
   Legato = handler->getParameter("mono_legato");
@@ -9,4 +9,4 @@ void CachedCoreParameters::setup(Core::ParameterHandler * handler) {
   AfterTouch = handler->getParameter("after__touch");
   ModWheel = handler->getParameter("mod__wheel");
 }
-}
+} // namespace VeNo::Audio

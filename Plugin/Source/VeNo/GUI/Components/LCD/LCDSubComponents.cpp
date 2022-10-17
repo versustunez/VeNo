@@ -200,10 +200,11 @@ void LCDInfo::updateData() {
       double y = std::clamp(rightChannel[i], -1.0, 1.0);
       radius = std::sqrt(x * x + y * y);
       double theta = std::atan(y / x);
-      double angle = theta * (180.0/juce::MathConstants<double>::pi);
+      double angle = theta * (180.0 / juce::MathConstants<double>::pi);
       double radX = radius * std::cos(angle);
       double radY = radius * std::sin(angle);
-      m_DrawPath.addRectangle(radX * halfWidth + halfWidth, radY * halfHeight + halfHeight, 0.5, 0.5);
+      m_DrawPath.addRectangle(radX * halfWidth + halfWidth,
+                              radY * halfHeight + halfHeight, 0.5, 0.5);
     }
   } else if (m_state == LCDInfoState::STEREO_TWO) {
     float halfWidth = width / 2.0f;

@@ -20,7 +20,7 @@ MatrixItemComponent::MatrixItemComponent(const std::string &name,
   m_AddRemoveButton->GetButton()->addListener(this);
 
   m_AmountKnob = CreateRef<Knob>("", "Amount", m_id);
-  auto* slider =  m_AmountKnob->slider();
+  auto *slider = m_AmountKnob->slider();
   slider->setRange(-1, 1, 0.01);
 
   if (!matrix.Has(m_Key)) {
@@ -29,7 +29,8 @@ MatrixItemComponent::MatrixItemComponent(const std::string &name,
   } else {
     m_AddRemoveButton->setButtonText("Remove");
     m_AmountKnob->setVisible(true);
-    slider->setValue(matrix.GetAmount(m_Key), juce::NotificationType::dontSendNotification);
+    slider->setValue(matrix.GetAmount(m_Key),
+                     juce::NotificationType::dontSendNotification);
   }
   slider->addListener(this);
   addAndMakeVisible(*m_Label);
@@ -66,7 +67,7 @@ void MatrixItemComponent::resized() {
 void MatrixItemComponent::paint(juce::Graphics &g) {
   auto theme = Core::Config::get().theme()->getColor(Theme::Colors::accent);
   g.setColour(theme);
-  g.fillRect(0,getHeight()-1, getWidth(), 1);
+  g.fillRect(0, getHeight() - 1, getWidth(), 1);
 }
 
 MatrixComponent::MatrixComponent(std::string name, InstanceID id)

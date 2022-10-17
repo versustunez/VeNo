@@ -69,6 +69,7 @@ public:
       return m_value;
     return m_values[voice];
   }
+
 protected:
   bool m_isDirty{true};
 };

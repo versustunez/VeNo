@@ -22,6 +22,5 @@ public:
 
 protected:
   std::unordered_map<std::string, Ref<VeNo::GUI::UIParser>> m_guiParser;
-
 };
 } // namespace VeNo::GUI

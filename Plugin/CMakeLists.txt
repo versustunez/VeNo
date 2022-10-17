@@ -1,7 +1,6 @@
 project(VeNo VERSION 0.0.1)
 
 set(BaseTargetName ${PROJECT_NAME})
-option(VeNo_ENABLE_PROFILE "Enable InEngine Profiling" OFF)
 
 juce_add_plugin(
         "${BaseTargetName}"
@@ -52,7 +51,3 @@ target_link_libraries(
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 )
-
-if (VeNo_ENABLE_PROFILE)
-    target_compile_definitions(${BaseTargetName} PRIVATE VENO_PROFILE=1)
-endif()

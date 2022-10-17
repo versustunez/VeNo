@@ -4,10 +4,10 @@ ColorComponent::ColorComponent(ColorChangeListener *listener,
                                const juce::Colour &currentColor)
     : m_ColorListener(listener) {
   typedef juce::ColourSelector::ColourSelectorOptions ColourSelectorOptions;
-  int flags = ColourSelectorOptions::showColourspace |
+  int _flags = ColourSelectorOptions::showColourspace |
               ColourSelectorOptions::showColourAtTop |
               ColourSelectorOptions::editableColour;
-  m_Selector = CreateScope<juce::ColourSelector>(flags, 0, 0);
+  m_Selector = CreateScope<juce::ColourSelector>(_flags, 0, 0);
   m_Selector->setCurrentColour(currentColor,
                                juce::NotificationType::dontSendNotification);
   m_Selector->addChangeListener(this);

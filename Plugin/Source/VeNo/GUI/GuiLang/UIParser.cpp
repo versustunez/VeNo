@@ -2,7 +2,6 @@
 #include <VeNo/Core/Config.h>
 #include <VeNo/GUI/GuiLang/UIParser.h>
 #include <VeNo/GUI/GuiLang/UIUtils.h>
-#include <VeNo/Utils/ProfileMacros.h>
 #include <fstream>
 
 namespace VeNo::GUI {
@@ -13,7 +12,6 @@ void UIParser::setContent(const VString &content) {
 }
 
 void UIParser::loadFile(const VString &filePath) {
-  VENO_PROFILE_FUNCTION();
   VString line;
   std::ifstream fileToRead(filePath);
   if (fileToRead.is_open()) {
@@ -28,7 +26,6 @@ void UIParser::loadFile(const VString &filePath) {
 
 // NOLINTNEXTLINE
 void UIParser::parse() {
-  VENO_PROFILE_FUNCTION();
   if (m_lines.empty())
     return;
   if (m_rootItem == nullptr)
@@ -123,7 +120,6 @@ void UIParser::parse() {
 }
 
 GUIParseItem *UIParser::createNew(GUIParseItem *previous) {
-  VENO_PROFILE_FUNCTION();
   auto item = new GUIParseItem();
   item->parent = previous;
   item->pos.w = previous->pos.w;
@@ -167,7 +163,6 @@ void UIParser::parseInfo(VString &line) {
 
 // NOLINTNEXTLINE
 void UIParser::importLine(GUIParseItem *previous, VString &line) {
-  VENO_PROFILE_FUNCTION();
   auto props = VUtils::StringUtils::split(line, "@import");
   if (props.size() != 2) {
     // TRIGGER WARNING ;)
@@ -187,7 +182,6 @@ void UIParser::importLine(GUIParseItem *previous, VString &line) {
   parser->parse();
 }
 UIParserLoop UIParser::getLoop(VString &line, size_t lineNumber) {
-  VENO_PROFILE_FUNCTION();
   UIParserLoop loop;
   loop.beginningLine = lineNumber;
   auto startPos = line.rfind('[');

@@ -42,13 +42,14 @@ private:
 
 public:
   CachedCoreParameters ParameterCache{};
+
 private:
   friend MidiHandler;
   InstanceID m_instanceId{0};
   Core::ParameterHandler *m_parameterHandler{nullptr};
   Core::Config *m_config{nullptr};
   Scope<SynthVoice> m_voices[MAX_VOICES]{};
-  FXChain* m_FXChain{nullptr};
+  FXChain *m_FXChain{nullptr};
   ParameterEventHandler m_parameterEventHandler{};
   uint64_t lastNoteOnCounter{0};
   bool hasActiveNote{false};
@@ -58,6 +59,7 @@ private:
   Matrix m_matrix;
   double m_sampleRate{44100};
   Filter m_Filter{m_instanceId, true};
+
 private:
   friend ParameterEventHandler;
 };
