@@ -10,6 +10,29 @@
 
 namespace VeNo::Audio {
 
+StepLowPass::StepLowPass() {
+  m_Filter.reserve(4);
+  m_Filter.emplace_back();
+  m_Filter.emplace_back();
+  m_Filter.emplace_back();
+  m_Filter.emplace_back();
+}
+
+float StepLowPass::DoFilter(float input) {
+  for (auto &filter : m_Filter) {
+    input = filter.processSingleSampleRaw(input);
+  }
+  return input;
+}
+
+void StepLowPass::SetSampleRate(double sr) {
+  auto coefficients = juce::IIRCoefficients::makeLowPass(
+      sr, sr * 0.5 * 0.5, 1.0 / juce::MathConstants<double>::sqrt2);
+  for (auto &filter : m_Filter) {
+    filter.setCoefficients(coefficients);
+  }
+}
+
 FXChain::FXChain(InstanceID id) : m_ID(id) {
   m_FX.push_back(CreateRef<Filter>(m_ID, "filter", 1)); // First Filter
   m_FX.push_back(CreateRef<Distortion>(m_ID));
@@ -21,11 +44,25 @@ FXChain::FXChain(InstanceID id) : m_ID(id) {
 }
 
 void FXChain::process(Channel &channel) {
+  Channel data[2] = {{channel.left, channel.right}, {0, 0}};
   for (auto &item : m_SortedFX) {
     auto &fx = m_FX[item];
     fx->update();
-    fx->process(channel);
   }
+  for (auto &i : data) {
+    i.left = m_PreFilter[0].DoFilter(i.left);
+    i.right = m_PreFilter[1].DoFilter(i.right);
+    for (auto &item : m_SortedFX) {
+      auto &fx = m_FX[item];
+      fx->process(i);
+    }
+    m_DCFilter.process(i);
+    i.left = m_PostFilter[0].DoFilter(i.left);
+    i.right = m_PostFilter[1].DoFilter(i.right);
+  }
+
+  channel.left = data[0].left * 2.0;
+  channel.right = data[0].right  * 2.0;
 }
 
 void FXChain::Deserialize(const VString &data) {
@@ -67,8 +104,15 @@ void FXChain::FixMissingFX() {
   }
 }
 void FXChain::SetSampleRate(double sampleRate) {
+  double newSR = sampleRate*2.0;
+  m_DCFilter.setSampleRate(newSR);
+  m_DCFilter.update();
+  for (int i = 0; i < 2; ++i) {
+    m_PostFilter[i].SetSampleRate(newSR);
+    m_PreFilter[i].SetSampleRate(newSR);
+  }
   for (auto &item : m_FX) {
-    item->setSampleRate(sampleRate);
+    item->setSampleRate(newSR);
   }
 }
 } // namespace VeNo::Audio
