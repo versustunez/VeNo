@@ -219,4 +219,10 @@ int LookHandler::getCallOutBoxBorderSize(const juce::CallOutBox &) { return 0; }
 float LookHandler::getCallOutBoxCornerSize(const juce::CallOutBox &) {
   return 0;
 }
+void LookHandler::fillTextEditorBackground(juce::Graphics &graphics, int width,
+                                           int height,
+                                           juce::TextEditor &) {
+  graphics.setColour(theme->getColor(Colors::bgTwo).withAlpha(0.2f));
+  graphics.fillRect(0, 0, width, height);
+}
 } // namespace VeNo::GUI

@@ -124,4 +124,11 @@ public:
                             Interpreter *) override;
 };
 
+class MatrixFactory : public ComponentFactory {
+public:
+  Ref<BaseComponent> create(GUIParseItem &, const std::string &parameter,
+                            const std::string &name, InstanceID id,
+                            Interpreter *) override;
+};
+
 } // namespace VeNo::GUI

@@ -80,6 +80,8 @@ public:
                                 juce::Image &image) override;
   int getCallOutBoxBorderSize(const juce::CallOutBox &box) override;
   float getCallOutBoxCornerSize(const juce::CallOutBox &box) override;
+  void fillTextEditorBackground(juce::Graphics &graphics, int width, int height,
+                                juce::TextEditor &editor) override;
 
 protected:
   void drawBasedOnKnob(juce::Graphics &g, int x, int y, int width, int height,

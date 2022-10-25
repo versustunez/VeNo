@@ -20,7 +20,6 @@
     #WaveFormBGGroup {
         width: 230
         height: 115
-        background: 21,21,21,40
         @WaveForm {
             bind: lfo{i}__wave
             index: {idx}

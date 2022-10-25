@@ -22,6 +22,7 @@ MatrixItemComponent::MatrixItemComponent(const std::string &name,
   m_AmountKnob = CreateRef<Knob>("", "Amount", m_id);
   auto *slider = m_AmountKnob->slider();
   slider->setRange(-1, 1, 0.01);
+  slider->setDoubleClickReturnValue(true, 0, juce::ModifierKeys());
 
   if (!matrix.Has(m_Key)) {
     m_AddRemoveButton->setButtonText("Add");
@@ -44,16 +45,25 @@ void MatrixItemComponent::buttonClicked(juce::Button *) {
     matrix.remove(m_Key);
     m_AddRemoveButton->setButtonText("Add");
     m_AmountKnob->setVisible(false);
+    Core::Instance::get(m_id)->eventHandler.triggerEvent(
+        "matrix-changed", new Events::MatrixChangeEvent(m_Key, true));
   } else {
     if (matrix.add(m_Modulator, m_Name)) {
       m_AddRemoveButton->setButtonText("Remove");
       m_AmountKnob->setVisible(true);
+      Core::Instance::get(m_id)->eventHandler.triggerEvent(
+          "matrix-changed", new Events::MatrixChangeEvent(m_Key, false));
     }
   }
+  // This is for the BigMatrix to let it update ;)
 }
 void MatrixItemComponent::sliderValueChanged(juce::Slider *) {
-  auto &matrix = VeNo::Core::Instance::get(m_id)->synthesizer->matrix();
+  auto *instance = VeNo::Core::Instance::get(m_id);
+  auto &matrix = instance->synthesizer->matrix();
   matrix.setAmount(m_Key, m_AmountKnob->getValue());
+  auto key = fmt::format("matrix-{}-changed", m_Key);
+  instance->eventHandler.triggerEvent(
+      key, new Events::ValueChange(m_AmountKnob->getValue()));
 }
 void MatrixItemComponent::resized() {
   float width = (float)getWidth() / 3.0f;

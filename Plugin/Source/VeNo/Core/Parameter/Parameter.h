@@ -17,6 +17,7 @@ protected:
   double m_max{};
   double m_min{};
   double m_value{};
+  double m_defaultValue{};
   int m_precision{0};
 
 public:
@@ -29,6 +30,7 @@ public:
   virtual void setValue(double value);
   double getMin();
   double getMax();
+  double getDefaultValue() { return m_defaultValue; }
   int precision();
   void calculatePrecision(float interval);
   std::string &getName();

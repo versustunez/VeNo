@@ -51,6 +51,8 @@ position-x: automatic
             @Tab {
                 name: Matrix
                 -- @Matrix
+                @Matrix {
+                }
             }
             @Tab {
                 name: Config

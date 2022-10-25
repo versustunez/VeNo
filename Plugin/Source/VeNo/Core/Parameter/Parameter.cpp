@@ -12,7 +12,8 @@ Parameter::Parameter(std::string name, std::string showName, double min,
       m_showName(std::move(showName)),
       m_max(max),
       m_min(min),
-      m_value(value) {}
+      m_value(value),
+      m_defaultValue(value) {}
 
 bool Parameter::getBool() { return m_value > 0.5; }
 int Parameter::getInt() { return (int)m_value; }

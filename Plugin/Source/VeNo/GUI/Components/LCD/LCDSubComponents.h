@@ -7,13 +7,15 @@
 
 namespace VeNo::GUI {
 
-enum class LCDInfoState { VU = 0, WAVE, STEREO, STEREO_TWO, LOGO_ONLY };
+enum class LCDInfoState : int { VU = 0, WAVE, STEREO, STEREO_TWO, LOGO_ONLY };
 
-class LCDHeader : public BaseComponent {
+class LCDHeader : public BaseComponent, public Events::Handler {
 public:
   LCDHeader(const std::string &name, const std::string &showName,
             InstanceID id);
+  ~LCDHeader() override;
   void paint(juce::Graphics &g) override;
+  void handle(Events::Event *event) override;
 };
 
 struct ChangedParameter {

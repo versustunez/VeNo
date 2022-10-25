@@ -27,6 +27,8 @@ public:
   Parameter *createFakeParameter(double value);
   ModulateParameter *createFakeModulateParameter(double value);
 
+  Map<std::string, Parameter *>& GetParameters() { return m_parameters; }
+
 protected:
   void setupParameter();
   void addParameterModulate(const std::string &name,

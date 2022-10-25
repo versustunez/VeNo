@@ -10,7 +10,15 @@ Button::Button(const std::string &name, const std::string &showName,
   m_button->addListener(this);
   addAndMakeVisible(*m_button);
 }
+
+Button::Button(InstanceID id) : BaseComponent("", "", id) {
+  m_button = std::make_unique<juce::TextButton>();
+  m_button->addListener(this);
+  addAndMakeVisible(*m_button);
+}
+
 Button::~Button() { m_button.reset(nullptr); }
+
 void Button::setButtonText(const std::string &text) {
   m_isIconButton = false;
   m_button->setButtonText(text);
@@ -20,6 +28,8 @@ void Button::setAction(std::string event) { m_action = std::move(event); }
 void Button::buttonClicked(juce::Button *) {
   if (!m_action.empty()) {
     m_handler->triggerEvent(m_action, new Events::ButtonClickedEvent(this));
+  } else if (m_Callback.has_value()) {
+    m_Callback.value()();
   }
 }
 bool Button::isFilled() { return m_isFilledButton; }

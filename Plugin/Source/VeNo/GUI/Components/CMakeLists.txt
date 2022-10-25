@@ -1,5 +1,6 @@
 add_sources(
         BaseComponent.cpp
+        BigMatrix.cpp
         Button.cpp
         ComponentGroup.cpp
         FXListSort.cpp
@@ -9,6 +10,7 @@ add_sources(
         Matrix.cpp
         NestedComponent.cpp
         Preset.cpp
+        PresetList.cpp
         ScrollComponent.cpp
         SelectComponent.cpp
         Switch.cpp

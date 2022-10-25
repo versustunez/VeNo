@@ -46,6 +46,11 @@ void Matrix::remove(const VString &key) {
   m_items.erase(key);
 }
 
+void Matrix::reset() {
+  const juce::GenericScopedLock<juce::CriticalSection> myScopedLock(m_Mutex);
+  m_items.clear();
+}
+
 bool Matrix::add(const VString &modulatorKey, const VString &dst) {
   std::string key = modulatorKey + dst;
   auto it = m_items.find(key);

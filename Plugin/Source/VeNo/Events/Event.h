@@ -25,6 +25,8 @@ class TriggerEvent : public NoHandleEvent {};
 class ParameterChangeEnd : public NoHandleEvent {};
 class TooltipEvent : public NoHandleEvent {
 public:
+  TooltipEvent() = default;
+  TooltipEvent(const char *_text) : text(_text) {}
   std::string text;
 };
 class ParameterChange : public NoHandleEvent {
@@ -39,6 +41,14 @@ public:
 };
 class RemoveEvent : public NoHandleEvent {};
 class AddEvent : public NoHandleEvent {};
+class MatrixChangeEvent : public NoHandleEvent {
+public:
+  explicit MatrixChangeEvent(std::string key, bool isDeleted = false)
+      : Key(std::move(key)),
+        IsDeleted(isDeleted) {}
+  std::string Key{};
+  bool IsDeleted{false};
+};
 
 class Handler {
 public:

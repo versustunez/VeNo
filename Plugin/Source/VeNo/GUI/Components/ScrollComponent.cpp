@@ -1,3 +1,5 @@
+#include "VeNo/Core/Config.h"
+
 #include <VeNo/GUI/Components/ScrollComponent.h>
 #include <utility>
 
@@ -37,5 +39,10 @@ void ScrollComponent::addChild(const Ref<ComponentGroup> &param) {
 }
 void ScrollComponent::enableVerticalScrollbar() {
   m_viewport->setScrollBarsShown(true, false, true, false);
+}
+void ScrollComponent::paint(juce::Graphics &g) {
+  if (m_Fill) {
+    g.fillAll(Core::Config::get().theme()->getColor(Theme::Colors::root).withAlpha(0.5f));
+  }
 }
 } // namespace VeNo::GUI

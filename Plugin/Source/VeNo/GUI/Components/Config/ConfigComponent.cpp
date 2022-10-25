@@ -29,6 +29,16 @@ void ConfigComponent::init() {
   knob->setValue(m_config->m_scale);
   m_components.push_back(knob);
 
+  auto author = m_config->properties()->asString(
+      "user.author", juce::SystemStats::getFullUserName().toStdString());
+
+  m_AuthorComponent = CreateScope<juce::TextEditor>();
+  m_AuthorComponent->setMultiLine(false, false);
+  m_AuthorComponent->setText(author);
+  m_AuthorComponent->addListener(this);
+
+  addAndMakeVisible(*m_AuthorComponent);
+
   for (auto i = Theme::Colors::unknown; i < Theme::Colors::end; ++i) {
     if (i == Theme::Colors::unknown)
       continue;
@@ -48,18 +58,24 @@ void ConfigComponent::init() {
 }
 
 void ConfigComponent::resized() {
+  m_AuthorComponent->setBounds(20, 10, getWidth() - 40, 24);
   m_flex.perform(
-      juce::Rectangle<float>(0, 10, (float)getWidth(), (float)getHeight()));
+      juce::Rectangle<float>(0, 50, (float)getWidth(), (float)getHeight()));
 }
 void ConfigComponent::calculateSize(int width) {
   Position size{};
   for (auto &component : m_components) {
     size.h += component->pos.h + 2;
   }
-  setSize(width, size.h + 20);
+  size.h += 30;
+  setSize(width, size.h + 30);
 }
 void ConfigComponent::sliderValueChanged(juce::Slider *) {}
 void ConfigComponent::sliderDragEnded(juce::Slider *slider) {
   m_config->setScale(slider->getValue());
+}
+void ConfigComponent::textEditorTextChanged(juce::TextEditor &editor) {
+  m_config->properties()->setValue("user.author", editor.getText().toStdString());
+  m_handler->triggerEvent("author.change", new Events::ChangeEvent());
 }
 } // namespace VeNo::GUI

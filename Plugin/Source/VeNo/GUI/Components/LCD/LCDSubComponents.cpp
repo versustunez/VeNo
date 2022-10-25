@@ -10,24 +10,45 @@ namespace VeNo::GUI {
 // LCD Header
 LCDHeader::LCDHeader(const std::string &name, const std::string &showName,
                      InstanceID id)
-    : BaseComponent(name, showName, id) {}
+    : BaseComponent(name, showName, id) {
+  m_handler->addHandler("author.change", this);
+}
+
+LCDHeader::~LCDHeader() { m_handler->removeHandler("author.change"); }
 
 void LCDHeader::paint(juce::Graphics &g) {
   g.setFont(Fonts::getLCD()->getTypefacePtr());
   g.setColour(Core::Config::get().theme()->getColor(Theme::Colors::lcd));
   int line = getHeight() - 2;
-  g.drawText("LICENSED TO: " + juce::SystemStats::getFullUserName(), 0, 2,
-             getWidth(), getHeight() - 4, juce::Justification::centred, true);
+  auto author = Core::Config::get().properties()->asString(
+      "user.author", juce::SystemStats::getFullUserName().toStdString());
+  g.drawText("LICENSED TO: " + author, 0, 2, getWidth(), getHeight() - 4,
+             juce::Justification::centred, true);
   g.drawLine(0, line, getWidth(), line);
 }
+void LCDHeader::handle(Events::Event *) { repaint(); }
 
 // LCD INFO SCREEN
+
+LCDInfoState StringToState(int state) {
+  if (state == 1) {
+    return LCDInfoState::VU;
+  } else if (state == 2) {
+    return LCDInfoState::WAVE;
+  } else if (state == 3) {
+    return LCDInfoState::STEREO;
+  } else if (state == 4) {
+    return LCDInfoState::STEREO_TWO;
+  }
+  return LCDInfoState::LOGO_ONLY;
+}
 
 LCDInfo::LCDInfo(const std::string &name, const std::string &showName,
                  InstanceID id)
     : BaseComponent(name, showName, id) {
   m_theme = Core::Config::get().theme().get();
   m_handler->addHandler("lcd-change", this);
+  m_state = static_cast<LCDInfoState>(Core::Config::get().properties()->asInt("lcd.state", 0));
 }
 
 LCDInfo::~LCDInfo() { m_handler->removeHandler("lcd-change"); }
@@ -136,6 +157,7 @@ void LCDInfo::mouseDown(const juce::MouseEvent &) {
   case LCDInfoState::STEREO_TWO: m_state = LCDInfoState::LOGO_ONLY; break;
   case LCDInfoState::LOGO_ONLY: m_state = LCDInfoState::VU; break;
   }
+  Core::Config::get().properties()->setValue("lcd.state", static_cast<int>(m_state));
   updateData();
   triggerAsyncUpdate();
 }

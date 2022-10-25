@@ -1,10 +1,55 @@
 #include "Preset.h"
 
+#include "ScrollComponent.h"
 #include "VeNo/Core/Instance.h"
 #include "VeNo/Events/GUIEvents.h"
 #include "VeNo/GUI/Fonts/Icons.h"
 
 namespace VeNo::GUI {
+
+PresetSaveDialog::PresetSaveDialog(InstanceID id) : BaseComponent("", "", id) {
+  m_TextEditor = CreateScope<juce::TextEditor>();
+  auto &pm = Core::Instance::get(m_id)->state.PresetManager;
+  m_TextEditor->setText(pm->GetCurrentPreset().FilePath);
+
+  m_RandomButton = CreateScope<Button>(m_id);
+  m_RandomButton->setIcon(Icons::FontAwesome_Dice);
+  m_RandomButton->SetCallback(
+      [&] { m_TextEditor->setText(Core::PresetManager::GetRandomFileName()); });
+
+  m_Button = CreateScope<Button>(m_id);
+  m_Button->setButtonText("Save");
+  m_Button->setFilled(true);
+  m_Button->SetCallback([&] {
+    pm->GetCurrentPreset().FilePath = m_TextEditor->getText().toStdString();
+    pm->Save();
+    if (DialogWindow != nullptr)
+      DialogWindow->exitModalState(0);
+  });
+
+  addAndMakeVisible(*m_Button);
+  addAndMakeVisible(*m_TextEditor);
+  addAndMakeVisible(*m_RandomButton);
+  setSize(400, 75);
+}
+
+void PresetSaveDialog::resized() {
+  constexpr int randomButtonWidth = 25;
+  constexpr int lineHeight = 25;
+  constexpr int saveButtonWidth = 100;
+  double x = 10;
+  double textWidth = getWidth() - randomButtonWidth - saveButtonWidth - (x * 2);
+
+  m_TextEditor->setBounds(x, 40, textWidth, lineHeight);
+  m_RandomButton->setBounds(x + textWidth, 40, randomButtonWidth, lineHeight);
+  m_Button->setBounds(x + textWidth + randomButtonWidth, 40, saveButtonWidth,
+                      lineHeight);
+}
+
+void PresetSaveDialog::paint(juce::Graphics &g) {
+  g.setColour(Core::Config::get().theme()->getColor(Theme::Colors::font));
+  g.drawText("Enter Preset Filename to save", 0,0,getWidth(), 35, juce::Justification::centred);
+}
 
 PresetComponent::PresetComponent(const std::string &name,
                                  const std::string &showName, InstanceID id)
@@ -68,9 +113,9 @@ void PresetComponent::handle(Events::Event *event) {
   auto tooltipEvent = new Events::TooltipEvent{};
   auto *button = realEvent->button;
   if (button == m_SaveButton.get()) {
-    presetManager->Save();
-    tooltipEvent->text =
-        fmt::format("Saved Preset: {}", presetManager->GetName());
+    openSaveDialog();
+    delete tooltipEvent;
+    return;
   } else if (button == m_NextButton.get()) {
     presetManager->LoadNext();
     tooltipEvent->text =
@@ -79,13 +124,47 @@ void PresetComponent::handle(Events::Event *event) {
     presetManager->LoadPrevious();
     tooltipEvent->text =
         fmt::format("Loaded Previous Preset: {}", presetManager->GetName());
+  } else if (button == m_LibraryButton.get()) {
+    openLibrary();
+    delete tooltipEvent;
+    return;
   } else {
     tooltipEvent->text = "Unknown Event Triggered";
   }
   m_handler->triggerEvent("tooltip", tooltipEvent);
 }
+
 void PresetComponent::labelTextChanged(juce::Label *) {
   auto &presetManager = Core::Instance::get(m_id)->state.PresetManager;
   presetManager->SetName(m_label->getText().toStdString());
+}
+
+void PresetComponent::openLibrary() {
+  auto *parent =
+      Core::Instance::get(m_id)->mainInterpreter->componentGroup.get();
+  auto component = CreateRef<PresetList>(m_name, "", m_id);
+  component->setSize(parent->getWidth() - 30, component->getHeight());
+  auto viewport = CreateScope<ScrollComponent>("", "", m_id);
+  viewport->setFillMode(true);
+  viewport->setViewComponent(component);
+  viewport->pos.w = component->getWidth();
+  viewport->pos.h = 500;
+  viewport->setSize(component->getWidth(), 500);
+  (void)juce::CallOutBox::launchAsynchronously(std::move(viewport), {0, 0},
+                                               parent->getParentComponent());
+}
+
+void PresetComponent::openSaveDialog() {
+  juce::DialogWindow::LaunchOptions launchOptions{};
+
+  auto *component = new PresetSaveDialog(m_id);
+  launchOptions.content =
+      juce::OptionalScopedPointer<juce::Component>(component, true);
+  launchOptions.resizable = false;
+  launchOptions.dialogTitle = "Save Preset";
+  launchOptions.escapeKeyTriggersCloseButton = true;
+  launchOptions.dialogBackgroundColour =
+      Core::Config::get().theme()->getColor(Theme::Colors::bg);
+  component->DialogWindow = launchOptions.launchAsync();
 }
 } // namespace VeNo::GUI

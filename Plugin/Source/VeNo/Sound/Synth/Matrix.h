@@ -20,6 +20,7 @@ public:
     m_modulators.push_back(modulator);
   }
   void remove(const VString &key);
+  void reset();
   bool add(const VString &modulator, const VString &dst);
   void setAmount(const VString &key, double amount);
   bool Has(const VString &key) { return m_items.find(key) != m_items.end(); }
@@ -30,6 +31,8 @@ public:
   juce::XmlElement *ToXml();
   void FromXML(const Scope<juce::XmlElement> &data);
 
+  ModulationItem& GetModulationItem(const std::string& key) { return m_items[key]; }
+  Map<VString, ModulationItem>& GetItems() { return m_items; }
 protected:
   InstanceID m_id{0};
   Vector<Ref<Modulator>> m_modulators{};

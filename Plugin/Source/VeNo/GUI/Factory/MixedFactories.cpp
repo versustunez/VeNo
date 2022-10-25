@@ -1,3 +1,4 @@
+#include "VeNo/GUI/Components/BigMatrix.h"
 #include "VeNo/GUI/Components/FXListSort.h"
 #include "VeNo/GUI/Components/Preset.h"
 #include "VeNo/GUI/Components/WaveForm.h"
@@ -130,6 +131,20 @@ Ref<BaseComponent> FXListSortFactory::create(GUIParseItem &,
   auto component = CreateScope<FXListSort>(parameter, name, id);
   component->Init();
   return component;
+}
+
+Ref<BaseComponent> MatrixFactory::create(GUIParseItem &item,
+                                             const std::string &parameter,
+                                             const std::string &name,
+                                             InstanceID id, Interpreter *) {
+  auto scrollComponent = CreateRef<ScrollComponent>(parameter, name, id);
+  scrollComponent->setSelectorId("ConfigFactory");
+  auto comp = CreateRef<BigMatrix>(parameter, name, id);
+  comp->setSize(item.pos.w, item.pos.h);
+  comp->UpdateSize();
+  scrollComponent->setViewComponent(comp);
+  scrollComponent->enableVerticalScrollbar();
+  return scrollComponent;
 }
 
 } // namespace VeNo::GUI
