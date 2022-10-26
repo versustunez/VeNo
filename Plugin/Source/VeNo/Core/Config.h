@@ -11,7 +11,8 @@
 
 class VeNoEditor;
 namespace VeNo::Core {
-struct Config {
+class Config {
+public:
   static Config &get();
   void registerEditor(std::string &id, VeNoEditor *editor);
   void removeEditor(std::string &id);

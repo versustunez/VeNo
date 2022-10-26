@@ -20,7 +20,7 @@ void LFOModulator::init(int number) {
   m_Data.Table = m_WaveLib->GetWaveTable(0);
 }
 
-void renderLFOVoice(LFOData &data) {
+static void renderLFOVoice(LFOData &data) {
   auto &table = data.Table->Waves[0];
   data.Phase += data.FreqInc;
   data.Phase -= float(data.Phase >= 1.0);
@@ -31,7 +31,7 @@ void renderLFOVoice(LFOData &data) {
   double sum2 = table.Data[temp];
   double fraction = val - value;
   data.Output = VUtils::Math::lerp(sum, sum2, fraction);
-};
+}
 
 void LFOModulator::update() {
   if (!m_Data.Active->getBool()) {

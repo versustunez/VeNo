@@ -4,7 +4,7 @@
 #include "VeNo/GUI/Components/Knob.h"
 
 namespace VeNo::GUI {
-LCDListener::LCDListener(InstanceID id) : m_id(id){};
+LCDListener::LCDListener(InstanceID id) : m_id(id){}
 void LCDListener::sliderValueChanged(juce::Slider *slider) {
   if (!m_eventHandler)
     init();

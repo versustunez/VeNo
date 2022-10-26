@@ -14,8 +14,8 @@ MatrixItemComponent::MatrixItemComponent(const std::string &name,
       m_Modulator(modulator),
       m_Name(name) {
   auto &matrix = VeNo::Core::Instance::get(m_id)->synthesizer->matrix();
-  m_Label = CreateScope<juce::Label>();
-  m_Label->setText(m_Modulator, juce::NotificationType::dontSendNotification);
+  m_MatrixLabel = CreateScope<juce::Label>();
+  m_MatrixLabel->setText(m_Modulator, juce::NotificationType::dontSendNotification);
   m_AddRemoveButton = VComponent::create<Button>(m_id);
   m_AddRemoveButton->GetButton()->addListener(this);
 
@@ -34,7 +34,7 @@ MatrixItemComponent::MatrixItemComponent(const std::string &name,
                      juce::NotificationType::dontSendNotification);
   }
   slider->addListener(this);
-  addAndMakeVisible(*m_Label);
+  addAndMakeVisible(*m_MatrixLabel);
   addAndMakeVisible(*m_AddRemoveButton);
   addChildComponent(*m_AmountKnob);
 }
@@ -68,7 +68,7 @@ void MatrixItemComponent::sliderValueChanged(juce::Slider *) {
 void MatrixItemComponent::resized() {
   float width = (float)getWidth() / 3.0f;
   float x = 0;
-  m_Label->setBounds(x, 0, width, getHeight());
+  m_MatrixLabel->setBounds(x, 0, width, getHeight());
   x += width;
   m_AmountKnob->setBounds(x, 0, width, getHeight());
   x += width;

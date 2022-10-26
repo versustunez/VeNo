@@ -26,7 +26,7 @@ protected:
   VString m_Modulator;
   VString m_Name;
   Ref<Knob> m_AmountKnob;
-  Ref<juce::Label> m_Label;
+  Ref<juce::Label> m_MatrixLabel;
   Ref<Button> m_AddRemoveButton;
 };
 class MatrixComponent : public BaseComponent {

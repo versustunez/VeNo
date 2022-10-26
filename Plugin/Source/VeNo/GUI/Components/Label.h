@@ -13,11 +13,11 @@ public:
   void resized() override;
 
   void addListenEvent(const std::string &event);
-  juce::Label *label() { return m_label.get(); }
+  juce::Label *label() { return m_LocalLabel.get(); }
 
 protected:
   std::string m_text;
-  Scope<juce::Label> m_label;
+  Scope<juce::Label> m_LocalLabel;
   Scope<LabelEventListener> m_eventListener{nullptr};
 };
 

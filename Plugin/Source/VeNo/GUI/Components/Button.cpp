@@ -29,7 +29,7 @@ void Button::buttonClicked(juce::Button *) {
   if (!m_action.empty()) {
     m_handler->triggerEvent(m_action, new Events::ButtonClickedEvent(this));
   } else if (m_Callback.has_value()) {
-    m_Callback.value()();
+    (*m_Callback)();
   }
 }
 bool Button::isFilled() { return m_isFilledButton; }
