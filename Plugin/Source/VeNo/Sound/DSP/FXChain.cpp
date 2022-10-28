@@ -26,11 +26,18 @@ float StepLowPass::DoFilter(float input) {
 }
 
 void StepLowPass::SetSampleRate(double sr) {
-  auto coefficients = juce::IIRCoefficients::makeLowPass(
-      sr, sr * 0.5 * 0.5, 1.0 / juce::MathConstants<double>::sqrt2);
-  for (auto &filter : m_Filter) {
-    filter.setCoefficients(coefficients);
+  juce::IIRCoefficients coefficients[4]{};
+  for (int j = 0; j < 2; ++j) {
+    double Q =
+        1.0 /
+        (2.0 * std::cos((2 * j + 1) * juce::MathConstants<double>::pi / 8.0));
+    auto coefficient =
+        juce::IIRCoefficients::makeLowPass(sr, sr * 0.5 * 0.5, Q);
+    coefficients[j * 2] = coefficient;
+    coefficients[j * 2 + 1] = coefficient;
   }
+  for (int i = 0; i < 4; i++)
+    m_Filter[i].setCoefficients(coefficients[i]);
 }
 
 FXChain::FXChain(InstanceID id) : m_ID(id) {
