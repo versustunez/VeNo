@@ -34,16 +34,15 @@ Filter::Filter(InstanceID id, const std::string &lookup_key, int index)
 
 void Filter::update() {
   // NO FILTER ;)
-  double sampleRate = m_FXSampleRate == 0 ? m_Config->sampleRate : m_FXSampleRate;
+  double sampleRate =
+      m_FXSampleRate == 0 ? m_Config->sampleRate : m_FXSampleRate;
   if (m_DCFilter) {
-    m_Type = FilterType::HP;
-    auto coeff = juce::IIRCoefficients::makeHighPass(sampleRate, 10.0);
-    setCoefficients(coeff);
+    m_Filter.SetFilterType(FilterImpl::Type::HighPass);
+    m_Filter.CalculateCoefficients(0, 10.0, 0.7);
     return;
   }
-  auto type = static_cast<FilterType>(Type->getInt() - 1);
-  if (type == FilterType::NO) {
-    m_Type = type;
+  bool typeChanged = m_Filter.SetFilterTypeByNumber(Type->getInt() - 1);
+  if (Type->getInt() == 0) {
     return;
   }
 
@@ -51,77 +50,28 @@ void Filter::update() {
   double qFactor = QFactor->getValue();
   double gain = Gain->getValue();
   if (m_SampleRate != sampleRate || m_Frequency != frequencyValue ||
-      m_QFactor != qFactor || m_Gain != gain || m_Type != type) {
+      m_QFactor != qFactor || m_Gain != gain || typeChanged) {
     // update ;)
     m_SampleRate = sampleRate;
     m_Frequency = frequencyValue;
     m_QFactor = qFactor;
     m_Gain = gain;
-    m_Type = type;
-    juce::IIRCoefficients coefficients;
-    switch (type) {
-    case FilterType::LP:
-    case FilterType::LP2:
-      coefficients = juce::IIRCoefficients::makeLowPass(
-          sampleRate, frequencyValue, qFactor);
-      break;
-    case FilterType::BP:
-      coefficients = juce::IIRCoefficients::makeBandPass(
-          sampleRate, frequencyValue, qFactor);
-      break;
-    case FilterType::HP:
-      coefficients = juce::IIRCoefficients::makeHighPass(
-          sampleRate, frequencyValue, qFactor);
-      break;
-    case FilterType::LS:
-      coefficients = juce::IIRCoefficients::makeLowShelf(
-          sampleRate, frequencyValue, qFactor, (float)gain);
-      break;
-    case FilterType::HS:
-      coefficients = juce::IIRCoefficients::makeHighShelf(
-          sampleRate, frequencyValue, qFactor, (float)gain);
-      break;
-    case FilterType::NOTCH:
-      coefficients = juce::IIRCoefficients::makeNotchFilter(
-          sampleRate, frequencyValue, qFactor);
-      break;
-    case FilterType::PEAK:
-      coefficients = juce::IIRCoefficients::makePeakFilter(
-          sampleRate, frequencyValue, qFactor, (float)gain);
-      break;
-    case FilterType::NO:
-    case FilterType::END:
-    default: break;
-    }
-    setCoefficients(coefficients);
+    m_Filter.SetSampleRate(m_SampleRate);
+    m_Filter.CalculateCoefficients(m_Gain, m_Frequency, m_QFactor);
   }
 }
 
 void Filter::process(Channel &channel) {
-  if (m_Type == FilterType::NO)
+  if (m_Filter.IsBypassed())
     return;
-  channel.left = m_filters[0].processSingleSampleRaw((float)channel.left);
-  channel.right = m_filters[1].processSingleSampleRaw((float)channel.right);
-  if (m_Type == FilterType::LP2) {
-    channel.left = m_filters[2].processSingleSampleRaw((float)channel.left);
-    channel.right = m_filters[3].processSingleSampleRaw((float)channel.right);
-  }
+  channel.left = m_Filter.ApplyLeft(channel.left);
+  channel.right = m_Filter.ApplyRight(channel.right);
 }
 
 void Filter::Setup() {
   if (!m_DCFilter) {
     CheckForNullParameters();
-    m_filters.emplace_back();
-    m_filters.emplace_back();
   }
-  m_Config = &Core::Config::get();
-  m_filters.emplace_back();
-  m_filters.emplace_back();
-}
-
-void Filter::setCoefficients(juce::IIRCoefficients &coefficients) {
-  for (auto &filter : m_filters)
-    filter.setCoefficients(coefficients);
 }
 
 void Filter::CheckForNullParameters() {

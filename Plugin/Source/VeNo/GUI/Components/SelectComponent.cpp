@@ -45,16 +45,12 @@ void setupWavePreset(Select &comboBox) {
 
 void setupFilterPreset(Select &comboBox, bool isAll = true) {
   comboBox.addItem("OFF");
-  comboBox.addItem("LP");
-  comboBox.addItem("LP2");
-  comboBox.addItem("BP");
-  comboBox.addItem("HP");
-  comboBox.addItem("NOTCH");
-  if (isAll) {
-    comboBox.addItem("LS");
-    comboBox.addItem("HS");
-    comboBox.addItem("PEAK");
-  }
+  comboBox.addItem("Low Pass");
+  comboBox.addItem("Low Shelf");
+  comboBox.addItem("Band Pass");
+  comboBox.addItem("Peak");
+  comboBox.addItem("High Shelf");
+  comboBox.addItem("High Pass");
 }
 
 void setupDistortionPreset(Select &comboBox) {

@@ -8,7 +8,7 @@ struct OscillatorData;
 struct WidenerState {
   double Panning[2]{SQRT2_2, SQRT2_2};
   double LastPanning{0};
-  double Wideness{0};
+  double Wideness{-1};
   double Coefficient{0};
   double CoefficientM{0};
 };

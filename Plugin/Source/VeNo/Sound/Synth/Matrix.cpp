@@ -64,6 +64,9 @@ bool Matrix::add(const VString &modulatorKey, const VString &dst) {
     return false;
   auto *handler = Core::Instance::get(m_id)->handler.get();
   auto *parameter = handler->getModulateParameter(dst);
+  // Parameter does not exist, skip adding it
+  if (!parameter)
+    return false;
   m_items[key] = {srcMod->get(), parameter, 0.0};
   return true;
 }

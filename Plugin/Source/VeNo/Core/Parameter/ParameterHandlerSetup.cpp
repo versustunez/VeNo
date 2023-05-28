@@ -3,6 +3,7 @@
 
 #include <VUtils/LogInclude.h>
 #include <VeNo/Sound/DSP/FX/FXEnums.h>
+#include <VeNo/Sound/DSP/FX/Impl/Filter.h>
 
 // THIS FILE FOLLOWS A SPECIFIC: ONE PARAMETER PER LINE!
 
@@ -11,11 +12,11 @@ namespace VeNo::Core {
 void ParameterHandler::setupParameter () {
   const auto addFilter = [&](const std::string& id, const std::string& name, bool hasQ, bool useGain, bool isLimited = false) {
     addParameterModulate(id + "frequency", name + " Frequency", 20, 20000, 20000, Float);
-    addParameter (id + "type", name + " Type", 1, isLimited ? 6 : static_cast<int>(Audio::FilterType::END), 1, Integer);
+    addParameter (id + "type", name + " Type", 1, static_cast<size_t>(FilterImpl::Type::END), 1, Integer);
     if (hasQ)
-      addParameterModulate (id + "q_factor", name + " QFactor", 0.2, 4, 1.0, Float);
+      addParameterModulate (id + "q_factor", name + " QFactor", 0.2, 6, 0.7, Float);
     if (useGain)
-      addParameterModulate (id + "gain", name + " Gain", 0.01, 3.0, 0.5, Float);
+      addParameterModulate (id + "gain", name + " Gain", -6.0, 6.0, 0.0, Float);
   };
 
   addParameterModulate ("master__volume", "Synth Volume", 0, 1.5, 1, Float);

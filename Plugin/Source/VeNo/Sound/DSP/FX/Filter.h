@@ -3,6 +3,7 @@
 #include "../FX.h"
 #include "FXEnums.h"
 #include "VeNo/Core/Parameter/Parameter.h"
+#include "VeNo/Sound/DSP/FX/Impl/Filter.h"
 
 #include <JuceHeader.h>
 namespace VeNo::Core {
@@ -20,7 +21,6 @@ public:
 
 protected:
   void Setup();
-  void setCoefficients(juce::IIRCoefficients &coefficients);
   void CheckForNullParameters();
 
 public:
@@ -36,7 +36,6 @@ protected:
   double m_QFactor{0.0};
   double m_Gain{0.0};
   bool m_DCFilter{false};
-  FilterType m_Type{FilterType::NO};
-  std::vector<juce::IIRFilter> m_filters;
+  FilterImpl m_Filter{};
 };
 } // namespace VeNo::Audio
