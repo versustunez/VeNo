@@ -1,3 +1,4 @@
+[![Build](https://github.com/versustunez/VeNo/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/versustunez/VeNo/actions/workflows/build.yml)
 
 <img src="./Plugin/Assets/Logo.svg" alt="VeNo Logo" style="margin: auto; display: block;">
 
@@ -19,14 +20,14 @@ The learning project turned into the dream of a new open source synthesizer whic
 - Distortion
 - Compressor
 - GUI
-    - Layoutable GUI via .vui files (or let them default :P)
+    - Layout-able GUI via .vui files (or let them default :P)
     - Colorable GUI
   
 ## GUI-Lang
 
 VeNo use a custom-written Layout language to optimize the relayouting for me
 
-Why selfwritten? because of learning perspective and not happy with pre-solutions
+Why self written? because of learning perspective and not happy with pre-solutions
 
 For information look into: DOCS/GUILang.md
 
@@ -38,38 +39,12 @@ For building you need:
 - Visual Studio (Windows only)
 - Terminal :P
 
-### Windows
+### Generic
 ```
 mkdir build
 cd build
-cmake ..
-```
-Then open the .sln file inside the build directory with Visual Studio.
-Select Start Project -> VST3
-Build :>
-
-### Linux
-```
-mkdir build
-cd build
-// For Release
-cmake -DCMAKE_BUILD_TYPE=Release ..
-// For Debug
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-
-make -j${nproc}
+cmake .. -DCMAKE_BUILD_TYPE={Release|Debug}
+cmake --build .
 ```
 
 
-### MacOS
-
-```
-mkdir build
-cd build
-// For Release
-cmake -DCMAKE_BUILD_TYPE=Release ..
-// For Debug
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-
-make -j${nproc}
-```
