@@ -1,4 +1,7 @@
 #pragma once
+
+#include <stddef.h>
+
 namespace VeNo {
 
 class FilterImpl {
