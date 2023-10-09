@@ -23,9 +23,11 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: build
-        run: cmake ${{github.workspace}} -DCMAKE_BUILD_TYPE=Release
+        run: |
+          cd $GITHUB_WORKSPACE/build
+          cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         shell: bash
         working-directory: build
-        run: cmake --build ${{github.workspace}}/build --config Release
+        run: cmake --build $GITHUB_WORKSPACE/build --config Release
