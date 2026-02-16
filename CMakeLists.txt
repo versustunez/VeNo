@@ -46,12 +46,11 @@ option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
 
 # SETUP JUCE
 include(CMake/GitFunctions.cmake)
-update_from_git(juce "https://github.com/juce-framework/JUCE" 2b16c1b94c90d0db3072f6dc9da481a9484d0435)
+update_from_git(juce "https://github.com/juce-framework/JUCE" "tags/8.0.10")
 
 ## SETUP OPTIONS
 option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
 option(JUCE_BUILD_EXTRAS "Build JUCE Extras" OFF)
 option(JUCE_BUILD_EXAMPLES "Build JUCE Examples" OFF)
 
-add_subdirectory(${juce_SOURCE_DIR})
 add_subdirectory(Plugin)

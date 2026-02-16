@@ -12,7 +12,7 @@ macro(update_from_git name repo branch)
 
     if (NOT ${name}_POPULATED)
         message("Updating ${name} from git...")
-        FetchContent_Populate(${name})
+        FetchContent_MakeAvailable(${name})
         message("${name} update finished")
     endif ()
 endmacro()
