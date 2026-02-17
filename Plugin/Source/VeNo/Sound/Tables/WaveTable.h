@@ -12,7 +12,7 @@ struct RawTable {
 };
 
 struct Wave {
-  double *Data{nullptr};
+  float *Data{nullptr};
   double TopFreq{0.0};
   double Length{0};
   ~Wave();

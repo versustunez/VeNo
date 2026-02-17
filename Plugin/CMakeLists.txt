@@ -35,6 +35,20 @@ target_compile_definitions(
         JUCE_VST3_CAN_REPLACE_VST2=0
 )
 
+#enable avx2
+if (OSC_ENABLE_SIMD)
+    message(STATUS "SIMD acceleration enabled (requesting AVX2)")
+    if (MSVC)
+        target_compile_options(${PROJECT_NAME} PRIVATE /arch:AVX2)
+    else ()
+        target_compile_options(${PROJECT_NAME} PRIVATE -mavx2 -mfma)
+    endif ()
+else ()
+    message(STATUS "SIMD acceleration disabled")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE SIMD_DISABLE=1)
+
+endif ()
+
 target_include_directories(${BaseTargetName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Source/)
 target_include_directories(${BaseTargetName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Source/vendors)
 

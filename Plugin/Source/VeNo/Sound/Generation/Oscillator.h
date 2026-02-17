@@ -13,7 +13,7 @@ public:
                       double sR);
   static bool finish(OscillatorData &, SingleVoiceData &);
   static void prepareVoice(OscillatorData &osc, SingleVoiceData &voice);
-  static double renderVoice(SingleVoiceData &voice, DetuneState &detune,
+  static float renderVoice(SingleVoiceData &voice, DetuneState &detune,
                             double inc, const Wave &table, int idx);
 
 protected:

@@ -15,7 +15,7 @@ protected:
   static void FillTables(RawTable &, WaveTable *);
   static void CreateTableRaw(RawTable &, WaveTable *);
   static void MakeWaveTable(Wave &, double topFreq, double *tempData);
-  static void FFT(int i, double *ar, double *ai);
+  static void FFT(int i, double *ar, float *ai);
   static double FindScale(Wave &wave);
   static void ApplyCutoff(Wave &wave, double topFreq);
 };

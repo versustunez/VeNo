@@ -8,6 +8,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake")
+
+option(OSC_ENABLE_SIMD "Enable AVX2 SIMD acceleration" ON)
+
 set_property(GLOBAL PROPERTY USE_FOLDERS YES)
 
 macro(add_sources)
@@ -31,13 +34,6 @@ endif()
 #if(MSVC)
 #add_compile_options(/fsanitize=address)
 #endif()
-
-add_library(sse4_1 INTERFACE IMPORTED)
-if(MSVC)
-  target_compile_options(sse4_1 INTERFACE /arch:SSE4.1)
-else()
-  target_compile_options(sse4_1 INTERFACE -msse4.1)
-endif()
 
 option(UniversalBinary "Build universal binary for mac" ON)
 

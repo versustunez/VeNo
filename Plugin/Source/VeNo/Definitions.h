@@ -11,3 +11,16 @@
 #define LFOS 2
 #define ENVELOPES 4
 #define MAX_TABLES 4
+
+
+
+#if !defined(SIMD_DISABLE)
+  #if defined(__AVX2__)
+    #define USE_AVX2 1
+  #else
+    #define USE_AVX2 0
+  #endif
+
+#else
+  #define USE_AVX2 0
+#endif

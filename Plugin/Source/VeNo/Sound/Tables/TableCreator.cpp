@@ -73,7 +73,7 @@ void TableCreator::CreateTableRaw(RawTable &rawTable, WaveTable *waveTable) {
   auto &wave = waveTable->Waves[0];
   wave.TopFreq = config.sampleRate / 2.0;
   wave.Length = (double)rawTable.Length;
-  wave.Data = new double[rawTable.Length + 1];
+  wave.Data = new float[rawTable.Length + 1];
   for (size_t x = 0; x < rawTable.Length; x++)
     wave.Data[x] = rawTable.Data[x];
   wave.Data[rawTable.Length] = wave.Data[0];
@@ -81,7 +81,7 @@ void TableCreator::CreateTableRaw(RawTable &rawTable, WaveTable *waveTable) {
 
 void TableCreator::MakeWaveTable(Wave &wave, double topFreq, double *tempData) {
   auto length = (size_t)wave.Length;
-  wave.Data = new double[length + 1]{};
+  wave.Data = new float[length + 1]{};
   FFT((int)wave.Length, tempData, wave.Data);
   ApplyCutoff(wave, topFreq);
   double scale = FindScale(wave);
@@ -90,7 +90,7 @@ void TableCreator::MakeWaveTable(Wave &wave, double topFreq, double *tempData) {
   wave.Data[length] = wave.Data[0];
 }
 
-void TableCreator::FFT(int N, double *ar, double *ai) {
+void TableCreator::FFT(int N, double *ar, float *ai) {
   int NV2 = N >> 1;
   int NM1 = N - 1;
   int TEMP = N;
