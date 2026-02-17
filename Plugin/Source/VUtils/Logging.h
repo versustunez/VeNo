@@ -5,26 +5,28 @@
 #include <VUtils/FileHandler.h>
 #include <string>
 
+#if 0
 #ifdef DEBUG
-#define VDBGN(log, ...)                                                        \
-  VUtils::Logger::create(VUtils::Logger::format(log, __VA_ARGS__), __FILE__,   \
-                         __FUNCTION__, VUtils::PrintType::DBG)
-#define DBGN(...) VDBGN(__VA_ARGS__, "")
+#define DBGN(log, ...)                                                         \
+  VUtils::Logger::create(std::format(log __VA_OPT__(, ) __VA_ARGS__),          \
+                         __FILE__, __FUNCTION__, VUtils::PrintType::Debug)
 #else
 #define DBGN(...)
 #endif
-#define VERR(log, ...)                                                         \
-  VUtils::Logger::create(VUtils::Logger::format(log, __VA_ARGS__), __FILE__,   \
-                         __FUNCTION__, VUtils::PrintType::ERROR)
+#define ERR(log, ...)                                                          \
+  VUtils::Logger::create(std::format(log __VA_OPT__(, ) __VA_ARGS__),          \
+                         __FILE__, __FUNCTION__, VUtils::PrintType::Error)
 
-#define VLOG(log, ...)                                                         \
-  VUtils::Logger::create(VUtils::Logger::format(log, __VA_ARGS__), __FILE__,   \
-                         __FUNCTION__, VUtils::PrintType::LOG)
+#define LOG(log, ...)                                                          \
+  VUtils::Logger::create(std::format(log __VA_OPT__(, ) __VA_ARGS__),          \
+                         __FILE__, __FUNCTION__, VUtils::PrintType::Log)
 
-#define VWARN(log, ...)                                                        \
-  VUtils::Logger::create(VUtils::Logger::format(log, __VA_ARGS__), __FILE__,   \
-                         __FUNCTION__, VUtils::PrintType::WARN)
-
-#define ERR(...) VERR(__VA_ARGS__, "")
-#define LOG(...) VLOG(__VA_ARGS__, "")
-#define WARN(...) VWARN(__VA_ARGS__, "")
+#define WARN(log, ...)                                                         \
+  VUtils::Logger::create(std::format(log __VA_OPT__(, ) __VA_ARGS__),          \
+                         __FILE__, __FUNCTION__, VUtils::PrintType::Warn)
+#else
+#define DBGN(...)
+#define ERR(...)
+#define LOG(...)
+#define WARN(...)
+#endif

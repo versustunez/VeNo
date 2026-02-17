@@ -10,7 +10,7 @@ BigMatrixItem::BigMatrixItem(std::string matrixKey, InstanceID id)
     : BaseComponent("", "", id),
       m_MatrixKey(std::move(matrixKey)) {
   auto &matrix = Core::Instance::get(m_id)->synthesizer->matrix();
-  m_handler->addHandler(fmt::format("matrix-{}-changed", m_MatrixKey), this);
+  m_handler->addHandler(std::format("matrix-{}-changed", m_MatrixKey), this);
   m_AmountKnob = CreateScope<Knob>("", "Amount", m_id);
   auto *slider = m_AmountKnob->slider();
   slider->setRange(-1, 1, 0.01);
@@ -32,7 +32,7 @@ BigMatrixItem::BigMatrixItem(std::string matrixKey, InstanceID id)
 }
 
 BigMatrixItem::~BigMatrixItem() {
-  m_handler->removeHandler(fmt::format("matrix-{}-changed", m_MatrixKey));
+  m_handler->removeHandler(std::format("matrix-{}-changed", m_MatrixKey));
 }
 
 void BigMatrixItem::paint(juce::Graphics &g) {
@@ -46,13 +46,13 @@ void BigMatrixItem::paint(juce::Graphics &g) {
   g.fillAll(theme->getColor(Theme::Colors::bg));
   g.setColour(theme->getColor(Theme::Colors::font));
   {
-    auto source = fmt::format("Source: {}", item.Source->name());
+    auto source = std::format("Source: {}", item.Source->name());
     g.drawText(source, onePercent * 2, 0, onePercent * 50, onePercentH * 50,
                juce::Justification::bottomLeft);
   }
   {
     auto destination =
-        fmt::format("Dest:   {}", item.Destination->getShowName());
+        std::format("Dest:   {}", item.Destination->getShowName());
     g.drawText(destination, onePercent * 2, onePercentH * 50, onePercent * 50,
                onePercentH * 50, juce::Justification::topLeft);
   }

@@ -13,7 +13,7 @@ Environment::Environment(const char *filename) : m_filename(filename) {
 Environment::Environment() { m_env[""] = ""; }
 
 void Environment::loadFile() {
-  DBGN("Load ENV-File: {}", m_filename.c_str());
+  DBGN("Load ENV-File: {}", m_filename);
   if (!FileHandler::fileExists(m_filename)) {
     WARN("Cannot Load Env-File {}! File not found", m_filename.c_str());
     return;

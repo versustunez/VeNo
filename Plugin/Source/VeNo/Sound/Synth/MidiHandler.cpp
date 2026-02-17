@@ -14,7 +14,7 @@ void MidiHandler::handleMidiMessage(juce::MidiMessage message,
     synthesizer.lastNoteOnCounter = 0;
     for (int i = 0; i < MAX_VOICES; i++) {
       synthesizer.matrix().handle().triggerNoteOff(i);
-      SynthVoiceHelper::noteOff(synthesizer, *voices[i], 1.0f);
+      SynthVoiceHelper::noteOff(synthesizer, voices[i], 1.0f);
     }
   } else if (message.isPitchWheel()) {
     double realValue = (((double)message.getPitchWheelValue() / 16383) * 2) - 1;
@@ -35,10 +35,10 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
   auto *voices = synthesizer.voices();
   for (int i = 0; i < MAX_VOICES; i++) {
     auto &voice = voices[i];
-    if (voice->isActive && voice->currentChannel == midiChannel &&
-        voice->currentNote == midiNoteNumber) {
+    if (voice.isActive && voice.currentChannel == midiChannel &&
+        voice.currentNote == midiNoteNumber) {
       synthesizer.matrix().handle().triggerNoteOff(i);
-      SynthVoiceHelper::noteOff(synthesizer, *voice, 1.0);
+      SynthVoiceHelper::noteOff(synthesizer, voice, 1.0);
     }
   }
   bool legato = synthesizer.ParameterCache.Legato->getBool();
@@ -48,9 +48,9 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
 
   for (int i = 0; i < MAX_VOICES; i++) {
     auto &voice = voices[i];
-    if (!voice->isActive || voice->envelopeData.state == EnvelopeState::IDLE) {
-      voice->noteOnTime = ++synthesizer.lastNoteOnCounter;
-      SynthVoiceHelper::noteOn(synthesizer, *voice, midiChannel, midiNoteNumber,
+    if (!voice.isActive || voice.envelopeData.state == EnvelopeState::IDLE) {
+      voice.noteOnTime = ++synthesizer.lastNoteOnCounter;
+      SynthVoiceHelper::noteOn(synthesizer, voice, midiChannel, midiNoteNumber,
                                velocity, legato);
       synthesizer.matrix().handle().triggerNoteOn(i);
       synthesizer.hasActiveNote = true;
@@ -66,19 +66,19 @@ void MidiHandler::noteOn(juce::MidiMessage &message, Synthesizer &synthesizer) {
     // Steps:
     // Select first if not selected any note
     if (voiceToSteal == -1 ||
-        (voice->envelopeData.state == EnvelopeState::RELEASE &&
-         voice->noteOnTime < voices[voiceToSteal]->noteOnTime))
+        (voice.envelopeData.state == EnvelopeState::RELEASE &&
+         voice.noteOnTime < voices[voiceToSteal].noteOnTime))
       voiceToSteal = index;
     index++;
   }
   if (voiceToSteal != -1) {
     auto &voice = voices[voiceToSteal];
     if (!legato) {
-      SynthVoiceHelper::noteOff(synthesizer, *voice, voice->velocity);
-      voice->noteOnTime = ++synthesizer.lastNoteOnCounter;
+      SynthVoiceHelper::noteOff(synthesizer, voice, voice.velocity);
+      voice.noteOnTime = ++synthesizer.lastNoteOnCounter;
       synthesizer.matrix().handle().triggerNoteOn(voiceToSteal);
     }
-    SynthVoiceHelper::noteOn(synthesizer, *voice, midiChannel, midiNoteNumber,
+    SynthVoiceHelper::noteOn(synthesizer, voice, midiChannel, midiNoteNumber,
                              velocity, legato);
     synthesizer.hasActiveNote = true;
   }
@@ -91,14 +91,14 @@ void MidiHandler::noteOff(juce::MidiMessage &message,
   auto midiNoteNumber = message.getNoteNumber();
   for (int i = 0; i < MAX_VOICES; i++) {
     auto &voice = voices[i];
-    if (voice->isActive && voice->currentNote == midiNoteNumber &&
-        voice->currentChannel == midiChannel) {
+    if (voice.isActive && voice.currentNote == midiNoteNumber &&
+        voice.currentChannel == midiChannel) {
       synthesizer.matrix().handle().triggerNoteOff(i);
-      SynthVoiceHelper::noteOff(synthesizer, *voice, voice->velocity);
-      if (voice->envelopeData.state != EnvelopeState::IDLE) {
+      SynthVoiceHelper::noteOff(synthesizer, voice, voice.velocity);
+      if (voice.envelopeData.state != EnvelopeState::IDLE) {
         synthesizer.hasActiveNote = true;
       }
-    } else if (voice->isActive)
+    } else if (voice.isActive)
       synthesizer.hasActiveNote = true;
   }
 }

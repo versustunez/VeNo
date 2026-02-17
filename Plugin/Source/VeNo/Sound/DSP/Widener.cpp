@@ -4,10 +4,10 @@
 #define PI_4 0.78539816339
 
 namespace VeNo::Audio {
-void Widener::Update(VeNo::Audio::OscillatorData &oscillatorData) {
-  auto wideness = oscillatorData.state.stereo->getVoice(oscillatorData.id);
-  auto panning = oscillatorData.state.panning->getVoice(oscillatorData.id);
-  auto &widenerState = oscillatorData.widenerState;
+void Widener::Update(OscillatorData &oscillatorData, size_t voice) {
+  auto wideness = oscillatorData.state.stereo[voice];
+  auto panning = oscillatorData.state.panning[voice];
+  auto &widenerState = oscillatorData.widenerState[voice];
   if (widenerState.Wideness != wideness) {
     double _width = wideness / 200.0;
     double tmp = 1 / fmax(1.0f + _width, 2.0f);
@@ -23,19 +23,19 @@ void Widener::Update(VeNo::Audio::OscillatorData &oscillatorData) {
     widenerState.LastPanning = panning;
   }
 }
-void Widener::Apply(VeNo::Audio::OscillatorData &oscillatorData,
+void Widener::Apply(WidenerState &widenerState,
                     Channel &channel) {
   double mid =
-      (channel.left + channel.right) * oscillatorData.widenerState.CoefficientM;
+      (channel.left + channel.right) * widenerState.CoefficientM;
   double stereo =
-      (channel.left - channel.right) * oscillatorData.widenerState.Coefficient;
+      (channel.left - channel.right) * widenerState.Coefficient;
   channel.left = mid - stereo;
   channel.right = mid + stereo;
 }
 
-void Widener::ApplyPanning(VeNo::Audio::OscillatorData &oscillatorData,
+void Widener::ApplyPanning(WidenerState &widenerState,
                            Channel &channel) {
-  channel.left *= oscillatorData.widenerState.Panning[0];
-  channel.right *= oscillatorData.widenerState.Panning[1];
+  channel.left *= widenerState.Panning[0];
+  channel.right *= widenerState.Panning[1];
 }
 } // namespace VeNo::Audio

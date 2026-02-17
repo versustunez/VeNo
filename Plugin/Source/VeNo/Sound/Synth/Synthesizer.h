@@ -20,19 +20,19 @@ class Synthesizer {
 public:
   explicit Synthesizer(size_t instanceID);
   void processBlock(juce::AudioBuffer<float> &, juce::MidiBuffer &);
-  size_t instanceID() const { return m_instanceId; }
-  Core::ParameterHandler *parameterHandler() const {
+  [[nodiscard]] size_t instanceID() const { return m_instanceId; }
+  [[nodiscard]] Core::ParameterHandler *parameterHandler() const {
     return m_parameterHandler;
   }
-  Scope<SynthVoice> *voices() { return m_voices; }
+  SynthVoice *voices() { return m_voices; }
   void setSampleRate(double sampleRate);
 
   void invalidateEnvelopes();
 
   EnvelopeData &envelope();
   Matrix &matrix() { return m_matrix; }
-  OscillatorState &oscillatorState(int idx) {
-    return m_oscillators[idx]->state;
+  OptimizedOscillatorState &oscillatorState(int idx) {
+    return m_oscillators[idx].state;
   }
 
 private:
@@ -48,16 +48,17 @@ private:
   InstanceID m_instanceId{0};
   Core::ParameterHandler *m_parameterHandler{nullptr};
   Core::Config *m_config{nullptr};
-  Scope<SynthVoice> m_voices[MAX_VOICES]{};
+  SynthVoice m_voices[MAX_VOICES]{};
   FXChain *m_FXChain{nullptr};
   ParameterEventHandler m_parameterEventHandler{};
   uint64_t lastNoteOnCounter{0};
   bool hasActiveNote{false};
-  Ref<OscillatorData> m_oscillators[OSCILLATORS];
-  Ref<EnvelopeData> m_envelope;
+  OscillatorData m_oscillators[OSCILLATORS];
+  EnvelopeData m_envelope;
   juce::CriticalSection lock;
   Matrix m_matrix;
   double m_sampleRate{44100};
+  OscillatorModulatorState m_OscillatorState[OSCILLATORS]{};
 
 private:
   friend ParameterEventHandler;

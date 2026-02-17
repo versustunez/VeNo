@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(VeNo)
 
 # SET VARIABLES
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
@@ -28,6 +28,9 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "^GNU$")
   message(STATUS "Add GNU Options for Compiling")
   add_compile_options(-Wno-free-nonheap-object -Wextra-semi)
 endif()
+#if(MSVC)
+#add_compile_options(/fsanitize=address)
+#endif()
 
 add_library(sse4_1 INTERFACE IMPORTED)
 if(MSVC)

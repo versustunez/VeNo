@@ -7,8 +7,8 @@ namespace VeNo::Audio {
 // not used by LFO because LFO is not the same!
 class Oscillator {
 public:
-  static bool setup(OscillatorData &, size_t instanceId);
-  static bool prepare(OscillatorData &);
+  static void setupModulatorState(OscillatorModulatorState &osc, size_t instanceId, size_t index);
+  static bool prepare(OscillatorData &osc, OscillatorModulatorState &modulator_state);
   static bool process(OscillatorData &, SingleVoiceData &, float currentNote,
                       double sR);
   static bool finish(OscillatorData &, SingleVoiceData &);

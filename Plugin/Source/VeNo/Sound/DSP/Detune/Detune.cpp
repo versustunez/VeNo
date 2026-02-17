@@ -5,15 +5,15 @@
 
 namespace VeNo::Audio {
 
-void Detune::update(DetuneState &detune, OscillatorState &osc) {
-  int voices = osc.voices->getInt();
-  int mode = osc.detuneMode->getInt();
-  auto amount = (float)osc.detuneDense->getValue();
+void Detune::update(DetuneState &detune, OptimizedOscillatorState &osc, size_t voice) {
+  const int voices = osc.voices;
+  const int mode = osc.detuneMode;
+  const auto amount = osc.detuneDense[voice];
   // we are in the right state! skip
-  bool voicesChanged = voices != detune.lastVoices;
-  bool amountChanged = amount != detune.lastDetune;
-  bool modeChanged = mode != detune.lastMode;
-  if (!amountChanged && !modeChanged && !voicesChanged)
+  const bool voicesChanged = voices != detune.lastVoices;
+  const bool amountChanged = amount != detune.lastDetune;
+  if (bool modeChanged = mode != detune.lastMode;
+      !amountChanged && !modeChanged && !voicesChanged)
     return;
   detune.lastVoices = voices;
   detune.lastDetune = amount;

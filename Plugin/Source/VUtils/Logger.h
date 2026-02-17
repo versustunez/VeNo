@@ -1,21 +1,17 @@
 #pragma once
 
-#include <VUtils/LogInclude.h>
+#include <format>
 #include <string>
 
 namespace VUtils {
-enum class PrintType { ERROR = 0, LOG = 1, WARN = 2, DBG = 3 };
+enum class PrintType { Error = 0, Log = 1, Warn = 2, Debug = 3 };
 
 class Logger {
 public:
   static void create(const std::string &output,
-                     PrintType type = PrintType::LOG);
+                     PrintType type = PrintType::Log);
   static void create(const std::string &output, const char *file,
-                     const char *func, PrintType type = PrintType::LOG);
-  template <typename S, typename... Args>
-  static std::string format(const S &format, Args &&...args) {
-    return fmt::format(format, args...);
-  }
+                     const char *func, PrintType type = PrintType::Log);
 
 protected:
   static int getColor(PrintType type);

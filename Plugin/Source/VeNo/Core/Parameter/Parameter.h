@@ -64,6 +64,8 @@ public:
   void addValueVoice(int voice, double value);
   void reset();
 
+  void copyInto(float* array) const;
+
   void Begin() { reset(); }
   void Finish();
   double operator[](int voice) {

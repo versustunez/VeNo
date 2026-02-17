@@ -51,6 +51,12 @@ void ModulateParameter::reset() {
     value = m_normalised;
 }
 
+void ModulateParameter::copyInto(float *array) const {
+  for (size_t i = 0; i < MAX_VOICES; ++i) {
+    array[i] = m_values[i];
+  }
+}
+
 void ModulateParameter::Finish() {
   if (m_isDirty) {
     m_value =

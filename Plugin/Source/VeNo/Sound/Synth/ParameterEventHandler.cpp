@@ -11,7 +11,7 @@ void ParameterEventHandler::handle(Events::Event *event) {
     auto *voices = m_synth->voices();
     double val = m_synth->ParameterCache.Portamento->getValue() / 1000.0;
     for (int i = 0; i < MAX_VOICES; ++i)
-      voices[i]->midiNotePortamento.reset(m_synth->m_sampleRate, val);
+      voices[i].midiNotePortamento.reset(m_synth->m_sampleRate, val);
   } else {
     m_synth->envelope().needRecalculate = true;
   }

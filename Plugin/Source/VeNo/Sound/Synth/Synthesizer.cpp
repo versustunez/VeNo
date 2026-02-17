@@ -17,17 +17,14 @@ Synthesizer::Synthesizer(size_t instanceID)
   m_FXChain = instance->state.FXChain.get();
   m_FXChain->SetSampleRate(m_sampleRate);
   ParameterCache.setup(m_parameterHandler);
-  m_envelope = CreateRef<EnvelopeData>();
-  Envelope::setup(*m_envelope, m_instanceId, "env1");
+  Envelope::setup(m_envelope, m_instanceId, "env1");
   double val = ParameterCache.Portamento->getValue() / 1000.0;
   for (auto &m_voice : m_voices) {
-    m_voice = CreateScope<SynthVoice>();
-    m_voice->midiNotePortamento.reset(m_sampleRate, val);
+    m_voice.midiNotePortamento.reset(m_sampleRate, val);
   }
-  for (int i = 0; i < OSCILLATORS; ++i) {
-    m_oscillators[i] = CreateRef<OscillatorData>();
-    m_oscillators[i]->id = i + 1;
-    Oscillator::setup(*m_oscillators[i], m_instanceId);
+  for (size_t i = 0; i < OSCILLATORS; ++i) {
+    m_oscillators[i].id = i;
+    Oscillator::setupModulatorState(m_OscillatorState[i], m_instanceId , i+1);
   }
   addEvents();
   DBGN("Synthesizer Created");
@@ -73,8 +70,8 @@ void Synthesizer::processBlock(juce::AudioBuffer<float> &audioBuffer,
 void Synthesizer::setSampleRate(double sampleRate) {
   assert(sampleRate > 0);
   m_sampleRate = sampleRate;
-  m_envelope->sampleRate = sampleRate;
-  m_envelope->needRecalculate = true;
+  m_envelope.sampleRate = sampleRate;
+  m_envelope.needRecalculate = true;
   m_FXChain->SetSampleRate(sampleRate);
   m_matrix.handle().setSampleRate(sampleRate);
 }
@@ -89,36 +86,36 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
     Channel outChannel{};
     // Update Matrix here
     m_matrix.update();
-    if (Envelope::prepare(*m_envelope)) {
-      for (const auto &voice : m_voices)
-        Envelope::needNextStep(voice->envelopeData, *m_envelope);
+    if (Envelope::prepare(m_envelope)) {
+      for (auto &voice : m_voices)
+        Envelope::needNextStep(voice.envelopeData, m_envelope);
     }
-    for (const auto &oscillator : m_oscillators) {
-      Oscillator::prepare(*oscillator);
+    for (size_t osc = 0; osc < OSCILLATORS; osc++) {
+      Oscillator::prepare(m_oscillators[osc], m_OscillatorState[osc]);
     }
 
     for (auto &voice : m_voices) {
-      if (!voice->isActive || voice->velocity == 0)
+      if (!voice.isActive || voice.velocity == 0)
         continue;
-      double envelope = Envelope::process(voice->envelopeData, *m_envelope);
-      if (envelope == 0 || voice->envelopeData.state == EnvelopeState::IDLE) {
+      double envelope = Envelope::process(voice.envelopeData, m_envelope);
+      if (envelope == 0 || voice.envelopeData.state == EnvelopeState::IDLE) {
         // clear Voice
-        SynthVoiceHelper::clear(*this, *voice.get());
+        SynthVoiceHelper::clear(*this, voice);
         continue;
       }
-      if (voice->isDirty) {
+      if (voice.isDirty) {
         for (int j = 0; j < OSCILLATORS; ++j) {
-          Oscillator::prepareVoice(*m_oscillators[j],
-                                   voice->voiceData.oscillatorVoices[j]);
+          Oscillator::prepareVoice(m_oscillators[j],
+                                   voice.voiceData.oscillatorVoices[j]);
         }
-        voice->isDirty = false;
+        voice.isDirty = false;
       }
 
       Channel voiceData{};
       for (int j = 0; j < OSCILLATORS; ++j) {
-        auto &voiceD = voice->voiceData.oscillatorVoices[j];
-        if (Oscillator::process(*m_oscillators[j], voiceD,
-                                voice->midiNotePortamento.getNextValue(),
+        auto &voiceD = voice.voiceData.oscillatorVoices[j];
+        if (Oscillator::process(m_oscillators[j], voiceD,
+                                voice.midiNotePortamento.getNextValue(),
                                 m_sampleRate)) {
           voiceData.left += voiceD.output.left;
           voiceData.right += voiceD.output.right;
@@ -134,8 +131,8 @@ void Synthesizer::renderVoices(juce::AudioBuffer<float> &buffer,
     outChannel.left *= ParameterCache.MasterVolume->getValue();
     outChannel.right *= ParameterCache.MasterVolume->getValue();
     m_FXChain->process(outChannel);
-    buffer.addSample(0, startSample, (float)outChannel.left);
-    buffer.addSample(1, startSample, (float)outChannel.right);
+    buffer.addSample(0, startSample, static_cast<float>(outChannel.left));
+    buffer.addSample(1, startSample, static_cast<float>(outChannel.right));
     ++startSample;
   }
 }
@@ -148,7 +145,7 @@ void Synthesizer::addEvents() {
   handler.addHandler("env1__sustain", &m_parameterEventHandler);
   handler.addHandler("portamento", &m_parameterEventHandler);
 }
-void Synthesizer::invalidateEnvelopes() { m_envelope->needRecalculate = true; }
-EnvelopeData &Synthesizer::envelope() { return *m_envelope; }
+void Synthesizer::invalidateEnvelopes() { m_envelope.needRecalculate = true; }
+EnvelopeData &Synthesizer::envelope() { return m_envelope; }
 
 } // namespace VeNo::Audio

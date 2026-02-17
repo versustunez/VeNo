@@ -17,10 +17,10 @@ void SuperDetune::create(DetuneState &detune) {
       plus = VUtils::Math::centsToRatio(cents);
     }
     cents += split;
-    detune.lookup[i] = (float)plus;
+    detune.lookup[i] = static_cast<float>(plus);
   }
 }
-double SuperDetune::getRealDetune(float detune) {
+double SuperDetune::getRealDetune(const float detune) {
   double d = detune / DETUNE_MAX_VALUE;
   if (d > 0.5f) {
     d = 0.5f + (d * d * 0.5f);

@@ -14,7 +14,7 @@ PresetListItem::PresetListItem(InstanceID id, int presetIndex, bool isHeader)
       m_PresetIndex(presetIndex),
       m_IsHeader(isHeader) {
 
-  auto key = fmt::format("preset-item-{}", presetIndex);
+  auto key = std::format("preset-item-{}", presetIndex);
   Core::Instance::get(m_ID)->eventHandler.addHandler(key, this);
   if (m_PresetIndex == -1) {
     {
@@ -52,7 +52,7 @@ void PresetListItem::paint(juce::Graphics &g) {
   if (m_PresetIndex == -1) {
     g.fillAll(theme->getColor(Theme::Colors::root));
     g.setFont(9.0f);
-    g.drawText(fmt::format("Preset Path: {}", Core::Config::get().presetPath),
+    g.drawText(std::format("Preset Path: {}", Core::Config::get().presetPath),
                10, 0, getWidth(), 11, juce::Justification::verticallyCentred);
     g.setFont(16.0f);
     g.drawText("Nr.", 0, 0, indexContainerWidth, getHeight(),
@@ -106,7 +106,7 @@ void PresetListItem::handle(Events::Event *event) {
         "tooltip", new Events::TooltipEvent("Loaded Init Preset"));
   } else if (name == "load_preset") {
     presetManager->LoadIndexPreset((size_t)m_PresetIndex);
-    auto tooltipText = fmt::format("Loaded Preset: {}",
+    auto tooltipText = std::format("Loaded Preset: {}",
                                    presetManager->GetCurrentPreset().Name);
     instance->eventHandler.triggerEvent(
         "tooltip", new Events::TooltipEvent(tooltipText.c_str()));
@@ -115,7 +115,7 @@ void PresetListItem::handle(Events::Event *event) {
 
 PresetListItem::~PresetListItem() {
   Core::Instance::get(m_ID)->eventHandler.removeHandler(
-      fmt::format("preset-item-{}", m_PresetIndex));
+      std::format("preset-item-{}", m_PresetIndex));
 }
 
 PresetList::PresetList(const std::string &name, const std::string &showName,

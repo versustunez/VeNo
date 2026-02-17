@@ -14,8 +14,8 @@ struct WidenerState {
 };
 class Widener {
 public:
-  static void Update(OscillatorData &);
-  static void Apply(OscillatorData &, Channel &);
-  static void ApplyPanning(OscillatorData &, Channel &);
+  static void Update(OscillatorData &, size_t voice);
+  static void Apply(WidenerState &widenerState, Channel &);
+  static void ApplyPanning(WidenerState &widenerState, Channel &);
 };
 } // namespace VeNo::Audio

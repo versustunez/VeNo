@@ -42,7 +42,14 @@ void ModulatorHandle::init(Matrix *matrix) {
     matrix->addModulator(randomModulator);
   }
 }
-void ModulatorHandle::setSampleRate(double sampleRate) {
+void ModulatorHandle::clear() {
+  m_LFOs.clear();
+  m_randomGenerators.clear();
+  m_envelopes.clear();
+  m_knobsModulator.clear();
+}
+
+void ModulatorHandle::setSampleRate(double sampleRate) const {
   for (auto &envelope : m_envelopes) {
     envelope->setSampleRate(sampleRate);
   }
@@ -51,13 +58,13 @@ void ModulatorHandle::setSampleRate(double sampleRate) {
     lfo->m_SampleRate = sampleRate;
   }
 }
-void ModulatorHandle::triggerNoteOn(int voice) {
+void ModulatorHandle::triggerNoteOn(int voice) const {
   for (auto &envelope : m_envelopes) {
     Envelope::noteOn(envelope->voiceData(voice + 1), envelope->data());
     Envelope::noteOn(envelope->voiceData(0), envelope->data());
   }
 }
-void ModulatorHandle::triggerNoteOff(int voice) {
+void ModulatorHandle::triggerNoteOff(int voice) const {
   for (auto &envelope : m_envelopes) {
     Envelope::noteOff(envelope->voiceData(voice + 1), envelope->data());
     Envelope::noteOff(envelope->voiceData(0), envelope->data());

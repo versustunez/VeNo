@@ -52,16 +52,20 @@ public:
   void update() override;
   double value(int index) override;
   VString &name() override { return m_name; }
+  bool isVoiceModulator() override { return true; }
 
 protected:
+  static constexpr size_t HISTORY_SIZE = 5;
+  static constexpr size_t VOICES = MAX_VOICES+1;
+
   VString m_name;
   Core::ModulateParameter *m_ChangeRate{nullptr};
   Core::Parameter *m_Active{nullptr};
   Core::Parameter *m_Mode{nullptr};
-  double m_Value{0};
+  std::array<float, VOICES> m_Value{};
   int m_Samples{0};
   Utils::Random m_Random{};
-  double m_Values[5]{0, 0, 0, 0, 0};
+  std::array<float, HISTORY_SIZE> m_Values[VOICES]{};
 };
 
 class LFOModulator : public Modulator {
@@ -98,9 +102,10 @@ class ModulatorHandle {
 public:
   explicit ModulatorHandle(InstanceID id) : m_id(id) {}
   void init(Matrix *matrix);
-  void setSampleRate(double sampleRate);
-  void triggerNoteOn(int voice);
-  void triggerNoteOff(int voice);
+  void clear();
+  void setSampleRate(double sampleRate) const;
+  void triggerNoteOn(int voice) const;
+  void triggerNoteOff(int voice) const;
 
 protected:
   Vector<Ref<LFOModulator>> m_LFOs;

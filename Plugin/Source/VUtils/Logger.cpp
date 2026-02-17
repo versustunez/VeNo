@@ -8,32 +8,32 @@ namespace VUtils {
 
 void Logger::create(const std::string &output, PrintType type) {
   if (juce::JUCEApplicationBase::isStandaloneApp())
-    fmt::print("\033[1;{}m[{}] >> {}\033[0m\n", getColor(type), getType(type),
+    std::cout << std::format("\033[1;{}m[{}] >> {}\033[0m\n", getColor(type), getType(type),
                output);
 }
 void Logger::create(const std::string &output, const char *file,
                     const char *func, PrintType type) {
   if (juce::JUCEApplicationBase::isStandaloneApp())
-    fmt::print("\033[1;{}m[{}][{}] >> {}\033[0m\n", getColor(type),
+    std::cout << std::format("\033[1;{}m[{}][{}] >> {}\033[0m\n", getColor(type),
                getType(type), getPlace(file, func), output);
 }
 
 int Logger::getColor(PrintType type) {
   switch (type) {
-  case PrintType::ERROR: return ERROR_COLOR;
-  case PrintType::DBG: return DEBUG_COLOR;
-  case PrintType::WARN: return WARN_COLOR;
-  case PrintType::LOG: return INFO_COLOR;
+  case PrintType::Error: return ERROR_COLOR;
+  case PrintType::Debug: return DEBUG_COLOR;
+  case PrintType::Warn: return WARN_COLOR;
+  case PrintType::Log: return INFO_COLOR;
   }
   return 35;
 }
 
 std::string Logger::getType(PrintType type) {
   switch (type) {
-  case PrintType::ERROR: return ERROR_KEY;
-  case PrintType::DBG: return DEBUG_KEY;
-  case PrintType::WARN: return WARN_KEY;
-  case PrintType::LOG: return INFO_KEY;
+  case PrintType::Error: return ERROR_KEY;
+  case PrintType::Debug: return DEBUG_KEY;
+  case PrintType::Warn: return WARN_KEY;
+  case PrintType::Log: return INFO_KEY;
   }
   return {};
 }

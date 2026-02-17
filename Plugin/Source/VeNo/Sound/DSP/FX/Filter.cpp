@@ -3,7 +3,7 @@
 #include "VeNo/Core/Config.h"
 #include "VeNo/Core/Instance.h"
 
-#include <VUtils/LogInclude.h>
+#include <format>
 
 namespace VeNo::Audio {
 
@@ -19,12 +19,12 @@ Filter::Filter(InstanceID id, const std::string &lookup_key, int index)
     : FX(id) {
   auto &instance = Core::Instance::get(id)->handler;
   const auto getKey = [&](const std::string &addon) {
-    return index == -1 ? fmt::format("{}__{}", lookup_key, addon)
-                       : fmt::format("{}{}__{}", lookup_key, index, addon);
+    return index == -1 ? std::format("{}__{}", lookup_key, addon)
+                       : std::format("{}{}__{}", lookup_key, index, addon);
   };
 
   if (index != -1)
-    SetName(fmt::format("Filter {}", index));
+    SetName(std::format("Filter {}", index));
   Frequency = instance->getModulateParameter(getKey("frequency"));
   QFactor = instance->getModulateParameter(getKey("q_factor"));
   Gain = instance->getModulateParameter(getKey("gain"));

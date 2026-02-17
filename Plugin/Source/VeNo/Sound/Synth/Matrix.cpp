@@ -10,9 +10,16 @@ Matrix::Matrix(InstanceID instance_id)
   m_modulatorHandle.init(this);
 }
 Matrix::~Matrix() {
-  m_modulators.clear();
-  m_items.clear();
+  {
+    const juce::GenericScopedLock<juce::CriticalSection> myScopedLock(m_Mutex);
+    std::cout << "Deleting Matrix" << std::endl;
+    m_modulators.clear();
+    m_items.clear();
+    std::cout << "Deleting Matrix handles" << std::endl;
+    m_modulatorHandle.clear();
+  }
 }
+
 void Matrix::update() {
   // Matrix is empty... don't update anything because we would waste cycles
   if (m_items.empty())
@@ -28,10 +35,10 @@ void Matrix::update() {
   for (auto &[key, item] : m_items) {
     if (item.Source->isVoiceModulator()) {
       for (int i = 0; i < MAX_VOICES; ++i) {
-        item.Destination->addValueVoice(i, item.Source->value(i) * item.Amount);
+        item.Destination->addValueVoice(i, item.Source->value(i+1) * item.Amount);
       }
     } else {
-      item.Destination->addValue(item.Source->value(-1) * item.Amount);
+      item.Destination->addValue(item.Source->value(0) * item.Amount);
     }
   }
   for (auto &[key, item] : m_items) {

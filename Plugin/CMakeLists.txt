@@ -19,12 +19,11 @@ juce_add_plugin(
         PRODUCT_NAME "VeNo Synth"
 )
 
-set_target_properties(${BaseTargetName} PROPERTIES CXX_STANDARD 17)
+set_target_properties(${BaseTargetName} PROPERTIES CXX_STANDARD 20)
 
 add_subdirectory(Assets)
 add_subdirectory(Source/VeNo)
 add_subdirectory(Source/VUtils)
-add_subdirectory(Source/vendors)
 
 target_sources(${BaseTargetName} PRIVATE ${SRCS})
 

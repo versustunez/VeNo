@@ -7,6 +7,7 @@ std::vector<Instance *> Instance::m_instances = {};
 Instance::~Instance() {
   mainInterpreter = nullptr;
   handler = nullptr;
+  synthesizer = nullptr;
 }
 Instance *Instance::get(InstanceID m_id) {
   // This should never be a problem tbh!
