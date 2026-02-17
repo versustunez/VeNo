@@ -1,5 +1,5 @@
-#define VeNo_VERSION 1.0
-#define VeNo_SCREEN_TEXT "VeNo v1.0"
+#define VeNo_VERSION 1.1
+#define VeNo_SCREEN_TEXT "VeNo v1.1"
 
 #define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 700
