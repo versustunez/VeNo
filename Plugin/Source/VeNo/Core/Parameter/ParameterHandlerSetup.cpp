@@ -1,7 +1,7 @@
 #include "Handler.h"
 #include "Parameter.h"
 
-#include <format>
+#include <VUtils/LogInclude.h>
 #include <VeNo/Sound/DSP/FX/FXEnums.h>
 #include <VeNo/Sound/DSP/FX/Impl/Filter.h>
 
@@ -33,8 +33,8 @@ void ParameterHandler::setupParameter () {
   addParameter ("portamento", "Portamento", 0, 1500, 0, Float);
 
   for (int i = 1; i < 5; i++) {
-    std::string id = std::format("osc{}__", i);
-    std::string name = std::format("OSC {}", i);
+    std::string id = fmt::format("osc{}__", i);
+    std::string name = fmt::format("OSC {}", i);
     addParameter (id + "active", name + " Active", 0, 1, i == 1, Boolean);
     addParameter (id + "voices", name + " Voices", 1, 9, 1, Integer);
     addParameterModulate (id + "semitones", name + " Semitones", -24, 24, 0, Integer);
@@ -52,24 +52,24 @@ void ParameterHandler::setupParameter () {
   }
 
   for (int i = 1; i < 3; i++) {
-    std::string id = std::format("lfo{}__", i);
-    std::string name = std::format("LFO {}", i);
+    std::string id = fmt::format("lfo{}__", i);
+    std::string name = fmt::format("LFO {}", i);
     addParameter (id + "active", name + " Active", 0, 1, 0, Boolean);
     addParameterModulate (id + "rate", name + " Rate", 1, 40, 1, Float);
     addParameter (id + "wave", name + " Waveform", 1, 4, 1, Integer);
   }
 
   for (int i = 1; i < 3; i++) {
-    std::string id = std::format("rng{}__", i);
-    std::string name = std::format("Random {}", i);
+    std::string id = fmt::format("rng{}__", i);
+    std::string name = fmt::format("Random {}", i);
     addParameter (id + "active", name + " Active", 0, 1, 0, Boolean);
     addParameterModulate (id + "change_rate", name + " Change Rate", 8, 4096, 256, Integer);
     addParameter(id + "mode", name + " Mode", 1, 3, 1, Integer);
   }
 
   for (int i = 1; i < 5; i++) {
-    std::string id = std::format("env{}__", i);
-    std::string name = std::format("Envelope {}", i);
+    std::string id = fmt::format("env{}__", i);
+    std::string name = fmt::format("Envelope {}", i);
     addParameter (id + "attack", name + " Attack", 0, 1500, 10, Float);
     addParameter (id + "decay", name + " Decay", 0, 1500, 0, Float);
     addParameter (id + "sustain", name + " Sustain", 0, 1, 1, Float);
@@ -87,8 +87,8 @@ void ParameterHandler::setupParameter () {
   }
 
   for (int i = 1; i < 3; i++) {
-    std::string id = std::format("filter{}__", i);
-    std::string name = std::format("Filter {}", i);
+    std::string id = fmt::format("filter{}__", i);
+    std::string name = fmt::format("Filter {}", i);
     addFilter(id, name, true, true);
   }
 

@@ -61,7 +61,7 @@ void MatrixItemComponent::sliderValueChanged(juce::Slider *) {
   auto *instance = VeNo::Core::Instance::get(m_id);
   auto &matrix = instance->synthesizer->matrix();
   matrix.setAmount(m_Key, m_AmountKnob->getValue());
-  auto key = std::format("matrix-{}-changed", m_Key);
+  auto key = fmt::format("matrix-{}-changed", m_Key);
   instance->eventHandler.triggerEvent(
       key, new Events::ValueChange(m_AmountKnob->getValue()));
 }

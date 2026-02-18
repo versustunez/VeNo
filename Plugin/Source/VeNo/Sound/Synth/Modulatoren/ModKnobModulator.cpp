@@ -5,7 +5,7 @@ namespace VeNo::Audio {
 
 void ModKnobsModulator::init(int index) {
   auto *handler = Core::Instance::get(m_id)->handler.get();
-  m_Parameter = handler->getParameter(std::format("mod{}", index));
+  m_Parameter = handler->getParameter(fmt::format("mod{}", index));
 }
 
 void ModKnobsModulator::update() { m_Value = m_Parameter->getValue(); }

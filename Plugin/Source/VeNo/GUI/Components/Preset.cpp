@@ -119,11 +119,11 @@ void PresetComponent::handle(Events::Event *event) {
   } else if (button == m_NextButton.get()) {
     presetManager->LoadNext();
     tooltipEvent->text =
-        std::format("Loaded Next Preset: {}", presetManager->GetName());
+        fmt::format("Loaded Next Preset: {}", presetManager->GetName());
   } else if (button == m_PrevButton.get()) {
     presetManager->LoadPrevious();
     tooltipEvent->text =
-        std::format("Loaded Previous Preset: {}", presetManager->GetName());
+        fmt::format("Loaded Previous Preset: {}", presetManager->GetName());
   } else if (button == m_LibraryButton.get()) {
     openLibrary();
     delete tooltipEvent;
