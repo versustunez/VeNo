@@ -1,21 +1,20 @@
 #pragma once
 
 #include <VeNo/TypeDefs.h>
+#include <array>
 
 namespace VeNo::Audio {
 
 struct RawTable {
-  double *Data{nullptr};
+  static constexpr size_t TableLength = 2048;
+  std::array<double, TableLength> Data{};
   bool IsNonImpulse{false};
-  size_t Length{0};
-  ~RawTable();
 };
 
 struct Wave {
-  float *Data{nullptr};
+  static constexpr size_t TableLength = RawTable::TableLength;
+  std::array<float, RawTable::TableLength+1> Data{};
   double TopFreq{0.0};
-  double Length{0};
-  ~Wave();
 };
 
 struct WaveTable {

@@ -24,7 +24,7 @@ static void renderLFOVoice(LFOData &data) {
   auto &table = data.Table->Waves[0];
   data.Phase += data.FreqInc;
   data.Phase -= float(data.Phase >= 1.0);
-  double val = data.Phase * (double)table.Length;
+  double val = data.Phase * static_cast<double>(Wave::TableLength);
   int value = (int)val;
   int temp = (int)val + 1;
   double sum = table.Data[value];

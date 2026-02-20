@@ -42,6 +42,7 @@ option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
 option(JUCE_BUILD_EXTRAS "Build JUCE Extras" OFF)
 option(JUCE_BUILD_EXAMPLES "Build JUCE Examples" OFF)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_subdirectory(vendor/fmt)
 add_subdirectory(${JUCE_ROOT} JUCE)
 

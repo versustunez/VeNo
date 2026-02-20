@@ -33,17 +33,17 @@ void WaveFormComponent::createWaveForm() {
   if (getWidth() == 0)
     return;
   m_RenderPath.clear();
-  auto &waveLib = VeNo::Audio::WaveLib::Get();
+  auto &waveLib = Audio::WaveLib::Get();
   auto *table = waveLib.GetWaveTable(m_CurrentTable);
   if (table == nullptr)
     return;
   auto &wave = table->Waves[0];
   float x = 0;
-  float xInc = (float)getWidth() / (float)wave.Length;
-  float y = ((wave.Data[0] + 1.0f) / 2.0f) * (float)getHeight();
+  float xInc = static_cast<float>(getWidth()) / Audio::Wave::TableLength;
+  float y = ((wave.Data[0] + 1.0f) / 2.0f) * static_cast<float>(getHeight());
   m_RenderPath.startNewSubPath(x, y);
-  for (size_t i = 0; i < wave.Length; ++i) {
-    y = ((wave.Data[i] + 1.0f) / 2.0f) * (float)getHeight();
+  for (size_t i = 0; i < Audio::Wave::TableLength; ++i) {
+    y = ((wave.Data[i] + 1.0f) / 2.0f) * static_cast<float>(getHeight());
     m_RenderPath.lineTo(x, y);
     x += xInc;
   }
