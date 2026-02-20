@@ -1,0 +1,6 @@
+[submodule "vendor/fmt"]
+	path = vendor/fmt
+	url = https://github.com/fmtlib/fmt.git
+[submodule "vendor/JUCE"]
+	path = vendor/JUCE
+	url = https://github.com/juce-framework/JUCE.git

@@ -6,16 +6,16 @@ namespace VeNo::Audio {
 void EnvModulator::init(int envelope) {
   // Create Data ;)
   m_envelope = envelope;
-  m_name = std::format("Envelope {}", m_envelope);
+  m_name = fmt::format("Envelope {}", m_envelope);
   auto *instance = Core::Instance::get(m_id);
   if (instance == nullptr)
     return;
   auto &eventHandler = instance->eventHandler;
-  eventHandler.addHandler(std::format("env{}__attack", m_envelope), this);
-  eventHandler.addHandler(std::format("env{}__decay", m_envelope), this);
-  eventHandler.addHandler(std::format("env{}__sustain", m_envelope), this);
-  eventHandler.addHandler(std::format("env{}__release", m_envelope), this);
-  Envelope::setup(m_data, m_id, std::format("env{}", m_envelope));
+  eventHandler.addHandler(fmt::format("env{}__attack", m_envelope), this);
+  eventHandler.addHandler(fmt::format("env{}__decay", m_envelope), this);
+  eventHandler.addHandler(fmt::format("env{}__sustain", m_envelope), this);
+  eventHandler.addHandler(fmt::format("env{}__release", m_envelope), this);
+  Envelope::setup(m_data, m_id, fmt::format("env{}", m_envelope));
 }
 void EnvModulator::update() {
   if (m_data.needRecalculate) {

@@ -5,6 +5,8 @@
 #include "VeNo/Utils/Math.h"
 #include "WaveLib.h"
 
+#include <cassert>
+
 namespace VeNo::Audio {
 
 WaveTable *TableCreator::CreateWaves(RawTable &rawTable) {
@@ -17,22 +19,18 @@ WaveTable *TableCreator::CreateWaves(RawTable &rawTable) {
   return table;
 }
 
+
 void TableCreator::CreateTable(
     int waveTableIndex, const std::function<void(RawTable *)> &generateWave) {
-  auto *rawTable = new RawTable{};
-  const auto &config = Core::Config::get();
-  rawTable->Length = size_t(
-      VUtils::Math::nextPowerOfTwo(config.sampleRate / (3.0 * 20)) * 2.0);
-  rawTable->Data = new double[rawTable->Length + 1]{};
-  generateWave(rawTable);
+  RawTable table;
+  generateWave(&table);
   auto &waveLib = WaveLib::Get();
-  waveLib.SetWaveTable(waveTableIndex, CreateWaves(*rawTable));
-  delete rawTable; // done! ;) free me pls :>
+  waveLib.SetWaveTable(waveTableIndex, CreateWaves(table));
 }
 
 void TableCreator::FillTables(RawTable &rawTable, WaveTable *waveTable) {
   auto &freqWaveRe = rawTable.Data;
-  unsigned int maxHarmonic = rawTable.Length >> 1u;
+  unsigned int maxHarmonic = RawTable::TableLength >> 1u;
   const double minValue = 0.000001;
   while (std::fabs(freqWaveRe[maxHarmonic]) < minValue && maxHarmonic)
     --maxHarmonic;
@@ -44,14 +42,14 @@ void TableCreator::FillTables(RawTable &rawTable, WaveTable *waveTable) {
     size++;
     maxHarmonicTemps >>= 1u;
   }
+  size = std::max(size, static_cast<size_t>(1));
   waveTable->Waves = new Wave[size]{};
   waveTable->Length = size;
   for (size_t i = 0; i < size; ++i) {
     auto &wave = waveTable->Waves[i];
-    wave.Length = (double)rawTable.Length;
     wave.TopFreq = topFreq;
-    auto len = (size_t)wave.Length;
-    auto *tempData = new double[len + 1]{};
+    auto len = RawTable::TableLength;
+    auto tempData = std::array<double, RawTable::TableLength+1>{};
     size_t numSamples = len;
     tempData[0] = 0;
     tempData[numSamples] = 0;
@@ -59,10 +57,9 @@ void TableCreator::FillTables(RawTable &rawTable, WaveTable *waveTable) {
       tempData[x] = rawTable.Data[x];
       tempData[numSamples - x] = rawTable.Data[numSamples - x];
     }
-    MakeWaveTable(wave, topFreq, tempData);
+    MakeWaveTable(wave, topFreq, tempData.data());
     topFreq *= 2.0;
     maxHarmonic >>= 1u;
-    delete[] tempData;
   }
 }
 
@@ -72,22 +69,18 @@ void TableCreator::CreateTableRaw(RawTable &rawTable, WaveTable *waveTable) {
   waveTable->Length = 1;
   auto &wave = waveTable->Waves[0];
   wave.TopFreq = config.sampleRate / 2.0;
-  wave.Length = (double)rawTable.Length;
-  wave.Data = new float[rawTable.Length + 1];
-  for (size_t x = 0; x < rawTable.Length; x++)
-    wave.Data[x] = rawTable.Data[x];
-  wave.Data[rawTable.Length] = wave.Data[0];
+  for (size_t x = 0; x < RawTable::TableLength; x++)
+    wave.Data[x] = static_cast<float>(rawTable.Data[x]);
+  wave.Data[RawTable::TableLength] = wave.Data[0];
 }
 
 void TableCreator::MakeWaveTable(Wave &wave, double topFreq, double *tempData) {
-  auto length = (size_t)wave.Length;
-  wave.Data = new float[length + 1]{};
-  FFT((int)wave.Length, tempData, wave.Data);
-  ApplyCutoff(wave, topFreq);
-  double scale = FindScale(wave);
-  for (size_t idx = 0; idx < length; idx++)
+  FFT(RawTable::TableLength, tempData, wave.Data.data());
+  //ApplyCutoff(wave, topFreq);
+  auto scale = static_cast<float>(FindScale(wave));
+  for (size_t idx = 0; idx < RawTable::TableLength; idx++)
     wave.Data[idx] = wave.Data[idx] * scale;
-  wave.Data[length] = wave.Data[0];
+  wave.Data[RawTable::TableLength] = wave.Data[0];
 }
 
 void TableCreator::FFT(int N, double *ar, float *ai) {
@@ -147,25 +140,24 @@ void TableCreator::FFT(int N, double *ar, float *ai) {
 
 double TableCreator::FindScale(Wave &wave) {
   double max = 0;
-  for (size_t idx = 0; idx < wave.Length; idx++) {
-    double temp = std::fabs(wave.Data[idx]);
-    if (max < temp)
+  for (size_t idx = 0; idx < RawTable::TableLength; idx++) {
+    if (const double temp = std::fabs(wave.Data[idx]); max < temp)
       max = temp;
   }
   return 1.0 / max * .999;
 }
 
 void TableCreator::ApplyCutoff(Wave &wave, double topFreq) {
-  double sRate = Core::Config::get().sampleRate;
-  double cutOff = topFreq * (sRate / 2) * 1.2;
-  double RC = 0.9 / (cutOff * 2 * V_PI);
-  double dt = 1.0 / sRate;
-  double alpha = dt / (RC + dt);
+  const double sRate = Core::Config::get().sampleRate;
+  const double cutOff = topFreq * (sRate / 2) * 1.2;
+  const double RC = 0.9 / (cutOff * 2 * V_PI);
+  const double dt = 1.0 / sRate;
+  const auto alpha = static_cast<float>(dt / (RC + dt));
 
-  double prev_sample = 0.0;
-  auto length = (size_t)wave.Length;
+  float prev_sample = 0.0;
+  constexpr auto length = RawTable::TableLength;
   for (size_t i = 0; i < length; ++i) {
-    double tmp = wave.Data[i];
+    const float tmp = wave.Data[i];
     wave.Data[i] = prev_sample + (alpha * (wave.Data[i] - prev_sample));
     prev_sample = tmp;
   }

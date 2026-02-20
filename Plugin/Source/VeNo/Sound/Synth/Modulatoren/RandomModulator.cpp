@@ -5,11 +5,11 @@
 namespace VeNo::Audio {
 void RandomModulator::init(int index) {
   auto *handler = Core::Instance::get(m_id)->handler.get();
-  m_name = std::format("Random {}", index);
+  m_name = fmt::format("Random {}", index);
   m_ChangeRate =
-      handler->getModulateParameter(std::format("rng{}__change_rate", index));
-  m_Active = handler->getParameter(std::format("rng{}__active", index));
-  m_Mode = handler->getParameter(std::format("rng{}__mode", index));
+      handler->getModulateParameter(fmt::format("rng{}__change_rate", index));
+  m_Active = handler->getParameter(fmt::format("rng{}__active", index));
+  m_Mode = handler->getParameter(fmt::format("rng{}__mode", index));
   m_Random.setRange(-1, 1);
 }
 

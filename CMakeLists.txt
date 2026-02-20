@@ -1,5 +1,7 @@
 ## Setup base
 cmake_minimum_required(VERSION 3.16)
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "" FORCE)
+
 project(VeNo)
 
 # SET VARIABLES
@@ -8,49 +10,41 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake")
+set(JUCE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/vendor/JUCE")
 
 option(OSC_ENABLE_SIMD "Enable AVX2 SIMD acceleration" ON)
-set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "" FORCE)
+option(UniversalBinary "Build universal binary for mac" ON)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS YES)
 
-macro(add_sources)
-  file(RELATIVE_PATH _relPath "${PROJECT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
-  foreach(_src ${ARGN})
-    if(_relPath)
-      list(APPEND SRCS "${_relPath}/${_src}")
-    else()
-      list(APPEND SRCS "${_src}")
-    endif()
-  endforeach()
-  if(_relPath)
-    set(SRCS ${SRCS} PARENT_SCOPE)
-  endif()
-endmacro()
+include(CMake/Sources.cmake)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "^GNU$")
   message(STATUS "Add GNU Options for Compiling")
   add_compile_options(-Wno-free-nonheap-object -Wextra-semi)
 endif()
-#if(MSVC)
-#add_compile_options(/fsanitize=address)
-#endif()
-
-option(UniversalBinary "Build universal binary for mac" ON)
 
 if(UniversalBinary)
   set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE INTERNAL "")
 endif()
-set_property(GLOBAL PROPERTY USE_FOLDERS YES)
-option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
 
-# SETUP JUCE
-include(CMake/GitFunctions.cmake)
-update_from_git(juce "https://github.com/juce-framework/JUCE" "tags/8.0.10")
+#removes MSVC warning: D9025
+if (MSVC)
+  string(REGEX REPLACE "/W3" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+  string(REGEX REPLACE "-W3" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+endif ()
+
+#static linking in Windows:
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 ## SETUP OPTIONS
 option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
 option(JUCE_BUILD_EXTRAS "Build JUCE Extras" OFF)
 option(JUCE_BUILD_EXAMPLES "Build JUCE Examples" OFF)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+add_subdirectory(vendor/fmt)
+add_subdirectory(${JUCE_ROOT} JUCE)
+
+set_property(TARGET fmt PROPERTY SYSTEM TRUE)
 add_subdirectory(Plugin)

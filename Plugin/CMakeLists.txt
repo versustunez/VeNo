@@ -50,7 +50,8 @@ else ()
 endif ()
 
 target_include_directories(${BaseTargetName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Source/)
-target_include_directories(${BaseTargetName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Source/vendors)
+target_include_directories(${BaseTargetName} SYSTEM PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../vendors/juce/modules)
+target_include_directories(${BaseTargetName} SYSTEM PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../vendors/fmt/include)
 
 target_link_libraries(
         ${BaseTargetName} PRIVATE
@@ -62,4 +63,5 @@ target_link_libraries(
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
+        fmt::fmt
 )

@@ -44,7 +44,7 @@ void UIParser::parse() {
     auto loop = getLoop(line, i);
     if (loop.times > -1) {
       loop.size = m_stack.size();
-      loop.itVar = std::format("it{}", m_loopStack.size());
+      loop.itVar = fmt::format("it{}", m_loopStack.size());
       loop.itVarOffset = loop.itVar + "_1";
       m_loopStack.push(loop);
       m_parameters[loop.itVar] = std::to_string(loop.done + 1);

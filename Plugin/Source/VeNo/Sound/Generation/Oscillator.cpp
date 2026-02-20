@@ -30,7 +30,7 @@ inline __m128 hermite4_ps(__m128 f, __m128 xm1, __m128 x0, __m128 x1,
 
 inline __m128 renderVoiceSIMD4(SingleVoiceData &voice, DetuneState &state,
                                float inc, const Wave &table, int baseIdx) {
-  const int mask = table.Length - 1;
+  constexpr int mask = Wave::TableLength - 1;
 
   __m128 lookup = _mm_loadu_ps(&state.lookup[baseIdx]);
   __m128 phase = _mm_loadu_ps(&voice.phaseOffset[baseIdx]);
@@ -44,7 +44,7 @@ inline __m128 renderVoiceSIMD4(SingleVoiceData &voice, DetuneState &state,
 
   _mm_storeu_ps(&voice.phaseOffset[baseIdx], phase);
 
-  __m128 pos = _mm_mul_ps(phase, _mm_set1_ps((float)table.Length));
+  __m128 pos = _mm_mul_ps(phase, _mm_set1_ps(static_cast<float>(Wave::TableLength)));
 
   __m128i i = _mm_cvttps_epi32(pos);
   __m128 f = _mm_sub_ps(pos, _mm_cvtepi32_ps(i));
@@ -56,7 +56,7 @@ inline __m128 renderVoiceSIMD4(SingleVoiceData &voice, DetuneState &state,
   __m128i i1 = _mm_and_si128(_mm_add_epi32(i, _mm_set1_epi32(1)), maskv);
   __m128i i2 = _mm_and_si128(_mm_add_epi32(i, _mm_set1_epi32(2)), maskv);
 
-  const float *base = table.Data;
+  const float *base = table.Data.data();
 
   __m128 xm1 = _mm_i32gather_ps(base, im1, 4);
   __m128 x0 = _mm_i32gather_ps(base, i0, 4);
@@ -243,11 +243,11 @@ float Oscillator::renderVoice(SingleVoiceData &voice, DetuneState &state,
   voice.phaseOffset[idx] = phase;
 
   // Scale to table
-  const float pos = phase * static_cast<float>(table.Length);
+  const float pos = phase * static_cast<float>(Wave::TableLength);
   const int i = static_cast<int>(pos);
   const float f = pos - static_cast<float>(i);
 
-  const int mask = table.Length - 1;
+  constexpr int mask = Wave::TableLength - 1;
   const float xm1 = table.Data[(i - 1) & mask];
   const float x0 = table.Data[(i)&mask];
   const float x1 = table.Data[(i + 1) & mask];

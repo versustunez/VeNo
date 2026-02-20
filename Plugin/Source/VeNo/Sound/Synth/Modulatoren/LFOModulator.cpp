@@ -5,7 +5,7 @@
 
 namespace VeNo::Audio {
 void LFOModulator::init(int number) {
-  m_name = std::format("LFO {}", number);
+  m_name = fmt::format("LFO {}", number);
   m_WaveLib = &WaveLib::Get();
   auto *instance = Core::Instance::get(m_id);
   if (instance == nullptr)
@@ -14,9 +14,9 @@ void LFOModulator::init(int number) {
   // Setup LFO-Data ;)
   auto *handler = instance->handler.get();
   m_Data.Frequency =
-      handler->getModulateParameter(std::format("lfo{}__rate", number));
-  m_Data.Active = handler->getParameter(std::format("lfo{}__active", number));
-  m_Data.WaveForm = handler->getParameter(std::format("lfo{}__wave", number));
+      handler->getModulateParameter(fmt::format("lfo{}__rate", number));
+  m_Data.Active = handler->getParameter(fmt::format("lfo{}__active", number));
+  m_Data.WaveForm = handler->getParameter(fmt::format("lfo{}__wave", number));
   m_Data.Table = m_WaveLib->GetWaveTable(0);
 }
 
@@ -24,7 +24,7 @@ static void renderLFOVoice(LFOData &data) {
   auto &table = data.Table->Waves[0];
   data.Phase += data.FreqInc;
   data.Phase -= float(data.Phase >= 1.0);
-  double val = data.Phase * (double)table.Length;
+  double val = data.Phase * static_cast<double>(Wave::TableLength);
   int value = (int)val;
   int temp = (int)val + 1;
   double sum = table.Data[value];

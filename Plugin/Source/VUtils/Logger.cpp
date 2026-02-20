@@ -8,13 +8,13 @@ namespace VUtils {
 
 void Logger::create(const std::string &output, PrintType type) {
   if (juce::JUCEApplicationBase::isStandaloneApp())
-    std::cout << std::format("\033[1;{}m[{}] >> {}\033[0m\n", getColor(type), getType(type),
+    std::cout << fmt::format("\033[1;{}m[{}] >> {}\033[0m\n", getColor(type), getType(type),
                output);
 }
 void Logger::create(const std::string &output, const char *file,
                     const char *func, PrintType type) {
   if (juce::JUCEApplicationBase::isStandaloneApp())
-    std::cout << std::format("\033[1;{}m[{}][{}] >> {}\033[0m\n", getColor(type),
+    std::cout << fmt::format("\033[1;{}m[{}][{}] >> {}\033[0m\n", getColor(type),
                getType(type), getPlace(file, func), output);
 }
 

@@ -8,21 +8,21 @@
 #if 0
 #ifdef DEBUG
 #define DBGN(log, ...)                                                         \
-  VUtils::Logger::create(std::format(log __VA_OPT__(, ) __VA_ARGS__),          \
+  VUtils::Logger::create(fmt::format(log __VA_OPT__(, ) __VA_ARGS__),          \
                          __FILE__, __FUNCTION__, VUtils::PrintType::Debug)
 #else
 #define DBGN(...)
 #endif
 #define ERR(log, ...)                                                          \
-  VUtils::Logger::create(std::format(log __VA_OPT__(, ) __VA_ARGS__),          \
+  VUtils::Logger::create(fmt::format(log __VA_OPT__(, ) __VA_ARGS__),          \
                          __FILE__, __FUNCTION__, VUtils::PrintType::Error)
 
 #define LOG(log, ...)                                                          \
-  VUtils::Logger::create(std::format(log __VA_OPT__(, ) __VA_ARGS__),          \
+  VUtils::Logger::create(fmt::format(log __VA_OPT__(, ) __VA_ARGS__),          \
                          __FILE__, __FUNCTION__, VUtils::PrintType::Log)
 
 #define WARN(log, ...)                                                         \
-  VUtils::Logger::create(std::format(log __VA_OPT__(, ) __VA_ARGS__),          \
+  VUtils::Logger::create(fmt::format(log __VA_OPT__(, ) __VA_ARGS__),          \
                          __FILE__, __FUNCTION__, VUtils::PrintType::Warn)
 #else
 #define DBGN(...)
