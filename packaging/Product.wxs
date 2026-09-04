@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*"
+             Language="0"
+             Name="$(var.PRODUCT_NAME)"
+             Version="$(var.VERSION)"
+             Manufacturer="VstZ"
+             UpgradeCode="3F2504E0-4F89-11D3-9A0C-0305E82C3301">
+
+        <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64"/>
+
+        <MajorUpgrade DowngradeErrorMessage="A newer version of this software is already installed."/>
+        <MediaTemplate EmbedCab="yes"/>
+
+        <Feature Id="ProductFeature" Title="$(var.PRODUCT_NAME)" Level="1">
+            <ComponentGroupRef Id="ProductComponents"/>
+        </Feature>
+
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFiles64Folder">
+                <Directory Id="CommonFiles64Folder">
+                    <Directory Id="CommonVst3" Name="VST3">
+                        <Directory Id="VstZ" Name="VstZ">
+                            <Directory Id="INSTALLFOLDER"/>
+                        </Directory>
+                    </Directory>
+                </Directory>
+            </Directory>
+        </Directory>
+    </Product>
+</Wix>
