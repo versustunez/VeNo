@@ -1,9 +1,6 @@
 name: Build
 run-name: "Release Build"
 on:
-  push:
-    branches:
-      - main
   pull_request: {}
 
 jobs:

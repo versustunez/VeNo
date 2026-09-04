@@ -73,7 +73,7 @@ if ((DEFINED ENV{CI}))
     # the first call truncates, the rest append
     file(WRITE  "${env_file}" "PROJECT_NAME=${PROJECT_NAME}\n")
     file(APPEND "${env_file}" "PRODUCT_NAME=${PROJECT_NAME}\n")
-    file(APPEND "${env_file}" "VERSION=${CURRENT_VERSION}\n")
+    file(APPEND "${env_file}" "VERSION=0.0.3\n")
     file(APPEND "${env_file}" "BUNDLE_ID=${PluginID}\n")
     file(APPEND "${env_file}" "COMPANY_NAME=${PluginVendor}\n")
 endif ()
