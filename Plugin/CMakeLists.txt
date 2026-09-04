@@ -16,7 +16,7 @@ juce_add_plugin(
         PLUGIN_MANUFACTURER_CODE VstZ
         PLUGIN_CODE VeNo
         FORMATS VST3 Standalone
-        PRODUCT_NAME "VeNo Synth"
+        PRODUCT_NAME "${PROJECT_NAME}"
 )
 
 set_target_properties(${BaseTargetName} PROPERTIES CXX_STANDARD 20)
@@ -72,7 +72,7 @@ if ((DEFINED ENV{CI}))
 
     # the first call truncates, the rest append
     file(WRITE  "${env_file}" "PROJECT_NAME=${PROJECT_NAME}\n")
-    file(APPEND "${env_file}" "PRODUCT_NAME=VeNo Synth\n")
+    file(APPEND "${env_file}" "PRODUCT_NAME=${PROJECT_NAME}\n")
     file(APPEND "${env_file}" "VERSION=${CURRENT_VERSION}\n")
     file(APPEND "${env_file}" "BUNDLE_ID=${PluginID}\n")
     file(APPEND "${env_file}" "COMPANY_NAME=${PluginVendor}\n")
