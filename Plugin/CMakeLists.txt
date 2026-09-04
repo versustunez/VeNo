@@ -65,3 +65,15 @@ target_link_libraries(
         juce::juce_recommended_warning_flags
         fmt::fmt
 )
+
+if ((DEFINED ENV{CI}))
+    set (env_file "${PROJECT_SOURCE_DIR}/../.env")
+    message ("Writing ENV file for CI: ${env_file}")
+
+    # the first call truncates, the rest append
+    file(WRITE  "${env_file}" "PROJECT_NAME=${PROJECT_NAME}\n")
+    file(APPEND "${env_file}" "PRODUCT_NAME=${PROJECT_NAME}\n")
+    file(APPEND "${env_file}" "VERSION=${CURRENT_VERSION}\n")
+    file(APPEND "${env_file}" "BUNDLE_ID=${PluginID}\n")
+    file(APPEND "${env_file}" "COMPANY_NAME=${PluginVendor}\n")
+endif ()

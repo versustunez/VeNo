@@ -48,3 +48,5 @@ add_subdirectory(${JUCE_ROOT} JUCE)
 
 set_property(TARGET fmt PROPERTY SYSTEM TRUE)
 add_subdirectory(Plugin)
+
+include (Version)
