@@ -135,21 +135,21 @@ jobs:
 
       - name: Upload Exe (Windows)
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ env.ARTIFACT_NAME }}.msi
           path: 'packaging/${{ env.ARTIFACT_NAME }}.msi'
 
       - name: Upload Zip (Linux)
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ env.ARTIFACT_NAME }}.zip
           path: '${{ env.ARTIFACTS_PATH }}/${{ env.ARTIFACT_NAME }}.zip'
 
       - name: Upload DMG (MacOS)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ env.ARTIFACT_NAME }}.dmg
           path: packaging/${{ env.ARTIFACT_NAME }}.dmg
@@ -161,7 +161,7 @@ jobs:
 
     steps:
       - name: Get Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
